@@ -56,6 +56,12 @@ expected (does not prematurely submit unless intended).
 - [ ] Very long block (e.g. a 1000-character paragraph): types fully without dropping the
       tail.
 - [ ] Emoji / accented characters in a block: appear correctly (Unicode fallback path).
+- [ ] Non-Latin block (e.g. Hebrew) with a Latin layout active: types correctly via the
+      Unicode fallback; same block with the Hebrew layout active types via real keystrokes.
+- [ ] Mixed-direction block (Hebrew + English in one sentence) into a bidi-aware field
+      (Notes, WhatsApp): characters arrive in logical order and render correctly RTL/LTR.
+- [ ] Switch the input source while the app is running, then type: no wrong-character
+      mapping (the resolver rebuilds its layout cache on switch).
 - [ ] Focus a password field, press the shortcut: TypeCue shows the "secure field" warning
       and does NOT consume the block (cursor does not advance).
 - [ ] Two rapid presses: the second is ignored while the first block is still typing; no
