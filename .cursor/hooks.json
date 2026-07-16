@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "hooks": {
+    "afterShellExecution": [
+      {
+        "command": ".cursor/hooks/open-typecue-after-build.sh",
+        "matcher": "xcodebuild"
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+# Xcode / generated project
+*.xcodeproj/
+!project.yml
+DerivedData/
+build/
+*.xcworkspace/xcuserdata/
+xcuserdata/
+*.xcuserstate
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# macOS
+.DS_Store
+
+# Misc build artifacts
+*.dmg
+*.app
+
+# Coverage artifacts
+*.profraw
+*.profdata
