@@ -23,7 +23,6 @@ struct OnboardingView: View {
 
     // Fixed layout dimensions that must grow with Dynamic Type so labels stay aligned.
     @ScaledMetric private var workflowNumberWidth: CGFloat = 18
-    @ScaledMetric private var calloutIconWidth: CGFloat = 24
 
     var body: some View {
         VStack(spacing: 0) {
@@ -56,30 +55,19 @@ struct OnboardingView: View {
     // MARK: Step 1 - What is TypeCue
 
     private var welcomeStep: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 18) {
             Text("Welcome to TypeCue")
                 .font(.largeTitle).bold()
-            Text("TypeCue types your script into the focused field, one block per hotkey press, so the typing comes out right - recorded or live.")
+            Text("TypeCue types your script into the focused field, one press per block, so recordings and live demos never show a typo. Great for demo videos, tutorials, webinars, and live presentations - anywhere an audience is watching you type.")
                 .foregroundStyle(.secondary)
-
-            calloutBlock(icon: "sparkles", title: "Great for") {
-                Text("Demo videos, tutorials, webinars, and live presentations - whenever people are watching you type and it has to come out right the first time.")
-                    .foregroundStyle(.secondary)
-            }
+                .fixedSize(horizontal: false, vertical: true)
 
             VStack(alignment: .leading, spacing: 8) {
                 Text("How it works")
                     .font(.headline)
-                workflowRow(1, "Write a script, an ordered list of text blocks.")
+                workflowRow(1, "Write a script - blocks of text in the order you'll play them.")
                 workflowRow(2, "Focus the field you want to type into.")
-                workflowRow(3, "Press your hotkey. TypeCue types the next block, human-paced.")
-                workflowRow(4, "Press again for the next block.")
-            }
-
-            calloutBlock(icon: "text.badge.plus", title: "Shape the pace in your text") {
-                Text("Markers like [0.5], [speed:20], and [enter] control pauses, speed, and sending. See Formatting in the editor for the full list.")
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
+                workflowRow(3, "Press your hotkey each time you want the next block typed, human-paced.")
             }
         }
     }
@@ -90,7 +78,7 @@ struct OnboardingView: View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Grant one permission")
                 .font(.largeTitle).bold()
-            Text("TypeCue needs Accessibility access to send keystrokes to other apps. That's the only permission it needs.")
+            Text("TypeCue needs Accessibility access to send keystrokes to other apps - that's the only permission it uses.")
                 .foregroundStyle(.secondary)
 
             permissionRow
@@ -131,7 +119,7 @@ struct OnboardingView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Test it")
                 .font(.headline)
-            Text("Click into the box, then press Test Type. TypeCue will type \u{201C}\(expected)\u{201D} into it - the surest way to confirm the permission actually works.")
+            Text("Accessibility can say Granted before it actually works. Click the box, press Test Type, and check that \u{201C}\(expected)\u{201D} appears.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
 
@@ -166,7 +154,7 @@ struct OnboardingView: View {
         VStack(alignment: .leading, spacing: 16) {
             Text("You're all set")
                 .font(.largeTitle).bold()
-            Text("Here's where things stand. Try the sample script to see every feature in action, or jump straight into your own.")
+            Text("Try the sample script to see it in action, or jump straight into your own.")
                 .foregroundStyle(.secondary)
 
             VStack(alignment: .leading, spacing: 10) {
@@ -174,14 +162,14 @@ struct OnboardingView: View {
                     done: coordinator.permissions.isTrusted,
                     title: "Accessibility",
                     detail: coordinator.permissions.isTrusted
-                        ? "Granted, TypeCue can type for you."
-                        : "Not granted yet, typing won't work until you enable it in Settings."
+                        ? "Granted - TypeCue can type for you."
+                        : "Not granted yet - typing won't work until you enable it in Settings."
                 )
                 readinessRow(
                     done: hotkeyDescription != nil,
                     title: "Hotkey",
                     detail: hotkeyDescription.map { "Press \($0) anywhere to type the next block." }
-                        ?? "Not set yet, add one in Settings."
+                        ?? "Not set yet - add one in Settings."
                 )
                 readinessRow(
                     done: true,
@@ -199,7 +187,7 @@ struct OnboardingView: View {
                     Button {
                         coordinator.startTour()
                     } label: {
-                        Label("Try the sample script", systemImage: "play.fill")
+                        Label("Try the Sample Script", systemImage: "play.fill")
                     }
                     .buttonStyle(.borderedProminent)
 
@@ -214,10 +202,14 @@ struct OnboardingView: View {
                         Label("Show Panel", systemImage: "macwindow")
                     }
                 }
-                Text("Makes it the active script - focus any text field and press your hotkey to see it type.")
+                Text("Loads \u{201C}TypeCue tour\u{201D} as your active script - focus any text field and press your hotkey to watch it type.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+
+            Text("Pace your blocks with inline markers like [0.5], [speed:20], and [enter] - the full list is under Formatting in the editor.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
         }
     }
 
@@ -313,26 +305,6 @@ struct OnboardingView: View {
         }
     }
 
-    private func calloutBlock(
-        icon: String,
-        title: String,
-        @ViewBuilder content: () -> some View
-    ) -> some View {
-        HStack(alignment: .top, spacing: 12) {
-            Image(systemName: icon)
-                .font(.title3)
-                .foregroundStyle(Color.accentColor)
-                .frame(width: calloutIconWidth)
-            VStack(alignment: .leading, spacing: 4) {
-                Text(title).font(.headline)
-                content()
-            }
-        }
-        .padding(12)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.secondary.opacity(0.08))
-        .clipShape(RoundedRectangle(cornerRadius: 10))
-    }
 }
 
 private extension OnboardingStep {
