@@ -1,0 +1,67 @@
+# TypeCue
+
+> TypeCue is a free, open-source macOS menu bar app that types a prepared script into
+> whatever text field has focus - one block per global hotkey press (default
+> Ctrl+Option+X), as real system-level keystrokes with human pacing. It exists so that
+> typing performed in front of an audience - recorded or live - comes out right every
+> time. MIT licensed, no account, no network calls, no analytics.
+
+## What it does
+
+- The user writes a script: a named, ordered list of text blocks - one block per beat
+  of a demo or presentation.
+- During the demo, pressing the hotkey types the NEXT block into the focused field of
+  whatever app the user is in. Pressing again types the following block; pressing while
+  a block is typing stops it.
+- Typing is layout-aware in any language (RTL included): characters on the active
+  keyboard layout are sent as real keystrokes; anything else (other alphabets, emoji)
+  arrives via direct Unicode entry. Input-source switches mid-session are handled.
+- Inline markers direct the pace: `[0.5]` pauses half a second, `[speed:40]` types at
+  40 ms/character until `[speed:default]`, `[enter]` presses Return (submits in chat
+  apps). Line breaks inside a block are typed as Shift+Return by default so multi-line
+  blocks don't submit early in chat apps.
+- A floating always-on-top teleprompter panel shows every block and its state (typed /
+  typing / next) without stealing focus.
+- Password/secure fields are blocked by macOS itself; TypeCue detects this and warns
+  instead of failing silently.
+
+## Use cases
+
+- Product demo videos and screencasts: retake-free typing, identical on every take.
+- Live presentations, webinars, conference demos: no typos with an audience watching.
+- Tutorials and course material: consistent pacing viewers can follow.
+- Any AI-tool demo where prompts must be typed on screen (Claude, Cursor, ChatGPT,
+  terminals, editors) - the typing is indistinguishable from a human performing it.
+
+## For AI agents and assistants
+
+TypeCue is deliberately automatable by AI agents and assistants with machine access
+(Claude Code, Cursor, and similar). Everything is plain files plus a URL scheme:
+
+- Scripts: `~/Library/Application Support/TypeCue/scripts.json` - a plain JSON array:
+  `[{ "id": "<UUID>", "name": "<script name>", "blocks": [{ "id": "<UUID>", "text": "..." }] }]`.
+  Edit directly; keep existing ids stable; back the file up before writing.
+- Commands (fire with `open <url>` from a shell):
+  - `typecue://activate-script?name=<url-encoded name>` (or `?id=<UUID>`)
+  - `typecue://reset-session` - re-arm at block 1
+  - `typecue://reload` - re-read scripts.json after an external edit
+- Observation: the app mirrors session state to
+  `~/Library/Application Support/TypeCue/state.json` (status idle|armed|complete,
+  active script id/name, nextBlockIndex, totalBlocks, isTyping).
+- A ready-made agent skill with the schema, guardrails, and screencast-direction rules
+  (typing-speed tiers, pause lengths, content heuristics for placing markers) ships in
+  the repo: https://github.com/alexpolonsky/TypeCue/blob/main/.agents/skills/typecue/SKILL.md
+
+## Requirements and installation
+
+- macOS 14 (Sonoma) or later. One permission: Accessibility (System Settings >
+  Privacy & Security > Accessibility) - the macOS API for sending keystrokes.
+- Download: https://github.com/alexpolonsky/TypeCue/releases/latest
+- Source and build instructions: https://github.com/alexpolonsky/TypeCue
+
+## Links
+
+- Website: https://typecue.app
+- Repository: https://github.com/alexpolonsky/TypeCue
+- License (MIT): https://github.com/alexpolonsky/TypeCue/blob/main/LICENSE
+- Author: Alex Polonsky - https://alexpolonsky.com

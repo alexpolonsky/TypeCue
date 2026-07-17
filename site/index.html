@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TypeCue - your script, typed for you</title>
+<meta name="description" content="Free, open-source macOS menu bar app that types your script into any app, one block per hotkey press. Real keystrokes, human pace, no typos - for demos, tutorials, and live presentations.">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta property="og:title" content="TypeCue - your script, typed for you">
+<meta property="og:description" content="Free, open-source macOS app that types your demo script into any app, one block per hotkey press. Flawless, take after take.">
+<meta property="og:image" content="https://typecue.app/og.png">
+<meta property="og:url" content="https://typecue.app">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --cream: #faf7f0;
+    --cream-deep: #f1ecdf;
+    --ink: #23243a;
+    --ink-soft: #5c5d72;
+    --coral: #f0594c;
+    --coral-deep: #d94a3e;
+    --line: #e4ddcc;
+    --card: #ffffff;
+    --code-bg: #23243a;
+    --code-ink: #e8e6f0;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font: 17px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  a { color: inherit; }
+  .wrap { max-width: 68rem; margin: 0 auto; padding: 0 1.5rem; }
+
+  /* ---------- Nav ---------- */
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 1.4rem 0; }
+  .brand { display: flex; align-items: center; gap: .6rem; font-weight: 700; font-size: 1.1rem; text-decoration: none; }
+  .brand img { width: 30px; height: 30px; border-radius: 7px; }
+  .nav-links { display: flex; gap: 1.6rem; font-size: .95rem; }
+  .nav-links a { text-decoration: none; color: var(--ink-soft); }
+  .nav-links a:hover, .nav-links a:focus-visible { color: var(--ink); }
+
+  /* ---------- Hero ---------- */
+  header.hero { padding: 4.5rem 0 3rem; text-align: center; }
+  h1 {
+    font-size: clamp(2.6rem, 7vw, 4.6rem);
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    margin: 0 0 .4rem;
+    font-weight: 800;
+    text-wrap: balance;
+  }
+  .typed-wrap { display: inline; }
+  .caret {
+    display: inline-block; width: .09em; height: .9em; margin-left: .06em;
+    background: var(--coral); vertical-align: -0.08em;
+    animation: blink 1.1s step-end infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  .kicker { font-size: clamp(1.15rem, 2.6vw, 1.5rem); font-weight: 600; color: var(--ink-soft); margin: 0 0 1.2rem; }
+  .sub { max-width: 38rem; margin: 0 auto 2rem; color: var(--ink-soft); }
+  .cta-row { display: flex; gap: .9rem; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: .8rem 1.5rem; border-radius: 12px;
+    font-weight: 600; text-decoration: none; font-size: 1.02rem;
+  }
+  .btn-primary { background: var(--ink); color: var(--cream); }
+  .btn-primary:hover { background: #33344e; }
+  .btn-ghost { border: 1.5px solid var(--line); background: var(--card); }
+  .btn-ghost:hover { border-color: var(--ink-soft); }
+  .fine { font-size: .85rem; color: var(--ink-soft); margin-top: 1.1rem; }
+  .fine b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- Keycaps ---------- */
+  kbd {
+    display: inline-block; min-width: 1.55em; padding: .18em .42em;
+    font: 600 .82em/1.25 -apple-system, BlinkMacSystemFont, sans-serif;
+    text-align: center; background: var(--card);
+    border: 1.5px solid var(--line); border-bottom-width: 3px; border-radius: 7px;
+    box-shadow: 0 1px 0 rgba(35,36,58,.04);
+  }
+  kbd.pressed { animation: press .28s ease; }
+  @keyframes press { 40% { transform: translateY(2px); border-bottom-width: 1.5px; } }
+
+  /* ---------- Demo ---------- */
+  .demo { padding: 1.5rem 0 4rem; }
+  .stage {
+    background: linear-gradient(180deg, var(--cream-deep), #e9e2d0);
+    border-radius: 24px; padding: clamp(1.2rem, 4vw, 3rem);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.6);
+  }
+  .mac-menubar {
+    display: flex; align-items: center; gap: 1rem;
+    background: rgba(255,255,255,.65); backdrop-filter: blur(6px);
+    border-radius: 10px; padding: .35rem .9rem; font-size: .8rem; color: var(--ink-soft);
+    max-width: 34rem; margin: 0 auto .9rem;
+  }
+  .mac-menubar .spacer { flex: 1; }
+  .mb-mark { display: inline-flex; flex-direction: column; gap: 2.5px; width: 15px; }
+  .mb-mark i { display: block; height: 3px; border-radius: 2px; background: var(--ink); }
+  .mb-mark i:first-child { width: 15px; }
+  .mb-row { display: flex; gap: 2.5px; align-items: center; }
+  .mb-row i { width: 8px; }
+  .mb-row s { display: block; width: 3px; height: 5px; border-radius: 1.5px; background: var(--coral); text-decoration: none; }
+  .window {
+    max-width: 34rem; margin: 0 auto; background: var(--card);
+    border-radius: 14px; box-shadow: 0 18px 50px rgba(35,36,58,.18), 0 2px 8px rgba(35,36,58,.08);
+    overflow: hidden;
+  }
+  .titlebar { display: flex; align-items: center; gap: .45rem; padding: .7rem .9rem; border-bottom: 1px solid #efece3; }
+  .dot { width: 11px; height: 11px; border-radius: 50%; flex: 0 0 11px; }
+  .dot:nth-child(1) { background: #ff5f57; } .dot:nth-child(2) { background: #febc2e; } .dot:nth-child(3) { background: #28c840; }
+  .titlebar .title { flex: 1; text-align: center; font-size: .8rem; color: var(--ink-soft); margin-right: 3rem; }
+  .chat { padding: 1.4rem 1.2rem 1.2rem; min-height: 9.5rem; display: flex; flex-direction: column; justify-content: flex-end; gap: .9rem; }
+  .bubble {
+    align-self: flex-end; background: var(--cream); border: 1px solid var(--line);
+    border-radius: 12px; padding: .6rem .9rem; font-size: .95rem; max-width: 92%;
+    opacity: 0; transform: translateY(4px); transition: opacity .35s, transform .35s;
+  }
+  .bubble.shown { opacity: 1; transform: none; }
+  .inputrow { display: flex; align-items: center; gap: .6rem; border: 1.5px solid var(--line); border-radius: 12px; padding: .65rem .9rem; }
+  .inputrow .text { font-size: .95rem; min-height: 1.4em; }
+  .inputrow .caret { height: 1.05em; }
+  .demo-hint { text-align: center; font-size: .85rem; color: var(--ink-soft); margin-top: 1.1rem; }
+  .demo-hint kbd { font-size: .78em; }
+
+  /* ---------- Sections ---------- */
+  section { padding: 3.5rem 0; }
+  h2 { font-size: clamp(1.6rem, 4vw, 2.2rem); letter-spacing: -0.02em; margin: 0 0 .5rem; text-wrap: balance; }
+  .section-sub { color: var(--ink-soft); max-width: 40rem; margin: 0 0 2.2rem; }
+
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.2rem; }
+  .step { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 1.3rem 1.4rem; }
+  .step .n { font-weight: 800; color: var(--coral); font-size: .95rem; margin-bottom: .35rem; }
+  .step h3 { margin: 0 0 .3rem; font-size: 1.06rem; }
+  .step p { margin: 0; font-size: .93rem; color: var(--ink-soft); }
+
+  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; }
+  .feature { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 1.3rem 1.4rem; }
+  .feature h3 { margin: 0 0 .3rem; font-size: 1.06rem; }
+  .feature p { margin: 0; font-size: .93rem; color: var(--ink-soft); }
+
+  /* ---------- Agents ---------- */
+  .agents-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 2rem; align-items: start; }
+  @media (max-width: 780px) { .agents-grid { grid-template-columns: 1fr; } }
+  pre {
+    background: var(--code-bg); color: var(--code-ink);
+    border-radius: 14px; padding: 1.1rem 1.2rem; overflow-x: auto;
+    font: .82rem/1.6 ui-monospace, "SF Mono", Menlo, monospace; margin: 0;
+  }
+  pre .c { color: #8f90a8; }
+  pre .a { color: #ffb0a8; }
+  .copybtn {
+    margin-top: .8rem; font: 600 .85rem/1 -apple-system, sans-serif;
+    background: var(--card); border: 1.5px solid var(--line); border-radius: 9px;
+    padding: .55rem .9rem; cursor: pointer;
+  }
+  .copybtn:hover { border-color: var(--ink-soft); }
+
+  /* ---------- FAQ ---------- */
+  details { border-bottom: 1px solid var(--line); padding: .9rem 0; }
+  details summary { font-weight: 600; cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 1rem; }
+  details summary::after { content: "+"; color: var(--coral); font-weight: 700; }
+  details[open] summary::after { content: "–"; }
+  details p { color: var(--ink-soft); font-size: .95rem; margin: .6rem 0 0; max-width: 44rem; }
+
+  /* ---------- Footer ---------- */
+  footer { border-top: 1px solid var(--line); margin-top: 3rem; padding: 2.2rem 0 3rem; font-size: .9rem; color: var(--ink-soft); }
+  .foot-row { display: flex; flex-wrap: wrap; gap: .4rem 1.4rem; margin-bottom: .9rem; }
+  footer a { color: var(--ink-soft); }
+  footer a:hover { color: var(--ink); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .caret { animation: none; }
+    kbd.pressed { animation: none; }
+    .bubble { transition: none; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="brand" href="#"><img src="icon-180.png" alt="" width="30" height="30">TypeCue</a>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#agents">For AI agents</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://github.com/alexpolonsky/TypeCue">GitHub</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <h1><span class="typed-wrap"><span id="typed-h1"></span><span class="caret" id="h1-caret"></span></span></h1>
+    <p class="kicker">Flawless, take after take.</p>
+    <p class="sub">TypeCue is a free, open-source menu bar app for macOS. Write your demo as
+    blocks; on stage or on camera, press one hotkey and the next block types itself into
+    whatever field has focus - real keystrokes, human pace, nothing to break your flow.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://github.com/alexpolonsky/TypeCue/releases/latest">Download for Mac</a>
+      <a class="btn btn-ghost" href="https://github.com/alexpolonsky/TypeCue">View source</a>
+    </div>
+    <p class="fine"><b>Free</b> &middot; MIT &middot; macOS 14+ &middot; no account, no network, no analytics</p>
+  </header>
+
+  <div class="demo">
+    <div class="stage">
+      <div class="mac-menubar" aria-hidden="true">
+        <span class="mb-mark"><i></i><span class="mb-row"><i style="height:3px;border-radius:2px;background:var(--ink)"></i><s></s></span></span>
+        <span style="font-weight:600">TypeCue</span>
+        <span class="spacer"></span>
+        <span id="mb-clock"></span>
+      </div>
+      <div class="window" aria-label="Simulated app window showing TypeCue typing">
+        <div class="titlebar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="title">Any app with a text field</span></div>
+        <div class="chat">
+          <div class="bubble" id="bubble-1">Sure - refactoring the auth flow now. I'll narrate each change.</div>
+          <div class="inputrow">
+            <div class="text"><span id="typed-demo"></span><span class="caret" id="demo-caret"></span></div>
+          </div>
+        </div>
+      </div>
+      <p class="demo-hint">Press <kbd id="k-ctrl">&#8963;</kbd><kbd id="k-opt">&#8997;</kbd><kbd id="k-x">X</kbd> - the next block types itself. Simulated here; the app sends real keystrokes.</p>
+    </div>
+  </div>
+
+  <section id="how">
+    <h2>How it works</h2>
+    <p class="section-sub">One script, one key, zero fumbling.</p>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><h3>Write your blocks</h3><p>A script is an ordered list of text blocks - one per beat of your demo. Add pacing with inline markers like [0.5] and [speed:40].</p></div>
+      <div class="step"><div class="n">2</div><h3>Focus any field</h3><p>Your editor, a browser, a chat app - wherever the typing should land. TypeCue stays out of sight in the menu bar.</p></div>
+      <div class="step"><div class="n">3</div><h3>Press <kbd>&#8963;</kbd><kbd>&#8997;</kbd><kbd>X</kbd></h3><p>The next block types itself, human-paced. Press again for the block after. Press mid-type to stop.</p></div>
+    </div>
+  </section>
+
+  <section id="features">
+    <h2>Built for people who type in front of people</h2>
+    <p class="section-sub">Demo videos, tutorials, webinars, live presentations - whenever it has to come out right the first time.</p>
+    <div class="features">
+      <div class="feature"><h3>Real keystrokes</h3><p>Synthetic key events at the system level - indistinguishable from physical typing to the receiving app. No pasting, no injection tricks.</p></div>
+      <div class="feature"><h3>Direct the pace</h3><p>Inline markers control the rhythm: [0.5] pauses, [speed:40] changes tempo mid-line, [enter] submits on purpose.</p></div>
+      <div class="feature"><h3>Natural rhythm</h3><p>Subtle pace variation with pauses at spaces and punctuation, so the typing reads like a person, not a metronome.</p></div>
+      <div class="feature"><h3>Floating teleprompter</h3><p>An always-on-top panel shows every block and where you are - typed, typing, next - without stealing focus from the app you're in.</p></div>
+      <div class="feature"><h3>Any language, any layout</h3><p>Layout-aware typing with RTL support. Characters not on your keyboard layout arrive by direct Unicode entry - switching input sources mid-session just works.</p></div>
+      <div class="feature"><h3>Chat-safe line breaks</h3><p>Multi-line blocks insert line breaks with Shift+Return by default, so nothing submits early in Claude, Cursor, or Slack.</p></div>
+      <div class="feature"><h3>One permission, explained</h3><p>Accessibility access - the macOS API for sending keystrokes - and nothing else. No account, no network calls, no analytics. Read the source.</p></div>
+      <div class="feature"><h3>Plain-file scripts</h3><p>Your scripts live in a readable JSON file on your Mac. Edit them by hand, sync them, or let your AI tools write them for you.</p></div>
+    </div>
+  </section>
+
+  <section id="agents">
+    <h2>For AI agents and assistants</h2>
+    <p class="section-sub">TypeCue is built to be driven by the tools you already use. Claude Code, Cursor, or any assistant
+    with access to your machine can author scripts, pace them like a director, and control the app.</p>
+    <div class="agents-grid">
+      <div>
+        <pre id="agent-snippet"><span class="c"># Scripts (plain JSON - edit directly)</span>
+~/Library/Application Support/TypeCue/scripts.json
+[{ "id", "name", "blocks": [{ "id", "text" }] }]
+
+<span class="c"># Drive the app</span>
+open <span class="a">"typecue://activate-script?name=My%20demo"</span>
+open <span class="a">"typecue://reset-session"</span>
+open <span class="a">"typecue://reload"</span>   <span class="c"># after editing scripts.json</span>
+
+<span class="c"># Observe it</span>
+~/Library/Application Support/TypeCue/state.json</pre>
+        <button class="copybtn" id="copy-snippet">Copy for your assistant</button>
+      </div>
+      <div>
+        <p>The repo ships a ready-made <a href="https://github.com/alexpolonsky/TypeCue/blob/main/.agents/skills/typecue/SKILL.md">agent skill</a>:
+        the schema, safety guardrails, and screencast-direction rules - typing speeds,
+        pause lengths, where a beat belongs - so you can ask your assistant for things like:</p>
+        <p style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding: .8rem 1rem;font-size:.95rem;">
+        "Turn this outline into a paced TypeCue script for my two-minute demo."</p>
+        <p>It writes the blocks, adds the markers, reloads the app. You press the key.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <h2>Questions</h2>
+    <details>
+      <summary>Why does TypeCue need Accessibility permission?</summary>
+      <p>Accessibility is the macOS API that lets an app send keystrokes to other apps - it's
+      the entire mechanism behind TypeCue, and the only permission it asks for. The onboarding
+      includes a Test Pad so you can verify it actually works before your demo. TypeCue makes
+      no network calls and collects nothing; the code is open if you want to check.</p>
+    </details>
+    <details>
+      <summary>Does it work in password fields?</summary>
+      <p>No - macOS blocks synthetic typing into secure fields system-wide, for every app.
+      TypeCue detects this and flashes a warning instead of silently consuming your block.
+      Type passwords manually; that's the OS working as intended.</p>
+    </details>
+    <details>
+      <summary>Does it work in my language?</summary>
+      <p>Yes. Typing is layout-aware (RTL included): characters on your active keyboard layout
+      are sent as real keystrokes, and everything else - other alphabets, emoji - arrives by
+      direct Unicode entry. Switching input sources mid-session is handled automatically.</p>
+    </details>
+    <details>
+      <summary>Which apps does it type into?</summary>
+      <p>Anything with a text field: browsers, editors like Cursor and VS Code, chat apps like
+      Claude and Slack, terminals, TextEdit. If you can click into it and type, TypeCue can
+      type there too.</p>
+    </details>
+    <details>
+      <summary>How is this different from TextExpander or Keyboard Maestro?</summary>
+      <p>Those expand snippets or run automations on demand. TypeCue plays an ordered script:
+      one hotkey, the next block, in sequence, with human pacing you direct - built
+      specifically for performing a demo, not for everyday shortcuts. It's also free and MIT
+      licensed.</p>
+    </details>
+    <details>
+      <summary>Does it pair with screen recorders?</summary>
+      <p>Perfectly - TypeCue handles what happens during the take, recorders like Screen Studio
+      handle capturing and polishing it. Scripted typing also means every retake is identical,
+      which makes editing easier.</p>
+    </details>
+    <details>
+      <summary>Is it really free?</summary>
+      <p>Yes - free and open source under the MIT license. No paid tier, no account, no
+      upsell. If it helps you ship a better demo, a star on GitHub is plenty.</p>
+    </details>
+  </section>
+
+  <footer>
+    <div class="foot-row">
+      <a href="https://github.com/alexpolonsky/TypeCue">GitHub</a>
+      <a href="https://github.com/alexpolonsky/TypeCue/releases">Releases</a>
+      <a href="https://github.com/alexpolonsky/TypeCue/blob/main/LICENSE">MIT License</a>
+      <a href="https://github.com/alexpolonsky/TypeCue/blob/main/THIRD-PARTY-LICENSES.md">Acknowledgements</a>
+      <a href="llms.txt">llms.txt</a>
+    </div>
+    <div class="foot-row">
+      <span>Made by <a href="https://alexpolonsky.com"><b>Alex Polonsky</b></a></span>
+      <a href="https://x.com/alexpo">X</a>
+      <a href="https://www.linkedin.com/in/alexpolonsky">LinkedIn</a>
+    </div>
+    <p style="margin:.4rem 0 0">The app collects nothing and makes no network calls. This site sets no cookies.</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Live clock in the fake menu bar
+  const clock = document.getElementById("mb-clock");
+  function tick() {
+    clock.textContent = new Date().toLocaleTimeString([], { weekday: "short", hour: "2-digit", minute: "2-digit" });
+  }
+  tick(); setInterval(tick, 30000);
+
+  // Typing engine (Raycast-style: mutate textContent, sibling caret rides along)
+  function typeInto(el, text, base, done) {
+    let i = 0;
+    (function step() {
+      el.textContent = text.slice(0, ++i);
+      if (i < text.length) setTimeout(step, base + (Math.random() * 40 - 20));
+      else if (done) done();
+    })();
+  }
+
+  // Hero headline
+  const h1 = document.getElementById("typed-h1");
+  const H1_TEXT = "Your script, typed for you.";
+  if (reduced) { h1.textContent = H1_TEXT; }
+  else setTimeout(() => typeInto(h1, H1_TEXT, 62), 350);
+
+  // Demo loop
+  const demo = document.getElementById("typed-demo");
+  const bubble = document.getElementById("bubble-1");
+  const keys = ["k-ctrl", "k-opt", "k-x"].map(id => document.getElementById(id));
+  const BLOCKS = [
+    "Refactor the auth flow and explain each change as you go.",
+    "Now add tests for the edge cases we just discussed.",
+  ];
+  function pressKeys() {
+    keys.forEach(k => { k.classList.remove("pressed"); void k.offsetWidth; k.classList.add("pressed"); });
+  }
+  function runDemo(idx) {
+    pressKeys();
+    setTimeout(() => {
+      typeInto(demo, BLOCKS[idx % BLOCKS.length], 55, () => {
+        setTimeout(() => {
+          if (idx % 2 === 0) bubble.classList.add("shown");
+          setTimeout(() => { demo.textContent = ""; runDemo(idx + 1); }, 2600);
+        }, 900);
+      });
+    }, 420);
+  }
+  if (reduced) {
+    demo.textContent = BLOCKS[0];
+    bubble.classList.add("shown");
+  } else {
+    setTimeout(() => runDemo(0), 1800);
+  }
+
+  // Copy snippet
+  const btn = document.getElementById("copy-snippet");
+  btn.addEventListener("click", () => {
+    navigator.clipboard.writeText(document.getElementById("agent-snippet").innerText).then(() => {
+      btn.textContent = "Copied";
+      setTimeout(() => { btn.textContent = "Copy for your assistant"; }, 1600);
+    });
+  });
+})();
+</script>
+</body>
+</html>
