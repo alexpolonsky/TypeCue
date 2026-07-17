@@ -39,9 +39,9 @@ Author pacing directly in a block's text (see "Formatting" in the editor):
 Line breaks inside a block are inserted with Shift+Return by default, so multi-line blocks
 don't submit themselves in chat apps like Claude, Cursor and Slack. Switch this in Settings.
 
-## Scripting API for AI agents and assistants
+## Scripting API for AI agents
 
-Everything TypeCue knows lives in plain files, so AI agents and assistants (Claude Code,
+Everything TypeCue knows lives in plain files, so AI agents (Claude Code,
 Cursor, or any tool with access to your machine) can author and drive your scripts:
 
 - **Scripts**: `~/Library/Application Support/TypeCue/scripts.json` - a plain JSON array
@@ -54,7 +54,7 @@ Cursor, or any tool with access to your machine) can author and drive your scrip
 
 The repo ships a ready-made agent skill at
 [`.agents/skills/typecue`](.agents/skills/typecue/SKILL.md) - schema, guardrails, and
-direction rules for pacing a script with markers. Point your assistant at it (or paste
+direction rules for pacing a script with markers. Point your agent at it (or paste
 it in) and ask for things like *"turn this outline into a paced TypeCue script for my
 demo"*.
 

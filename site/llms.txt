@@ -33,9 +33,9 @@
 - Any AI-tool demo where prompts must be typed on screen (Claude, Cursor, ChatGPT,
   terminals, editors) - the typing is indistinguishable from a human performing it.
 
-## For AI agents and assistants
+## For AI agents
 
-TypeCue is deliberately automatable by AI agents and assistants with machine access
+TypeCue is deliberately automatable by AI agents with machine access
 (Claude Code, Cursor, and similar). Everything is plain files plus a URL scheme:
 
 - Scripts: `~/Library/Application Support/TypeCue/scripts.json` - a plain JSON array:
