@@ -85,12 +85,12 @@ tool with access to your machine) can author and drive your scripts:
   (active script, next block, typing status) so tools can observe what's happening.
 
 The repo ships a ready-made agent skill at
-[`.agents/skills/typecue`](.agents/skills/typecue/SKILL.md) (also served at
-[typecue.app/skill](https://typecue.app/skill)) - the schema, guardrails, and
+[`.agents/skills/typecue`](.agents/skills/typecue/SKILL.md) (served raw at
+[typecue.app/skill.md](https://typecue.app/skill.md)) - the schema, guardrails, and
 screencast-direction rules for pacing a script. Give your agent one line:
 
 ```
-Read https://typecue.app/skill and set up my TypeCue scripts.
+Read https://typecue.app/skill.md and set up my TypeCue scripts.
 ```
 
 Any agent that can fetch a URL, edit files, and run shell commands qualifies: Claude

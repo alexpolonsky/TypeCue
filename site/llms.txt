@@ -48,9 +48,10 @@ TypeCue is deliberately automatable by AI agents with machine access
 - Observation: the app mirrors session state to
   `~/Library/Application Support/TypeCue/state.json` (status idle|armed|complete,
   active script id/name, nextBlockIndex, totalBlocks, isTyping).
-- A ready-made agent skill with the schema, guardrails, and screencast-direction rules
-  (typing-speed tiers, pause lengths, content heuristics for placing markers) ships in
-  the repo: https://github.com/alexpolonsky/TypeCue/blob/main/.agents/skills/typecue/SKILL.md
+- A ready-made agent skill with the schema, guardrails, and pacing-direction rules
+  (typing-speed tiers, pause lengths, content heuristics for placing markers) is served
+  raw at https://typecue.app/skill.md (source:
+  https://github.com/alexpolonsky/TypeCue/blob/main/.agents/skills/typecue/SKILL.md)
 
 ## Requirements and installation
 

@@ -276,7 +276,7 @@ struct OnboardingView: View {
 
     private var step: OnboardingStep { coordinator.onboardingStep }
 
-    /// Whether the permission step is verified ready (trusted + functional test passed).
+    /// Whether the permission step is verified ready (trusted, or the functional test passed).
     private var permissionReady: Bool {
         OnboardingGate.canProceed(
             isTrusted: coordinator.permissions.isTrusted,

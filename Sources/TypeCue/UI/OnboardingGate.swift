@@ -2,13 +2,13 @@ import Foundation
 
 /// Pure, testable readiness logic for the onboarding permission step.
 ///
-/// "Ready" (a *soft* gate - the user can still skip) means the process is a trusted
-/// Accessibility client AND the functional Test Pad check has confirmed keystrokes
-/// actually reach a field. Both are required because `AXIsProcessTrusted()` can report
-/// `true` before the grant is fully live (documented macOS quirk), so trust alone isn't
-/// proof that typing works.
+/// The footer shows "Continue" when either signal says typing can work: the process is
+/// a trusted Accessibility client, or the functional Test Pad check has already proven
+/// keystrokes reach a field (which implies the grant is live even if `AXIsProcessTrusted()`
+/// misreports - a documented macOS quirk cuts both ways). Only when neither signal is
+/// present does the honest "Skip for now" label appear. The gate stays soft either way.
 enum OnboardingGate {
     static func canProceed(isTrusted: Bool, testPassed: Bool) -> Bool {
-        isTrusted && testPassed
+        isTrusted || testPassed
     }
 }

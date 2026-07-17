@@ -24,11 +24,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
-      # Serve the agent skill at typecue.app/skill (kept in sync from the repo copy)
+      # Serve the agent skill: /skill.md is the canonical raw markdown (agent-ready),
+      # /skill is a human-facing redirect to it. Both stay in sync with the repo copy.
       - run: |
-          mkdir dist
+          mkdir -p dist/skill
           cp -R site/* dist/
-          cp .agents/skills/typecue/SKILL.md dist/skill
+          cp .agents/skills/typecue/SKILL.md dist/skill.md
+          cat > dist/skill/index.html <<'HTML'
+          <!DOCTYPE html>
+          <meta charset="utf-8">
+          <meta http-equiv="refresh" content="0; url=/skill.md">
+          <title>TypeCue agent skill</title>
+          <p><a href="/skill.md">TypeCue agent skill (markdown)</a></p>
+          HTML
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
