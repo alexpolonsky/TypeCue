@@ -34,6 +34,8 @@ targets:
     platform: macOS
     sources:
       - path: Sources/TypeCue
+      - path: THIRD-PARTY-LICENSES.md
+        buildPhase: resources
     dependencies:
       - package: KeyboardShortcuts
       - package: Sauce
@@ -46,7 +48,11 @@ targets:
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         NSAppleEventsUsageDescription: TypeCue uses automation to type scripted text into the focused app during demo recordings.
+        NSHumanReadableCopyright: "© 2026 Alex Polonsky. MIT License."
         LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
+        CFBundleURLTypes:
+          - CFBundleURLName: com.alexpo.typecue
+            CFBundleURLSchemes: [typecue]
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.alexpo.typecue

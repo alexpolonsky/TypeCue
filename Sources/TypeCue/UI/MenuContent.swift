@@ -32,6 +32,7 @@ struct MenuContent: View {
             }
             Divider()
 
+            Button("About TypeCue") { coordinator.openAbout() }
             Button("Quit TypeCue") { NSApplication.shared.terminate(nil) }
                 .keyboardShortcut("q")
         }
