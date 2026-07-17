@@ -38,7 +38,9 @@ public final class ScriptStore {
         let resolvedDirectory = ScriptStore.resolveDirectory(directory)
         ScriptStore.ensureDirectoryExists(resolvedDirectory)
         self.fileURL = resolvedDirectory.appendingPathComponent("scripts.json")
-        self.scripts = ScriptStore.load(from: fileURL, decoder: decoder)
+        let loaded = ScriptStore.load(from: fileURL, decoder: decoder)
+        self.scripts = loaded.scripts
+        self.lastError = loaded.error
     }
 
     // MARK: - Mutations
@@ -109,16 +111,48 @@ public final class ScriptStore {
         }
     }
 
-    private static func load(from fileURL: URL, decoder: JSONDecoder) -> [Script] {
+    /// Re-reads `scripts.json`, replacing the in-memory scripts. Used by the
+    /// `typecue://reload` command after an external tool (an AI agent or assistant, a
+    /// script) edited the file. A pending debounced save is cancelled first so it can't
+    /// overwrite the just-loaded external content; a failed decode keeps the current
+    /// in-memory scripts rather than wiping a running session.
+    public func reload() {
+        saveTask?.cancel()
+        saveTask = nil
+        guard FileManager.default.fileExists(atPath: fileURL.path) else { return }
+        do {
+            let data = try Data(contentsOf: fileURL)
+            scripts = try decoder.decode([Script].self, from: data)
+            lastError = nil
+        } catch {
+            lastError = "Couldn't reload your scripts file: \(error.localizedDescription)"
+            Self.logger.error("Reload of \(self.fileURL.path, privacy: .public) failed; keeping in-memory scripts: \(String(describing: error), privacy: .public)")
+        }
+    }
+
+    /// Loads scripts at init. A file that exists but fails to decode is moved aside
+    /// (`scripts.json.corrupt-<timestamp>`) instead of being left in place - otherwise
+    /// the next autosave would silently overwrite possibly-recoverable data with the
+    /// empty list this returns.
+    private static func load(from fileURL: URL, decoder: JSONDecoder) -> (scripts: [Script], error: String?) {
         guard FileManager.default.fileExists(atPath: fileURL.path) else {
-            return []
+            return ([], nil)
         }
         do {
             let data = try Data(contentsOf: fileURL)
-            return try decoder.decode([Script].self, from: data)
+            return (try decoder.decode([Script].self, from: data), nil)
         } catch {
-            logger.error("Failed to load scripts from \(fileURL.path, privacy: .public); starting empty: \(String(describing: error), privacy: .public)")
-            return []
+            logger.error("Failed to load scripts from \(fileURL.path, privacy: .public): \(String(describing: error), privacy: .public)")
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyyMMdd-HHmmss"
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            let corruptURL = URL(fileURLWithPath: fileURL.path + ".corrupt-\(formatter.string(from: Date()))")
+            do {
+                try FileManager.default.moveItem(at: fileURL, to: corruptURL)
+                return ([], "Couldn't read your scripts file - it was set aside as \(corruptURL.lastPathComponent) and TypeCue started with an empty list.")
+            } catch {
+                return ([], "Couldn't read your scripts file (\(fileURL.lastPathComponent)). TypeCue started with an empty list.")
+            }
         }
     }
 

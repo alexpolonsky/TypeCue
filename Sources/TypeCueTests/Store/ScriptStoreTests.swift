@@ -133,4 +133,55 @@ struct ScriptStoreTests {
         store.moveBlock(inScriptID: script.id, from: 0, to: 9)
         #expect(store.scripts.first?.blocks.map(\.text) == ["a", "b"])
     }
+
+    @Test("Corrupt scripts.json is set aside, not silently overwritten")
+    func corruptFileSetAside() throws {
+        let dir = makeTempDirectory()
+        defer { removeDirectory(dir) }
+        try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        let fileURL = dir.appendingPathComponent("scripts.json")
+        try Data("not json {".utf8).write(to: fileURL)
+
+        let store = ScriptStore(directory: dir)
+        #expect(store.scripts.isEmpty)
+        #expect(store.lastError?.contains("set aside") == true)
+        // Original moved out of the way so a later autosave can't destroy it.
+        #expect(!FileManager.default.fileExists(atPath: fileURL.path))
+        let corpses = try FileManager.default.contentsOfDirectory(atPath: dir.path)
+            .filter { $0.contains("corrupt") }
+        #expect(corpses.count == 1)
+    }
+
+    @Test("reload replaces in-memory scripts and cancels a pending debounced save")
+    func reloadReplacesAndCancelsPendingSave() async throws {
+        let dir = makeTempDirectory()
+        defer { removeDirectory(dir) }
+        let store = ScriptStore(directory: dir)
+        store.addScript(Script(name: "InApp", blocks: []))
+        // Debounced save for "InApp" is now pending. External tool writes the file first:
+        let external = [Script(name: "External", blocks: [TextBlock(text: "x")])]
+        try JSONEncoder().encode(external).write(to: store.fileURL)
+
+        store.reload()
+        #expect(store.scripts.map(\.name) == ["External"])
+
+        // The pending save must not fire and clobber the external content.
+        try await Task.sleep(for: .milliseconds(700))
+        let onDisk = try JSONDecoder().decode([Script].self, from: Data(contentsOf: store.fileURL))
+        #expect(onDisk.map(\.name) == ["External"])
+    }
+
+    @Test("reload keeps current scripts when the file is invalid")
+    func reloadKeepsStateOnBadFile() throws {
+        let dir = makeTempDirectory()
+        defer { removeDirectory(dir) }
+        let store = ScriptStore(directory: dir)
+        store.addScript(Script(name: "Keep", blocks: []))
+        store.flush()
+
+        try Data("garbage".utf8).write(to: store.fileURL)
+        store.reload()
+        #expect(store.scripts.map(\.name) == ["Keep"])
+        #expect(store.lastError?.contains("reload") == true)
+    }
 }

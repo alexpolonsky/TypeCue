@@ -16,6 +16,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         Signposts.launch.endInterval("post_main", interval)
     }
 
+    /// Delivery point for the `typecue://` URL scheme (declared via CFBundleURLTypes).
+    func application(_ application: NSApplication, open urls: [URL]) {
+        guard !isUnitTestHost else { return }
+        for url in urls {
+            AppCoordinator.shared.handle(url: url)
+        }
+    }
+
     /// Refresh permission state whenever the app is reactivated (e.g. after the user
     /// grants Accessibility in System Settings and switches back).
     func applicationDidBecomeActive(_ notification: Notification) {

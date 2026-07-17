@@ -1,3 +1,4 @@
+import AppKit
 import Foundation
 import KeyboardShortcuts
 import Observation
@@ -41,6 +42,9 @@ final class AppCoordinator {
     var importExportError: String?
 
     @ObservationIgnored private let defaults = UserDefaults.standard
+    /// Mirrors session state to `state.json` for external observers (AI agents and
+    /// assistants, scripts) - see `SessionStateFile`.
+    @ObservationIgnored private lazy var stateFile = SessionStateFile(directory: store.fileURL.deletingLastPathComponent())
     /// The in-flight typing run, so a second hotkey press can cancel (stop) it.
     @ObservationIgnored private var typingTask: Task<Void, Never>?
 
@@ -104,6 +108,8 @@ final class AppCoordinator {
             }
         }
 
+        publishState()
+
         let args = ProcessInfo.processInfo.arguments
         if args.contains("UITEST_OPEN_EDITOR") {
             openEditor()
@@ -162,6 +168,7 @@ final class AppCoordinator {
         let mode = settings.newlineMode
 
         isTyping = true
+        publishState()
         typingTask = Task {
             let outcome = await engine.type(segments, pacing: pacing, newlineMode: mode)
             if outcome == .cancelled {
@@ -169,6 +176,7 @@ final class AppCoordinator {
             }
             isTyping = false
             typingTask = nil
+            publishState()
         }
     }
 
@@ -248,11 +256,69 @@ final class AppCoordinator {
     func setActiveScript(_ id: UUID?) {
         session.setActiveScript(id)
         defaults.set(id?.uuidString, forKey: Keys.activeScriptID)
+        publishState()
     }
 
     func resetSequence() {
         session.reset()
         clearWarning()
+        publishState()
+    }
+
+    // MARK: - URL commands
+
+    /// Handles `typecue://` URLs - the command surface for AI agents and assistants and
+    /// other local tools (documented in the README's Scripting API section). Deliberately
+    /// limited to session-state changes: nothing here types text or reads arbitrary files,
+    /// because macOS lets any local process fire a registered URL scheme.
+    func handle(url: URL) {
+        guard url.scheme?.lowercased() == "typecue" else { return }
+        let command = url.host?.lowercased() ?? ""
+        let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
+        func value(_ name: String) -> String? {
+            queryItems.first { $0.name == name }?.value
+        }
+
+        switch command {
+        case "activate-script":
+            if let idString = value("id"), let id = UUID(uuidString: idString) {
+                guard store.scripts.contains(where: { $0.id == id }) else {
+                    flashWarning("No script with id \(idString).")
+                    return
+                }
+                setActiveScript(id)
+            } else if let name = value("name") {
+                let matches = store.scripts.filter { $0.name == name }
+                switch matches.count {
+                case 1:
+                    setActiveScript(matches[0].id)
+                case 0:
+                    flashWarning("No script named \u{201C}\(name)\u{201D}.")
+                default:
+                    flashWarning("\(matches.count) scripts are named \u{201C}\(name)\u{201D} - rename one or activate by id.")
+                }
+            } else {
+                flashWarning("activate-script needs a name or id parameter.")
+            }
+        case "reset-session":
+            resetSequence()
+        case "reload":
+            store.reload()
+            if let error = store.lastError {
+                flashWarning(error)
+            }
+            // Re-derive the session against the (possibly changed) scripts without
+            // moving the cursor: rewind(to:) clamps and recomputes.
+            session.rewind(to: session.cursor)
+            publishState()
+        default:
+            flashWarning("Unknown TypeCue command \u{201C}\(command)\u{201D}.")
+        }
+    }
+
+    /// Snapshot the session for external observers. Called after every state mutation.
+    private func publishState() {
+        stateFile.write(state: session.state, activeScript: activeScript, isTyping: isTyping)
     }
 
     private func restoreActiveScript() {
@@ -291,6 +357,45 @@ final class AppCoordinator {
     func openSettings() {
         editorTab = .settings
         showMainWindow()
+    }
+
+    /// Standard About panel with custom credits: project links plus the third-party
+    /// license texts (bundled so the MIT attribution ships inside the app itself).
+    func openAbout() {
+        NSApp.activate()
+        NSApp.orderFrontStandardAboutPanel(options: [.credits: Self.aboutCredits()])
+    }
+
+    private static func aboutCredits() -> NSAttributedString {
+        let center = NSMutableParagraphStyle()
+        center.alignment = .center
+
+        let credits = NSMutableAttributedString()
+        func appendLine(_ text: String, size: CGFloat, link: String? = nil, color: NSColor = .labelColor) {
+            var attributes: [NSAttributedString.Key: Any] = [
+                .font: NSFont.systemFont(ofSize: size),
+                .paragraphStyle: center,
+                .foregroundColor: color,
+            ]
+            if let link { attributes[.link] = link }
+            credits.append(NSAttributedString(string: text, attributes: attributes))
+        }
+
+        appendLine("alexpolonsky.com", size: 11, link: "https://alexpolonsky.com")
+        appendLine("   \u{00B7}   ", size: 11, color: .secondaryLabelColor)
+        appendLine("GitHub", size: 11, link: "https://github.com/alexpolonsky/TypeCue")
+        appendLine("   \u{00B7}   ", size: 11, color: .secondaryLabelColor)
+        appendLine("Report an Issue", size: 11, link: "https://github.com/alexpolonsky/TypeCue/issues")
+        appendLine("\n\nFree and open source \u{00B7} MIT License\n\n", size: 10, color: .secondaryLabelColor)
+
+        appendLine("Acknowledgements\n", size: 10)
+        if let url = Bundle.main.url(forResource: "THIRD-PARTY-LICENSES", withExtension: "md"),
+           let licenses = try? String(contentsOf: url, encoding: .utf8) {
+            appendLine(licenses, size: 8, color: .secondaryLabelColor)
+        } else {
+            appendLine("Built with KeyboardShortcuts (\u{00A9} Sindre Sorhus) and Sauce (\u{00A9} Clipy Project), both MIT licensed.", size: 9, color: .secondaryLabelColor)
+        }
+        return credits
     }
 
     func openOnboarding(step: OnboardingStep = .welcome) {

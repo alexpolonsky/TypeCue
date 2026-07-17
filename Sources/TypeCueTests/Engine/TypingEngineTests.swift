@@ -111,7 +111,10 @@ struct TypingEngineTests {
         #expect(sink.calls == expected)
     }
 
-    @Test("total delay equals character count times base delay when jitter disabled")
+    @Test(
+        "total delay equals character count times base delay when jitter disabled",
+        .enabled(if: LayoutGate.latinTypable, "Requires a Latin-capable active keyboard layout (switch to English/ABC)")
+    )
     func timingBudget() async {
         let sink = MockEventSink()
         let resolver = KeystrokeResolver()

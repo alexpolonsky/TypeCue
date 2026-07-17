@@ -6,7 +6,10 @@ import TypeCue
 /// (which the dev machine's current input source provides).
 @Suite("KeystrokeResolver")
 struct KeystrokeResolverTests {
-    @Test("uppercase shares the base keycode but needs shift")
+    @Test(
+        "uppercase shares the base keycode but needs shift",
+        .enabled(if: LayoutGate.latinTypable, "Requires a Latin-capable active keyboard layout (switch to English/ABC)")
+    )
     func uppercaseSharesKeycode() {
         let resolver = KeystrokeResolver()
 

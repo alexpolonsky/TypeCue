@@ -18,6 +18,17 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.alexpo.typecue</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>typecue</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSMinimumSystemVersion</key>
@@ -26,5 +37,7 @@
 	<true/>
 	<key>NSAppleEventsUsageDescription</key>
 	<string>TypeCue uses automation to type scripted text into the focused app during demo recordings.</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>© 2026 Alex Polonsky. MIT License.</string>
 </dict>
 </plist>
