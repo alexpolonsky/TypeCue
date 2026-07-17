@@ -1,48 +1,80 @@
-# TypeCue
+<p align="center">
+  <img src="site/icon-180.png" width="96" alt="TypeCue icon">
+</p>
 
-A macOS menu bar app that fake-types a scripted, ordered set of text blocks into whatever
-field currently has focus - one block per global-hotkey press. Built to make product demo
-video recording (typing prompts into Claude, Cursor, browsers, etc.) consistent and
-retake-free.
+<h1 align="center">TypeCue</h1>
 
-See [AGENTS.md](AGENTS.md) for the locked technical decisions and working agreement.
+<p align="center"><b>Press a key. It types the line.</b><br>
+A macOS menu bar app that types your script into any app - one block per hotkey press,
+as real keystrokes, at a human pace.</p>
+
+<p align="center">
+  <a href="https://typecue.app">typecue.app</a> ·
+  <a href="https://github.com/alexpolonsky/TypeCue/releases/latest">Download</a> ·
+  <a href="#scripting-api-for-ai-agents">For AI agents</a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/macOS-14%2B-blue" alt="macOS 14+">
+  <img src="https://img.shields.io/badge/Swift-6-orange" alt="Swift 6">
+  <img src="https://img.shields.io/github/license/alexpolonsky/TypeCue" alt="MIT">
+</p>
+
+---
+
+Typing on screen while people watch - demo videos, tutorials, webinars, live
+presentations - goes wrong in exactly one way: the typing. TypeCue plays a prepared
+script instead. Write your demo as ordered blocks; during the take, each press of a
+global hotkey (default Ctrl+Option+X) types the next block into whatever field has
+focus. Real system-level keystrokes, human pacing, no typos, identical on every take.
+
+## Install
+
+**Download**: grab [the latest release](https://github.com/alexpolonsky/TypeCue/releases/latest),
+drag TypeCue to Applications, and grant the one permission it asks for (Accessibility -
+the macOS API for sending keystrokes; there is a Test Pad in onboarding to verify it).
+
+**Build from source**:
+
+```bash
+git clone https://github.com/alexpolonsky/TypeCue && cd TypeCue
+xcodegen generate    # brew install xcodegen if needed
+xcodebuild build -project TypeCue.xcodeproj -scheme TypeCue -destination 'platform=macOS' -derivedDataPath DerivedData
+```
+
+Requires macOS 14+ to run, Xcode 16.4+ to build.
 
 ## How it works
 
-1. Open "Edit Scripts" from the menu bar icon and create a named script - an ordered list
-   of text blocks for one demo. New Script and Add Sample are in the editor's action bar;
-   Import/Export live in its overflow menu. The window has "Scripts" and "Settings" tabs;
-   "Settings" and "How TypeCue Works" in the menu open the right surface.
-2. Pick it as the active script from the menu, or from the floating panel's header menu.
-3. During recording, focus the target field, then press the global hotkey
-   (default Ctrl+Option+X). TypeCue types the next block, human-paced.
-4. Each press types the next block in order. Press the hotkey again while a block is
-   typing to stop it. When the last block is typed, the sequence stops - choose "Reset"
-   to start over.
-5. Optionally open "Show Panel" for a floating teleprompter that shows every block with its
-   state (typed / typing / next / upcoming), full text, and the current position.
+1. Open **Edit Scripts** from the menu bar icon and write a script - an ordered list of
+   text blocks, one per beat of your demo.
+2. Pick it as the active script (menu bar, floating panel, or `typecue://` command).
+3. Focus the target field and press the hotkey. Each press types the next block; press
+   mid-type to stop; the menu bar caret shows when a script is armed.
+4. Optional: **Show Panel** opens a floating teleprompter with every block and its state
+   (typed / typing / next / upcoming) that never steals focus.
 
-Typing is real synthetic key events (indistinguishable from physical typing), with optional
-natural rhythm (subtle pace variation plus pauses at spaces and punctuation). It works in
-any language and keyboard layout, RTL included: characters on the active layout are typed
-as real keystrokes, and anything else (emoji, other alphabets) falls back to direct Unicode
-entry - switching input sources mid-session is handled automatically.
+### Pacing markers
 
-### Inline markers
+Direct the typing inline, inside a block's text:
 
-Author pacing directly in a block's text (see "Formatting" in the editor):
+| Marker | Effect |
+|---|---|
+| `[0.5]`, `[2]` | pause that many seconds |
+| `[speed:40]` | 40 ms/character from here on; `[speed:default]` restores your set speed |
+| `[enter]` | press Return (submits in chat apps) |
 
-- `[0.5]`, `[2]` - pause for that many seconds
-- `[speed:20]` - type at 20 ms/character from here on; `[speed:default]` restores your set speed
-- `[enter]` - press Return (submits in chat apps)
+Line breaks inside a block are typed as Shift+Return by default so multi-line blocks
+never submit early in chat apps. Unrecognized brackets (`array[0]`) are typed literally.
 
-Line breaks inside a block are inserted with Shift+Return by default, so multi-line blocks
-don't submit themselves in chat apps like Claude, Cursor and Slack. Switch this in Settings.
+Typing works in any language and keyboard layout, RTL included: characters on the active
+layout go out as real keystrokes, everything else arrives by direct Unicode entry, and
+switching input sources mid-session is handled automatically.
 
 ## Scripting API for AI agents
 
-Everything TypeCue knows lives in plain files, so AI agents (Claude Code,
-Cursor, or any tool with access to your machine) can author and drive your scripts:
+Everything TypeCue knows lives in plain files, so AI agents (Claude Code, Cursor, or any
+tool with access to your machine) can author and drive your scripts:
 
 - **Scripts**: `~/Library/Application Support/TypeCue/scripts.json` - a plain JSON array
   (`[{id, name, blocks: [{id, text}]}]`). Edit it directly, then run
@@ -53,88 +85,64 @@ Cursor, or any tool with access to your machine) can author and drive your scrip
   (active script, next block, typing status) so tools can observe what's happening.
 
 The repo ships a ready-made agent skill at
-[`.agents/skills/typecue`](.agents/skills/typecue/SKILL.md) - schema, guardrails, and
-direction rules for pacing a script with markers. Point your agent at it (or paste
-it in) and ask for things like *"turn these prompts into a well-paced TypeCue script for my
-demo"*.
+[`.agents/skills/typecue`](.agents/skills/typecue/SKILL.md) (also served at
+[typecue.app/skill](https://typecue.app/skill)) - the schema, guardrails, and
+screencast-direction rules for pacing a script. Give your agent one line:
 
-## Requirements
-
-- macOS 14+ (Sonoma or later) to run
-- Xcode 16.4+ (Swift 6) to build
-- [XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`)
-
-## Permissions
-
-TypeCue needs one permission: Accessibility (Privacy & Security > Accessibility), which
-lets it send keystrokes to other apps. The onboarding window guides you through granting
-it and includes a Test Pad to confirm it actually works. No other permission is required.
-
-Password / secure input fields block synthetic keystrokes system-wide (a macOS rule no app
-can bypass); TypeCue detects this where macOS reports it and asks you to type those
-manually. Detection is best-effort - some fields don't opt into secure input, so they may
-not be flagged. When a press is blocked, TypeCue flashes a warning on the menu bar icon and
-in the floating panel so you notice it mid-recording, instead of only in the menu dropdown.
-
-## Build and run
-
-```bash
-# Generate the Xcode project from project.yml (do this after pulling or editing project.yml)
-xcodegen generate
-
-# Build
-xcodebuild build -project TypeCue.xcodeproj -scheme TypeCue -destination 'platform=macOS' -derivedDataPath DerivedData
-
-# Or open in Xcode and run
-open TypeCue.xcodeproj
+```
+Read https://typecue.app/skill and set up my TypeCue scripts.
 ```
 
-The built app is a menu bar item only (no Dock icon).
+Any agent that can fetch a URL, edit files, and run shell commands qualifies: Claude
+Code and Cursor are tested; Claude with computer access and Codex work the same way.
+Chat-only assistants can still author the JSON for you to paste - they just can't drive
+the app.
+
+## Permissions and limits
+
+Accessibility is the only permission - no account, no network calls, no analytics.
+Password and secure fields block synthetic typing system-wide (a macOS rule for every
+app); TypeCue detects this and flashes a warning on the menu bar icon and floating panel
+instead of silently consuming your block.
 
 ## Tests
 
 ```bash
-# Unit tests (engine, session, store) - run headless anywhere
+# Unit tests (engine, session, store) - headless
 xcodebuild test -project TypeCue.xcodeproj -scheme TypeCue -destination 'platform=macOS' \
   -derivedDataPath DerivedData -only-testing:TypeCueTests
 
-# UI tests - require an interactive login/GUI session
+# UI tests - need an interactive GUI session
 xcodebuild test -project TypeCue.xcodeproj -scheme TypeCue -destination 'platform=macOS' \
   -derivedDataPath DerivedData -only-testing:TypeCueUITests
 ```
 
-- `TypeCueTests` (Swift Testing): tokenization/pacing/jitter, layout-aware keystroke
-  resolution, the typing-engine sequence including the anti-interleaving regression test,
-  the session cursor state machine, and script persistence. These are the
-  reliability-critical coverage and run without any permissions.
-- `TypeCueUITests` (XCUITest): script/block CRUD and the onboarding surface, plus an
-  end-to-end typing smoke test against the in-app Test Pad. The e2e test is skipped unless
-  the test runner has Accessibility permission, and UI tests require an interactive GUI
-  session (they won't run in a headless CI without a persistent, authorized runner).
+The unit suite covers tokenization and pacing, layout-aware keystroke resolution, the
+typing sequence (including the anti-interleaving regression), the session state machine,
+and persistence. Tests that type Latin text through the real resolver skip under a
+non-Latin active keyboard layout. See
+[docs/MANUAL_REGRESSION.md](docs/MANUAL_REGRESSION.md) for the pre-release human pass
+against real target apps.
 
 ## Project layout
 
 ```
 Sources/TypeCue/
-  App/          App entry, delegate, coordinator, window manager, floating panel controller, hotkey definition
-  Engine/       TypingEngine, BlockTokenizer, Pacer, KeystrokeResolver, NewlineMode, EventSink, CGEventPoster
+  App/          App entry, delegate, coordinator, windows, floating panel, hotkey
+  Engine/       TypingEngine, BlockTokenizer, Pacer, KeystrokeResolver, CGEventPoster
   Model/        Script, TextBlock
-  Store/        ScriptStore (JSON in Application Support)
-  Session/      SessionController (cursor state machine), PanelRowState (panel row-state logic)
+  Store/        ScriptStore (plain JSON in Application Support)
+  Session/      SessionController (cursor state machine), state.json mirror
   Permissions/  PermissionManager
-  UI/           MenuContent, MainWindowView (Scripts + Settings tabs), EditorView, SettingsView, OnboardingView, ScriptPanelView
-Sources/TypeCueTests/       Unit tests (Swift Testing)
-Sources/TypeCueUITests/     UI + e2e tests (XCUITest)
+  UI/           Menu, main window (Scripts / Settings / About), editor, onboarding, panel
 ```
 
-See [docs/MANUAL_REGRESSION.md](docs/MANUAL_REGRESSION.md) for the pre-release manual check
-against real target apps.
+See [AGENTS.md](AGENTS.md) for locked technical decisions and the working agreement.
 
 ## Built with
 
-[KeyboardShortcuts](https://github.com/sindresorhus/KeyboardShortcuts) (global hotkey
-recording) and [Sauce](https://github.com/Clipy/Sauce) (layout-aware key code
-resolution), both MIT licensed - full texts in
+[KeyboardShortcuts](https://github.com/sindresorhus/KeyboardShortcuts) and
+[Sauce](https://github.com/Clipy/Sauce), both MIT licensed - full texts in
 [THIRD-PARTY-LICENSES.md](THIRD-PARTY-LICENSES.md).
 
 ## License

@@ -14,6 +14,8 @@ Accessibility onboarding with a live Test Pad.
 
 ### Added
 
+- An About tab, drag-to-reorder for scripts, and a right-click menu on scripts
+  (Make Active, Duplicate, Export, Delete).
 - App icon and a matching menu bar mark - the caret appears in the menu bar exactly
   when a script is armed.
 - `typecue://` commands (`activate-script`, `reset-session`, `reload`) so AI agents,
@@ -25,6 +27,8 @@ Accessibility onboarding with a live Test Pad.
 ### Changed
 
 - Default hotkey is now Ctrl+Option+X.
+- Onboarding is shorter and clearer; the tour script now mixes pauses, speed
+  changes, and sends the way a real demo script does.
 
 ### Fixed
 

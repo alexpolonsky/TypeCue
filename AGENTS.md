@@ -29,6 +29,21 @@ on screen - demo recordings, tutorials, live presentations - comes out right eve
   a feature (AI agents and assistants edit it directly); a Markdown import/export is a
   considered-and-deferred v1.1 idea, never a storage-format change.
 
+## Agent workflow
+
+- Project skills: `verify` (build/test/launch/screenshot loop), `changelog` (update
+  CHANGELOG.md in the same change), `release` (full release checklist; release dmg
+  builds require Xcode 26). The `typecue` skill (`.agents/skills/typecue`) covers
+  authoring and driving the app's scripts.
+- Commits: plain descriptive messages - what changed and why it matters; one concern
+  per commit; doc sync in the same commit. Never push `backup-*` branches.
+- Environment: building with Xcode 16.4+ works (deployment target macOS 14.0); the
+  Tahoe appearance comes from building with Xcode 26, so release builds use that.
+  Some SourceKit single-file diagnostics ("No such module") are noise - trust
+  `xcodebuild`. Tests that type Latin text through the real resolver skip under a
+  non-Latin active keyboard layout. After editing `project.yml` or adding/removing
+  files: `xcodegen generate`.
+
 ## Working agreement for this repo
 
 - **Small incremental changes, one concern at a time**; terse comments only where
