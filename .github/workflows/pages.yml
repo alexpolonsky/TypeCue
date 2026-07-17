@@ -24,8 +24,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+      # Serve the agent skill at typecue.app/skill (kept in sync from the repo copy)
+      - run: |
+          mkdir dist
+          cp -R site/* dist/
+          cp .agents/skills/typecue/SKILL.md dist/skill
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          path: dist
       - id: deployment
         uses: actions/deploy-pages@v4
