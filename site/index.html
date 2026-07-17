@@ -13,6 +13,7 @@
 <meta property="og:url" content="https://typecue.app">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
+<script data-goatcounter="https://stats.a3p7.com/count" async src="//stats.a3p7.com/count.js"></script>
 <style>
   :root {
     --cream: #faf7f0;
@@ -39,8 +40,8 @@
   a { color: inherit; }
   .wrap { max-width: 68rem; margin: 0 auto; padding: 0 1.5rem; }
   .eyebrow {
-    font: 600 .74rem/1 ui-monospace, "SF Mono", Menlo, monospace;
-    letter-spacing: .13em; text-transform: uppercase; color: var(--ink-soft);
+    font: 600 .82rem/1.4 ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: .02em; color: var(--ink-soft);
   }
 
   /* ---------- Nav ---------- */
@@ -52,7 +53,9 @@
   .nav-links a:hover, .nav-links a:focus-visible { color: var(--ink); }
 
   /* ---------- Hero (left-aligned) ---------- */
-  header.hero { padding: 4.5rem 0 1rem; max-width: 46rem; }
+  header.hero { padding: 3.6rem 0 1rem; max-width: 46rem; }
+  .hero-icon { display: block; width: 84px; height: 84px; margin-bottom: 1.3rem;
+    border-radius: 19px; box-shadow: 0 10px 24px rgba(35,36,58,.18); }
   .hero .eyebrow { display: block; margin-bottom: 1.1rem; }
   h1 {
     font-size: clamp(2.7rem, 7.5vw, 5rem);
@@ -69,9 +72,8 @@
   }
   @keyframes blink { 50% { opacity: 0; } }
   .kicker {
-    font: 600 .82rem/1.5 ui-monospace, "SF Mono", Menlo, monospace;
-    letter-spacing: .1em; text-transform: uppercase; color: var(--coral);
-    margin: 0 0 1.1rem;
+    font: 600 .9rem/1.5 ui-monospace, "SF Mono", Menlo, monospace;
+    color: var(--coral); margin: 0 0 1.1rem;
   }
   .sub { max-width: 36rem; margin: 0 0 1.8rem; color: var(--ink-soft); }
   .cta-row { display: flex; gap: .9rem; flex-wrap: wrap; }
@@ -115,7 +117,6 @@
   /* TypeCue panel: deliberately NOT app-window chrome - a floating overlay card */
   .tc-panel {
     background: var(--card); border-radius: var(--r-md);
-    border-left: 3px solid var(--coral);
     box-shadow: 0 10px 28px rgba(35,36,58,.14);
     padding: .75rem .8rem .6rem;
     font-size: .82rem;
@@ -134,7 +135,7 @@
     transition: opacity .25s, border-color .25s, background .25s;
   }
   .tc-block[data-state="upcoming"] { opacity: .38; }
-  .tc-block[data-state="next"] { opacity: .85; border-color: var(--line); }
+  .tc-block[data-state="next"] { opacity: .85; }
   .tc-block[data-state="typing"] { opacity: 1; border-color: var(--coral); background: rgba(240,89,76,.07); }
   .tc-block[data-state="typing"]::after {
     content: ""; position: absolute; left: 0; bottom: 0; height: 2px;
@@ -175,23 +176,15 @@
   }
 
   /* ---------- Sections ---------- */
-  section .eyebrow { display: block; margin-bottom: .6rem; color: var(--coral); }
   h2 { font-size: clamp(1.7rem, 4vw, 2.3rem); letter-spacing: -0.02em; margin: 0 0 .5rem; text-wrap: balance; }
-  h2::before {
-    content: ""; display: inline-block; width: .14em; height: .78em;
-    background: var(--coral); border-radius: .05em; margin-right: .38em;
-    vertical-align: -0.06em;
-  }
   .section-sub { color: var(--ink-soft); max-width: 40rem; margin: 0 0 2.2rem; }
 
   #how { padding: 4.5rem 0 2.5rem; }
-  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.6rem; margin-top: 2.6rem; }
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.2rem; margin-top: 2rem; }
   .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 1.3rem 1.4rem; }
-  .step { position: relative; padding-top: 1.7rem; }
   .step .n {
-    position: absolute; top: -1.05rem; left: 1.05rem;
-    font-size: 2.5rem; font-weight: 800; color: var(--coral); line-height: 1;
-    text-shadow: 0 2px 0 var(--cream);
+    font: 700 .85rem/1 ui-monospace, "SF Mono", Menlo, monospace;
+    color: var(--coral); margin-bottom: .45rem;
   }
   .step h3 { margin: 0 0 .3rem; font-size: 1.06rem; }
   .step p { margin: 0; font-size: .93rem; color: var(--ink-soft); }
@@ -209,47 +202,37 @@
 
   /* ---------- Agents (the dark beat) ---------- */
   #agents-band { background: var(--ink); color: var(--cream); padding: 6rem 0; margin: 1rem 0; }
-  #agents-band .eyebrow { color: var(--coral); }
   #agents-band h2 { color: #fff; }
   #agents-band .section-sub { color: #b9b9c9; }
-  .agents-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 2.4rem; align-items: start; }
-  @media (max-width: 780px) { .agents-grid { grid-template-columns: 1fr; } }
-  pre {
-    background: rgba(0,0,0,.32); color: var(--code-ink);
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: var(--r-md); padding: 1.1rem 1.2rem; overflow-x: auto;
-    font: .82rem/1.6 ui-monospace, "SF Mono", Menlo, monospace; margin: 0;
+  .agents-lede { max-width: 42rem; color: #cfcfdd; }
+  .agents-lede a { color: #fff; }
+  .skillfield {
+    display: flex; gap: .6rem; max-width: 42rem; margin: 1.2rem 0;
   }
-  pre .c { color: #8f90a8; }
-  pre .a { color: #ffb0a8; }
+  .skillfield input {
+    flex: 1; min-width: 0; padding: .7rem .9rem;
+    font: .82rem/1.4 ui-monospace, "SF Mono", Menlo, monospace;
+    color: var(--code-ink); background: rgba(0,0,0,.32);
+    border: 1px solid rgba(255,255,255,.14); border-radius: var(--r-sm);
+    text-overflow: ellipsis;
+  }
   .copybtn {
-    margin-top: .9rem; font: 600 .85rem/1 -apple-system, sans-serif;
-    background: transparent; color: var(--cream);
-    border: 1.5px solid rgba(255,255,255,.35); border-radius: var(--r-sm);
-    padding: .6rem .95rem; cursor: pointer; transition: border-color .2s;
+    font: 600 .85rem/1 -apple-system, sans-serif;
+    background: var(--coral); color: #fff;
+    border: none; border-radius: var(--r-sm);
+    padding: .6rem 1.1rem; cursor: pointer;
   }
-  .copybtn:hover { border-color: var(--coral); color: #fff; }
-  .pull-quote {
-    position: relative; font-style: italic; font-size: .98rem;
-    padding: .9rem 1.1rem .9rem 2.4rem; margin: 1rem 0;
-    border-left: 3px solid var(--coral); background: rgba(255,255,255,.05);
-    border-radius: var(--r-sm); color: #e8e6f0;
-  }
-  .pull-quote::before {
-    content: "\201C"; position: absolute; left: .65rem; top: .2rem;
-    font-size: 2rem; color: var(--coral); font-style: normal;
-  }
+  .copybtn:hover { background: var(--coral-deep); }
+  .agents-facts { display: flex; flex-direction: column; gap: .45rem; margin-top: 1.6rem; font-size: .92rem; color: #b9b9c9; }
+  .agents-facts code { font: .85em ui-monospace, "SF Mono", Menlo, monospace; color: #e8e6f0; }
+  .agents-facts b { color: #fff; font-weight: 600; }
   #agents-band a { color: #fff; }
 
   /* ---------- Install ---------- */
   #install { padding: 5rem 0 2rem; }
   .tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; margin-top: 2rem; }
   .tier h3 { margin: 0 0 .15rem; font-size: 1rem; }
-  .tier .tag {
-    font: 600 .64rem/1 ui-monospace, "SF Mono", Menlo, monospace;
-    letter-spacing: .09em; color: var(--coral); text-transform: uppercase;
-    display: block; margin-bottom: .55rem;
-  }
+
   .tier p { margin: .4rem 0 0; font-size: .88rem; color: var(--ink-soft); }
   .tier code {
     display: block; margin-top: .6rem; padding: .55rem .7rem;
@@ -260,12 +243,8 @@
 
   /* ---------- FAQ ---------- */
   #faq { padding: 3.5rem 0 3rem; }
-  details {
-    border-bottom: 1px solid var(--line);
-    border-left: 3px solid transparent;
-    padding: .9rem 0 .9rem 1rem; transition: border-color .2s;
-  }
-  details[open] { border-left-color: var(--coral); }
+  details { border-bottom: 1px solid var(--line); padding: .9rem 0; }
+  details[open] summary { color: var(--coral-deep); }
   details summary { font-weight: 600; cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 1rem; }
   details summary::-webkit-details-marker { display: none; }
   details summary:hover { color: var(--coral-deep); }
@@ -302,16 +281,17 @@
   </nav>
 
   <header class="hero">
-    <span class="eyebrow">Native macOS &middot; Free &amp; open source</span>
+    <img class="hero-icon" src="icon-180.png" alt="" width="84" height="84">
+    <span class="eyebrow">Native macOS &middot; free &amp; open source</span>
     <h1><span id="typed-h1"></span><span class="caret" id="h1-caret"></span></h1>
     <p class="kicker">Real keystrokes &middot; Human pace &middot; No retakes</p>
     <p class="sub">Write your demo as blocks. Press one hotkey on stage or on camera, and the
     next block types itself into whatever field has focus - real keystrokes, not a paste trick.</p>
     <div class="cta-row">
-      <a class="btn btn-primary" href="https://github.com/alexpolonsky/TypeCue/releases/latest">Download for Mac</a>
-      <a class="btn btn-ghost" href="https://github.com/alexpolonsky/TypeCue">View source</a>
+      <a class="btn btn-primary" href="https://github.com/alexpolonsky/TypeCue/releases/latest/download/TypeCue.dmg">Download for Mac</a>
+      <a class="btn btn-ghost" href="https://github.com/alexpolonsky/TypeCue"><svg viewBox="0 0 16 16" width="15" height="15" style="vertical-align:-2px;margin-right:.4rem" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>Source on GitHub</a>
     </div>
-    <p class="fine">MIT &middot; macOS 14+ &middot; no account, no network, no analytics</p>
+    <p class="fine">MIT license &middot; macOS 14+ &middot; everything stays on your Mac</p>
   </header>
 </div>
 
@@ -348,7 +328,6 @@
 
 <div class="wrap">
   <section id="how">
-    <span class="eyebrow">The loop</span>
     <h2>How it works</h2>
     <p class="section-sub">One script, one key, no do-overs.</p>
     <div class="steps">
@@ -359,7 +338,6 @@
   </section>
 
   <section id="features">
-    <span class="eyebrow">Capabilities</span>
     <h2>Everything a live take needs</h2>
     <p class="section-sub">Demo videos, tutorials, webinars, live presentations - the take that has to be right the first time.</p>
     <div class="features">
@@ -401,51 +379,38 @@
 
 <div id="agents-band">
   <div class="wrap">
-    <span class="eyebrow">Scripting API</span>
     <h2>Built for AI agents</h2>
     <p class="section-sub">TypeCue is driven by the tools you already use. Claude Code, Cursor, or any agent
     with access to your machine can author scripts, pace them like a director, and control the app.</p>
-    <div class="agents-grid">
-      <div>
-        <pre id="agent-snippet"><span class="c"># Scripts (plain JSON - edit directly)</span>
-~/Library/Application Support/TypeCue/scripts.json
-[{ "id", "name", "blocks": [{ "id", "text" }] }]
-
-<span class="c"># Drive the app</span>
-open <span class="a">"typecue://activate-script?name=My%20demo"</span>
-open <span class="a">"typecue://reset-session"</span>
-open <span class="a">"typecue://reload"</span>   <span class="c"># after editing scripts.json</span>
-
-<span class="c"># Observe it</span>
-~/Library/Application Support/TypeCue/state.json</pre>
-        <button class="copybtn" id="copy-snippet">Copy for your agent</button>
-      </div>
-      <div>
-        <p>The repo ships a ready-made <a href="https://github.com/alexpolonsky/TypeCue/blob/main/.agents/skills/typecue/SKILL.md">agent skill</a>:
-        the schema, safety guardrails, and screencast-direction rules - typing speeds,
-        pause lengths, where a beat belongs. Point your agent at it and ask for:</p>
-        <p class="pull-quote">Turn this outline into a paced TypeCue script for my two-minute demo.</p>
-        <p>It writes the blocks, adds the markers, reloads the app. You press the key.</p>
-      </div>
+    <p class="agents-lede">The repo ships an <a href="https://github.com/alexpolonsky/TypeCue/blob/main/.agents/skills/typecue/SKILL.md">agent skill</a>
+    with the script schema, guardrails, and pacing rules. Give this line to your agent:</p>
+    <div class="skillfield">
+      <input id="skill-line" type="text" readonly spellcheck="false"
+        value="Read https://raw.githubusercontent.com/alexpolonsky/TypeCue/main/.agents/skills/typecue/SKILL.md and set up my TypeCue scripts.">
+      <button class="copybtn" id="copy-snippet">Copy</button>
+    </div>
+    <p class="agents-lede">Then ask for things like <em>"turn this outline into a paced two-minute demo script"</em> -
+    it writes the blocks, adds the markers, and reloads the app. You press the key.</p>
+    <div class="agents-facts">
+      <div><b>Scripts</b> are plain JSON at <code>~/Library/Application Support/TypeCue/scripts.json</code></div>
+      <div><b>Commands</b>: <code>typecue://activate-script</code> &middot; <code>typecue://reset-session</code> &middot; <code>typecue://reload</code></div>
+      <div><b>State</b> mirrors to <code>state.json</code> so tools can watch the session</div>
     </div>
   </div>
 </div>
 
 <div class="wrap">
   <section id="install">
-    <span class="eyebrow">Install</span>
-    <h2>Two ways in</h2>
+    <h2>Install</h2>
     <div class="tiers">
       <div class="card tier">
-        <span class="tag">Direct</span>
         <h3>Download the app</h3>
         <p>Grab the latest release and drag it to Applications. macOS 14 or later.</p>
         <code><a href="https://github.com/alexpolonsky/TypeCue/releases/latest" style="text-decoration:none">github.com/alexpolonsky/TypeCue/releases</a></code>
       </div>
       <div class="card tier">
-        <span class="tag">For hackers</span>
         <h3>Build from source</h3>
-        <p>Swift 6, XcodeGen, no surprises. The whole app is a weekend read.</p>
+        <p>Swift 6 and XcodeGen; the README has the three commands.</p>
         <code>git clone https://github.com/alexpolonsky/TypeCue && cd TypeCue && xcodegen generate</code>
       </div>
     </div>
@@ -454,7 +419,6 @@ open <span class="a">"typecue://reload"</span>   <span class="c"># after editing
   </section>
 
   <section id="faq">
-    <span class="eyebrow">Questions</span>
     <h2>Before you ask</h2>
     <details>
       <summary>Why does TypeCue need Accessibility permission?</summary>
@@ -510,7 +474,7 @@ open <span class="a">"typecue://reload"</span>   <span class="c"># after editing
       <a href="https://x.com/alexpo">X</a>
       <a href="https://www.linkedin.com/in/alexpolonsky">LinkedIn</a>
     </div>
-    <p style="margin:.4rem 0 0">The app collects nothing and makes no network calls. This site sets no cookies.</p>
+    <p style="margin:.4rem 0 0">The app runs entirely on your Mac - no account, nothing phoned home. This site keeps an anonymous, cookieless visit count (self-hosted GoatCounter).</p>
   </footer>
 </div>
 
@@ -585,13 +549,14 @@ open <span class="a">"typecue://reload"</span>   <span class="c"># after editing
     setTimeout(() => playBlock(1), 2200);
   }
 
-  // Copy for your agent
+  // Copy the skill line for the user's agent
   const btn = document.getElementById("copy-snippet");
-  const AGENT_SNIPPET = 'Read https://raw.githubusercontent.com/alexpolonsky/TypeCue/main/.agents/skills/typecue/SKILL.md and use it to create, pace, and control TypeCue scripts on my Mac.';
+  const skillLine = document.getElementById("skill-line");
   btn.addEventListener("click", () => {
-    navigator.clipboard.writeText(AGENT_SNIPPET).then(() => {
+    skillLine.select();
+    navigator.clipboard.writeText(skillLine.value).then(() => {
       btn.textContent = "Copied";
-      setTimeout(() => { btn.textContent = "Copy for your agent"; }, 1600);
+      setTimeout(() => { btn.textContent = "Copy"; }, 1600);
     });
   });
 })();
