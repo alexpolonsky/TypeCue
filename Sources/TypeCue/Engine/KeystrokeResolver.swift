@@ -50,20 +50,29 @@ public final class KeystrokeResolver: @unchecked Sendable {
         }
     }
 
+    /// Runs Sauce/TIS work on the main thread. The Text Input Sources APIs underneath
+    /// Sauce are main-thread affine and ABORT the process when reached from two threads
+    /// concurrently; the typing engine (and tests) may call `resolve` off-main, so every
+    /// Sauce touchpoint funnels through here.
+    private func onMain<T>(_ work: () -> T) -> T {
+        if Thread.isMainThread { return work() }
+        return DispatchQueue.main.sync(execute: work)
+    }
+
     /// The Return keystroke on the current layout. `shifted` posts Shift+Return, which
     /// inserts a line break without submitting in most chat apps.
     public func returnKeystroke(shifted: Bool) -> Keystroke {
-        Keystroke(keyCode: CGKeyCode(Sauce.shared.keyCode(for: .`return`)), needsShift: shifted)
+        Keystroke(keyCode: onMain { CGKeyCode(Sauce.shared.keyCode(for: .`return`)) }, needsShift: shifted)
     }
 
     public func resolve(_ character: Character) -> Resolution {
         switch character {
         case "\n", "\r":
-            return .special(Keystroke(keyCode: CGKeyCode(Sauce.shared.keyCode(for: .`return`)), needsShift: false))
+            return .special(Keystroke(keyCode: onMain { CGKeyCode(Sauce.shared.keyCode(for: .`return`)) }, needsShift: false))
         case "\t":
-            return .special(Keystroke(keyCode: CGKeyCode(Sauce.shared.keyCode(for: .tab)), needsShift: false))
+            return .special(Keystroke(keyCode: onMain { CGKeyCode(Sauce.shared.keyCode(for: .tab)) }, needsShift: false))
         case " ":
-            return .special(Keystroke(keyCode: CGKeyCode(Sauce.shared.keyCode(for: .space)), needsShift: false))
+            return .special(Keystroke(keyCode: onMain { CGKeyCode(Sauce.shared.keyCode(for: .space)) }, needsShift: false))
         default:
             break
         }
@@ -91,26 +100,29 @@ public final class KeystrokeResolver: @unchecked Sendable {
     }
 
     private func rebuildCache() {
-        var newCache: [Character: Keystroke] = [:]
+        let newCache = onMain { () -> [Character: Keystroke] in
+            var built: [Character: Keystroke] = [:]
 
-        // First pass: base (unshifted) mappings take priority.
-        for key in Self.printableKeys {
-            let keyCode = Sauce.shared.keyCode(for: key)
-            guard let base = Sauce.shared.character(for: Int(keyCode), cocoaModifiers: []),
-                  base.count == 1, let character = base.first else { continue }
-            if newCache[character] == nil {
-                newCache[character] = Keystroke(keyCode: keyCode, needsShift: false)
+            // First pass: base (unshifted) mappings take priority.
+            for key in Self.printableKeys {
+                let keyCode = Sauce.shared.keyCode(for: key)
+                guard let base = Sauce.shared.character(for: Int(keyCode), cocoaModifiers: []),
+                      base.count == 1, let character = base.first else { continue }
+                if built[character] == nil {
+                    built[character] = Keystroke(keyCode: keyCode, needsShift: false)
+                }
             }
-        }
 
-        // Second pass: shifted mappings, never overwriting an existing base mapping.
-        for key in Self.printableKeys {
-            let keyCode = Sauce.shared.keyCode(for: key)
-            guard let shifted = Sauce.shared.character(for: Int(keyCode), cocoaModifiers: [.shift]),
-                  shifted.count == 1, let character = shifted.first else { continue }
-            if newCache[character] == nil {
-                newCache[character] = Keystroke(keyCode: keyCode, needsShift: true)
+            // Second pass: shifted mappings, never overwriting an existing base mapping.
+            for key in Self.printableKeys {
+                let keyCode = Sauce.shared.keyCode(for: key)
+                guard let shifted = Sauce.shared.character(for: Int(keyCode), cocoaModifiers: [.shift]),
+                      shifted.count == 1, let character = shifted.first else { continue }
+                if built[character] == nil {
+                    built[character] = Keystroke(keyCode: keyCode, needsShift: true)
+                }
             }
+            return built
         }
 
         lock.lock()

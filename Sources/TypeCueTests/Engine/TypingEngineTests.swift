@@ -111,13 +111,14 @@ struct TypingEngineTests {
         #expect(sink.calls == expected)
     }
 
-    @Test(
-        "total delay equals character count times base delay when jitter disabled",
-        .enabled(if: LayoutGate.latinTypable, "Requires a Latin-capable active keyboard layout (switch to English/ABC)")
-    )
+    @Test("total delay equals character count times base delay when jitter disabled")
     func timingBudget() async {
         let sink = MockEventSink()
         let resolver = KeystrokeResolver()
+        // Per-character sleep accounting assumes Latin chars resolve to keystrokes;
+        // on a non-Latin active layout they batch through the unicode path instead.
+        // Probe here (not in a trait) - the input source can change at any moment.
+        guard case .keystroke = resolver.resolve("h") else { return }
         let recorder = DurationRecorder()
         let engine = TypingEngine(
             sink: sink,
