@@ -1,50 +1,42 @@
-# AGENTS.md — yo-type
+# AGENTS.md — TypeCue
 
 Context file for any agent (or human) picking up work in this repo.
 
 ## What this project is
 
 A macOS menu bar app that fake-types a predefined, ordered script of text blocks into
-whatever field currently has focus, one block per global-hotkey press. Built to make
-product demo video recording (typing prompts into Claude, Cursor, browsers, etc.)
-consistent and retake-free.
+whatever field currently has focus, one block per global-hotkey press. Built so typing
+on screen - demo recordings, tutorials, live presentations - comes out right every time.
 
-## Start here
+## Locked decisions (don't re-derive; discuss before changing)
 
-Read `PROJECT_BRIEF.md` before making any product or architecture decision. It holds:
-
-- Problem/solution/goals
-- Research findings on the typing mechanism (why one prior tool worked, why another
-  didn't, and what we do instead)
-- Locked-in technical decisions (typing engine, permissions model, hotkey approach,
-  menu bar/panel shell)
-- Known risks and how each is resolved or accepted
-- Testing strategy
-
-Do not re-derive decisions already resolved there. If new information changes one of
-them, update the brief in the same change — don't let it drift out of sync with reality.
+- **Typing engine**: in-process `CGEventPost` synthetic key events from a private
+  `CGEventSource` - real HID-level keystrokes, indistinguishable from physical typing
+  to the receiving app. Not AppleScript/`osascript`, not pasteboard tricks.
+- **Layout-aware, never hardcoded to US ANSI**: character → key-code resolution goes
+  through Sauce/`UCKeyTranslate` against the live layout, rebuilt on input-source
+  switches; anything unmappable (emoji, other alphabets) falls back to
+  `keyboardSetUnicodeString`. Any change to this path must keep working across
+  keyboard layouts.
+- **No App Store / no App Sandbox**, by deliberate decision - don't reintroduce sandbox
+  entitlements or App Store-compliance workarounds (they conflict with the
+  `CGEventPost` mechanism).
+- **Permissions model**: exactly one permission - Accessibility. Password/secure-input
+  fields are blocked by macOS system-wide; TypeCue detects and warns, by design.
+- **One permission, no network**: the app makes no network calls, has no accounts, no
+  analytics. Don't add any without explicit discussion.
+- **Scripts are plain JSON** (`scripts.json` in Application Support) - the openness is
+  a feature (AI agents and assistants edit it directly); a Markdown import/export is a
+  considered-and-deferred v1.1 idea, never a storage-format change.
 
 ## Working agreement for this repo
 
-- **Keep `PROJECT_BRIEF.md` current.** Any change to scope, architecture, permissions
-  model, or a resolved risk gets reflected there as part of the same task, not as a
-  follow-up.
-- **Split out new docs when a section outgrows the brief**, e.g. `ARCHITECTURE.md` once
-  module boundaries are implemented, `TESTING.md` once the test suite exists beyond
-  what §8 of the brief describes. Link new docs from the brief; don't duplicate content
-  across files.
-- **No App Store / no App Sandbox**, by deliberate decision — don't reintroduce sandbox
-  entitlements or App Store-compliance workarounds without discussing first (they'd
-  conflict with the chosen `CGEventPost`-based typing mechanism).
-- **Typing mechanism is layout-aware, not hardcoded to US ANSI.** Any change to the
-  character → key-code path must keep working across keyboard layouts (see brief §5/§6).
-- **Follow the user's general TypeScript/general coding rules where they apply to
-  Swift** (small incremental changes, one concern at a time, terse comments only where
-  non-obvious, tests before/alongside behavior changes) — adapted to Swift idioms since
-  this is a native Swift/SwiftUI project, not TypeScript.
+- **Small incremental changes, one concern at a time**; terse comments only where
+  non-obvious; tests land with behavior changes, not as follow-ups.
 - **Testing is not an afterthought.** New logic in the typing engine, sequencing, or
-  layout resolution should land with unit/component test coverage per the layers in
-  brief §8, in the same change.
+  layout resolution ships with unit/component coverage in the same change.
+- **Docs stay in sync in the same commit** (README, CHANGELOG per the changelog skill,
+  docs/MANUAL_REGRESSION.md when behavior it checks changes).
 
 ## Repo state
 
@@ -63,12 +55,14 @@ A Cursor hook (`.cursor/hooks.json`) auto-opens `DerivedData/Build/Products/Debu
 after a successful `xcodebuild build` for TypeCue. It quits any running instance first so the
 new binary launches. Reload Cursor (or save `hooks.json`) if the hook does not fire.
 
-## Open TODOs
+## Signing note
 
-- None. (Stable code-signing identity was resolved 2026-07-16: `DEVELOPMENT_TEAM` in
-  `project.yml` signs dev builds with the owner's Apple Development certificate, so
-  the Accessibility grant survives rebuilds. See `PROJECT_BRIEF.md` §6 risk #4.
-  Contributors on a fork substitute their own team or blank the value.)
+Dev builds sign with the owner's Apple Development certificate (`DEVELOPMENT_TEAM` in
+`project.yml`) so the Accessibility grant survives rebuilds - ad-hoc signatures change
+their `CDHash` every build and macOS keys the grant to it (the workaround for ad-hoc
+builds is remove + re-add the app in System Settings > Accessibility; toggling the
+switch does not work). Contributors on a fork substitute their own team or blank the
+value.
 
 Notes for anyone extending this:
 

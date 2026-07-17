@@ -18,7 +18,7 @@ the release dmg with Xcode 16.x would ship the legacy look to Tahoe users.
 3. **Version**: bump `MARKETING_VERSION` (and `CURRENT_PROJECT_VERSION`) in
    `project.yml`; regenerate.
 4. **Changelog**: cut `[Unreleased]` into `[X.Y.Z] - date` (see changelog skill).
-5. **Docs**: README and PROJECT_BRIEF reflect any behavior changes.
+5. **Docs**: README and AGENTS.md reflect any behavior changes.
 6. **Build the dmg (Xcode 26 machine)**: Release config archive, sign with the
    Developer ID Application certificate (paid account, team TK8UD5BXJM), then
    notarize with `xcrun notarytool submit --wait` and `xcrun stapler staple`.

@@ -5,9 +5,6 @@ import Foundation
 /// event stream via `CGEventPost`. To a receiving app these are indistinguishable from
 /// physical key presses. Requires Accessibility (PostEvent) permission to deliver events
 /// to other apps; without it, `post` fails silently (see `PermissionManager`).
-///
-/// This mirrors the mechanism from the Raycast `clipboard-type` extension that the user
-/// confirmed works, but runs in-process (no `osascript` spawn).
 public final class CGEventPoster: EventSink, @unchecked Sendable {
     // `.privateState` gives this poster its own modifier-state tracking, isolated from the
     // real hardware/system state. Using `.hidSystemState` here caused a stuck-Shift bug:

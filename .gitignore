@@ -21,3 +21,9 @@ xcuserdata/
 # Coverage artifacts
 *.profraw
 *.profdata
+
+# Internal planning docs and editor-agent plans (kept local, not published)
+PROJECT_BRIEF.md
+docs/OPTIMIZATION_PLAN.md
+docs/PERFORMANCE.md
+.cursor/plans/

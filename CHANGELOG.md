@@ -11,3 +11,20 @@ scripted block typing (layout-aware synthetic keystrokes, Unicode fallback for
 characters not on the current layout), inline pacing markers, natural typing
 rhythm, floating teleprompter panel, script editor with import/export, and
 Accessibility onboarding with a live Test Pad.
+
+### Added
+
+- `typecue://` commands (`activate-script`, `reset-session`, `reload`) so AI agents,
+  assistants, and scripts can drive the app, plus a `state.json` session mirror they
+  can observe.
+- About TypeCue in the menu, with project links and open-source acknowledgements.
+- A ready-made agent skill (`.agents/skills/typecue`) for authoring and pacing scripts.
+
+### Changed
+
+- Default hotkey is now Ctrl+Option+X.
+
+### Fixed
+
+- A scripts file that fails to read is set aside as `scripts.json.corrupt-<timestamp>`
+  instead of being silently replaced on the next save.

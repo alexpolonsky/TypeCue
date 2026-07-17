@@ -51,8 +51,8 @@ EOF
 screencapture -x -o -l "$W" /path/to/shot.png
 ```
 
-Requires Screen Recording permission for the terminal (already granted on this
-machine). To crop (e.g. to compare footer strips), use CoreGraphics via a `swift -`
+Requires Screen Recording permission for the terminal (System Settings > Privacy &
+Security). To crop (e.g. to compare footer strips), use CoreGraphics via a `swift -`
 heredoc - `sips` crop flags are unreliable.
 
 ## 4. Full checklist before calling a change done
@@ -62,4 +62,4 @@ heredoc - `sips` crop flags are unreliable.
   change is appearance-sensitive).
 - Typing-path changes: also run the manual smoke against a real target app
   (docs/MANUAL_REGRESSION.md has the full pre-release list).
-- Docs synced per AGENTS.md (PROJECT_BRIEF.md stays current in the same change).
+- Docs synced per AGENTS.md (README/CHANGELOG/checklists stay current in the same change).

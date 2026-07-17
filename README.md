@@ -5,8 +5,7 @@ field currently has focus - one block per global-hotkey press. Built to make pro
 video recording (typing prompts into Claude, Cursor, browsers, etc.) consistent and
 retake-free.
 
-See [PROJECT_BRIEF.md](PROJECT_BRIEF.md) for the full problem statement, research, and
-decisions, and [AGENTS.md](AGENTS.md) for the working agreement.
+See [AGENTS.md](AGENTS.md) for the locked technical decisions and working agreement.
 
 ## How it works
 
