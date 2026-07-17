@@ -362,43 +362,10 @@ final class AppCoordinator {
         showMainWindow()
     }
 
-    /// Standard About panel with custom credits: project links plus the third-party
-    /// license texts (bundled so the MIT attribution ships inside the app itself).
+    /// Opens the main window on the About tab (identity, links, acknowledgements).
     func openAbout() {
-        NSApp.activate()
-        NSApp.orderFrontStandardAboutPanel(options: [.credits: Self.aboutCredits()])
-    }
-
-    private static func aboutCredits() -> NSAttributedString {
-        let center = NSMutableParagraphStyle()
-        center.alignment = .center
-
-        let credits = NSMutableAttributedString()
-        func appendLine(_ text: String, size: CGFloat, link: String? = nil, color: NSColor = .labelColor) {
-            var attributes: [NSAttributedString.Key: Any] = [
-                .font: NSFont.systemFont(ofSize: size),
-                .paragraphStyle: center,
-                .foregroundColor: color,
-            ]
-            if let link { attributes[.link] = link }
-            credits.append(NSAttributedString(string: text, attributes: attributes))
-        }
-
-        appendLine("alexpolonsky.com", size: 11, link: "https://alexpolonsky.com")
-        appendLine("   \u{00B7}   ", size: 11, color: .secondaryLabelColor)
-        appendLine("GitHub", size: 11, link: "https://github.com/alexpolonsky/TypeCue")
-        appendLine("   \u{00B7}   ", size: 11, color: .secondaryLabelColor)
-        appendLine("Report an Issue", size: 11, link: "https://github.com/alexpolonsky/TypeCue/issues")
-        appendLine("\n\nFree and open source \u{00B7} MIT License\n\n", size: 10, color: .secondaryLabelColor)
-
-        appendLine("Acknowledgements\n", size: 10)
-        if let url = Bundle.main.url(forResource: "THIRD-PARTY-LICENSES", withExtension: "md"),
-           let licenses = try? String(contentsOf: url, encoding: .utf8) {
-            appendLine(licenses, size: 8, color: .secondaryLabelColor)
-        } else {
-            appendLine("Built with KeyboardShortcuts (\u{00A9} Sindre Sorhus) and Sauce (\u{00A9} Clipy Project), both MIT licensed.", size: 9, color: .secondaryLabelColor)
-        }
-        return credits
+        editorTab = .about
+        showMainWindow()
     }
 
     func openOnboarding(step: OnboardingStep = .welcome) {

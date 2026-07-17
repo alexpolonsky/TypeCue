@@ -184,4 +184,22 @@ struct ScriptStoreTests {
         #expect(store.scripts.map(\.name) == ["Keep"])
         #expect(store.lastError?.contains("reload") == true)
     }
+
+    @Test("moveScript reorders and persists the new order")
+    func moveScriptPersists() {
+        let dir = makeTempDirectory()
+        defer { removeDirectory(dir) }
+        let store = ScriptStore(directory: dir)
+        let a = Script(name: "A", blocks: [])
+        let b = Script(name: "B", blocks: [])
+        let c = Script(name: "C", blocks: [])
+        store.addScript(a); store.addScript(b); store.addScript(c)
+
+        store.moveScript(fromOffsets: IndexSet(integer: 2), toOffset: 0)
+        #expect(store.scripts.map(\.name) == ["C", "A", "B"])
+
+        store.flush()
+        let reloaded = ScriptStore(directory: dir)
+        #expect(reloaded.scripts.map(\.name) == ["C", "A", "B"])
+    }
 }

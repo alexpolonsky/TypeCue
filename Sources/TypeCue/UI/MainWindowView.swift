@@ -4,6 +4,7 @@ import SwiftUI
 enum EditorTab: Hashable {
     case scripts
     case settings
+    case about
 }
 
 /// The app's one primary window. Toolbar-style icon tabs switch between the Scripts
@@ -17,6 +18,7 @@ struct MainWindowView: View {
             HStack(spacing: 14) {
                 tabItem(.scripts, label: "Scripts", systemImage: "text.badge.checkmark")
                 tabItem(.settings, label: "Settings", systemImage: "gearshape")
+                tabItem(.about, label: "About", systemImage: "info.circle")
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 6)
@@ -28,6 +30,8 @@ struct MainWindowView: View {
                 ScriptsEditorView()
             case .settings:
                 SettingsView()
+            case .about:
+                AboutView()
             }
         }
         .frame(minWidth: 700, minHeight: 480)

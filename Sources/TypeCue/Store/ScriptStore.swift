@@ -65,6 +65,12 @@ public final class ScriptStore {
         }
     }
 
+    /// Reorders scripts in the sidebar (drag to reorder). Mirrors `List.onMove` semantics.
+    public func moveScript(fromOffsets source: IndexSet, toOffset destination: Int) {
+        scripts.move(fromOffsets: source, toOffset: destination)
+        scheduleSave()
+    }
+
     /// Reorders a block within a single script. Indices are validated; out-of-range requests are ignored.
     public func moveBlock(inScriptID scriptID: UUID, from source: Int, to destination: Int) {
         guard let scriptIndex = scripts.firstIndex(where: { $0.id == scriptID }) else { return }

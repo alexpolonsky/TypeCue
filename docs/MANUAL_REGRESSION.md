@@ -20,6 +20,11 @@ Test Pad shows "Verified".
 - [ ] "Reset" re-arms at block 1.
 - [ ] Rebinding the shortcut in Settings works and the new binding takes effect; the menu's
       "Type Next Block" item shows the current shortcut.
+- [ ] Drag a script in the sidebar to reorder; the order survives quitting and relaunching.
+- [ ] Right-click a script: Make Active, Duplicate (fresh copy, " copy" suffix), Export…,
+      and Delete all behave; deleting the active script clears the active state.
+- [ ] The About tab shows the icon, correct version, working links, and the
+      acknowledgements text.
 
 ## Typing fidelity in real target apps
 

@@ -95,10 +95,44 @@ struct ScriptsEditorView: View {
             ForEach(coordinator.store.scripts) { script in
                 Text(script.name.isEmpty ? "Untitled" : script.name)
                     .tag(script.id)
+                    .contextMenu { scriptMenu(for: script) }
+            }
+            .onMove { indices, destination in
+                coordinator.store.moveScript(fromOffsets: indices, toOffset: destination)
             }
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
             listFooter
+        }
+    }
+
+    @ViewBuilder
+    private func scriptMenu(for script: Script) -> some View {
+        Button("Make Active") { coordinator.setActiveScript(script.id) }
+            .disabled(coordinator.session.activeScriptID == script.id)
+        Button("Duplicate") { duplicate(script) }
+        Button("Export\u{2026}") { coordinator.exportScript(script) }
+        Divider()
+        Button("Delete", role: .destructive) { delete(script) }
+    }
+
+    private func duplicate(_ script: Script) {
+        // Fresh ids throughout so the copy never collides with the original.
+        let copy = Script(
+            name: script.name.isEmpty ? "Untitled copy" : "\(script.name) copy",
+            blocks: script.blocks.map { TextBlock(text: $0.text) }
+        )
+        coordinator.store.addScript(copy)
+        selectedID = copy.id
+    }
+
+    private func delete(_ script: Script) {
+        coordinator.store.deleteScript(id: script.id)
+        if coordinator.session.activeScriptID == script.id {
+            coordinator.setActiveScript(nil)
+        }
+        if selectedID == script.id {
+            selectedID = coordinator.store.scripts.first?.id
         }
     }
 
