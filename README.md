@@ -23,10 +23,11 @@ decisions, and [AGENTS.md](AGENTS.md) for the working agreement.
 5. Optionally open "Show Panel" for a floating teleprompter that shows every block with its
    state (typed / typing / next / upcoming), full text, and the current position.
 
-Typing is real synthetic key events (indistinguishable from physical typing), layout-aware
-across keyboard layouts, with optional natural rhythm (subtle pace variation plus pauses at
-spaces and punctuation). Characters that can't be mapped to a key on the current layout
-(emoji, other scripts) fall back to direct Unicode entry.
+Typing is real synthetic key events (indistinguishable from physical typing), with optional
+natural rhythm (subtle pace variation plus pauses at spaces and punctuation). It works in
+any language and keyboard layout, RTL included: characters on the active layout are typed
+as real keystrokes, and anything else (emoji, other alphabets) falls back to direct Unicode
+entry - switching input sources mid-session is handled automatically.
 
 ### Inline markers
 
@@ -38,6 +39,25 @@ Author pacing directly in a block's text (see "Formatting" in the editor):
 
 Line breaks inside a block are inserted with Shift+Return by default, so multi-line blocks
 don't submit themselves in chat apps like Claude, Cursor and Slack. Switch this in Settings.
+
+## Scripting API for AI agents and assistants
+
+Everything TypeCue knows lives in plain files, so AI agents and assistants (Claude Code,
+Cursor, or any tool with access to your machine) can author and drive your scripts:
+
+- **Scripts**: `~/Library/Application Support/TypeCue/scripts.json` - a plain JSON array
+  (`[{id, name, blocks: [{id, text}]}]`). Edit it directly, then run
+  `open "typecue://reload"` so the app picks the changes up live.
+- **Commands**: `typecue://activate-script?name=…` (or `?id=…`), `typecue://reset-session`,
+  `typecue://reload`.
+- **State**: the app mirrors its session to `state.json` next to the scripts file
+  (active script, next block, typing status) so tools can observe what's happening.
+
+The repo ships a ready-made agent skill at
+[`.agents/skills/typecue`](.agents/skills/typecue/SKILL.md) - schema, guardrails, and
+direction rules for pacing a script with markers. Point your assistant at it (or paste
+it in) and ask for things like *"turn this outline into a paced TypeCue script for my
+demo"*.
 
 ## Requirements
 
