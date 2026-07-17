@@ -231,8 +231,8 @@ final class AppCoordinator {
 
     /// SF Symbol shown in the menu bar, reflecting the current session state (or a warning
     /// flash when a press was just blocked).
-    var menuBarSymbol: String {
-        MenuBarPresentation.symbol(
+    var menuBarGlyph: MenuBarPresentation.Glyph {
+        MenuBarPresentation.glyph(
             isFlashingWarning: isFlashingWarning,
             isTyping: isTyping,
             sessionState: session.state

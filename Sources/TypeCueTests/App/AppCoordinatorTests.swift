@@ -18,13 +18,13 @@ struct AppCoordinatorTests {
     @Test("Menu bar symbol and VoiceOver label reflect session state")
     func menuBarReflectsState() {
         let coordinator = makeCoordinator()
-        #expect(coordinator.menuBarSymbol == "keyboard")
+        #expect(coordinator.menuBarGlyph == .asset("MenuBarIdle"))
         #expect(coordinator.menuBarAccessibilityLabel == "TypeCue, idle")
 
         let script = Script(name: "Demo", blocks: [TextBlock(text: "a"), TextBlock(text: "b")])
         coordinator.store.addScript(script)
         coordinator.setActiveScript(script.id)
-        #expect(coordinator.menuBarSymbol == "arrowtriangle.right.circle")
+        #expect(coordinator.menuBarGlyph == .asset("MenuBarArmed"))
         #expect(coordinator.menuBarAccessibilityLabel == "TypeCue, ready to type block 1 of 2")
     }
 

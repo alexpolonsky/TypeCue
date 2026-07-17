@@ -14,6 +14,8 @@ Accessibility onboarding with a live Test Pad.
 
 ### Added
 
+- App icon and a matching menu bar mark - the caret appears in the menu bar exactly
+  when a script is armed.
 - `typecue://` commands (`activate-script`, `reset-session`, `reload`) so AI agents,
   assistants, and scripts can drive the app, plus a `state.json` session mirror they
   can observe.
