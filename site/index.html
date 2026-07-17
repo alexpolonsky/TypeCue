@@ -18,16 +18,46 @@
   :root {
     --cream: #faf7f0;
     --cream-deep: #f1ecdf;
+    --stage-deep: #e9e2d0;
     --ink: #23243a;
+    --ink-hover: #33344e;
     --ink-soft: #5c5d72;
     --coral: #f0594c;
     --coral-deep: #d94a3e;
     --line: #e4ddcc;
     --card: #ffffff;
+    --card-line: #efece3;
+    --band: #23243a;
     --code-ink: #e8e6f0;
     --r-sm: 8px;
     --r-md: 14px;
     --r-lg: 22px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --cream: #1d1e28;
+      --cream-deep: #171821;
+      --stage-deep: #14151d;
+      --ink: #ecebf3;
+      --ink-hover: #ffffff;
+      --ink-soft: #a5a5ba;
+      --line: #34354a;
+      --card: #282936;
+      --card-line: #34354a;
+      --band: #12131b;
+    }
+  }
+  :root[data-theme="dark"] {
+    --cream: #1d1e28;
+    --cream-deep: #171821;
+    --stage-deep: #14151d;
+    --ink: #ecebf3;
+    --ink-hover: #ffffff;
+    --ink-soft: #a5a5ba;
+    --line: #34354a;
+    --card: #282936;
+    --card-line: #34354a;
+    --band: #12131b;
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -51,6 +81,11 @@
   .nav-links { display: flex; gap: 1.6rem; font-size: .95rem; flex-wrap: wrap; }
   .nav-links a { text-decoration: none; color: var(--ink-soft); }
   .nav-links a:hover, .nav-links a:focus-visible { color: var(--ink); }
+  #theme-toggle {
+    background: none; border: none; cursor: pointer; padding: 0 .1rem;
+    font-size: 1.05rem; color: var(--ink-soft); line-height: 1;
+  }
+  #theme-toggle:hover { color: var(--ink); }
 
   /* ---------- Hero (left-aligned) ---------- */
   header.hero { padding: 3.6rem 0 1rem; max-width: 46rem; }
@@ -84,12 +119,16 @@
   }
   .btn:active { transform: translateY(1px); }
   .btn-primary {
-    background: var(--coral); color: #fff;
-    box-shadow: 0 1px 2px rgba(35,36,58,.18), inset 0 1px 0 rgba(255,255,255,.18);
+    background: var(--ink); color: var(--cream);
+    box-shadow: 0 1px 2px rgba(35,36,58,.18), inset 0 1px 0 rgba(255,255,255,.1);
   }
-  .btn-primary:hover { background: var(--coral-deep); }
-  .btn-ghost { border: 1.5px solid var(--line); background: var(--card); }
-  .btn-ghost:hover { border-color: var(--ink-soft); }
+  .btn-primary:hover { background: var(--ink-hover); }
+  .link-secondary {
+    display: inline-flex; align-items: center; gap: .45rem;
+    font-weight: 600; font-size: 1rem; text-decoration: none;
+    color: var(--ink-soft); padding: .8rem .4rem;
+  }
+  .link-secondary:hover { color: var(--ink); }
   .fine { font-size: .85rem; color: var(--ink-soft); margin-top: 1.1rem; }
 
   /* ---------- Keycaps ---------- */
@@ -110,7 +149,7 @@
   /* ---------- Demo scene ---------- */
   .demo { padding: 2.2rem 0 4rem; }
   .stage {
-    background: linear-gradient(180deg, var(--cream-deep), #e9e2d0);
+    background: linear-gradient(180deg, var(--cream-deep), var(--stage-deep));
     border-radius: var(--r-lg); padding: clamp(1.2rem, 4vw, 2.6rem);
     box-shadow: inset 0 1px 0 rgba(255,255,255,.6);
   }
@@ -158,7 +197,7 @@
     box-shadow: 0 18px 50px rgba(35,36,58,.18), 0 2px 8px rgba(35,36,58,.08);
     overflow: hidden;
   }
-  .titlebar { display: flex; align-items: center; gap: .45rem; padding: .7rem .9rem; border-bottom: 1px solid #efece3; }
+  .titlebar { display: flex; align-items: center; gap: .45rem; padding: .7rem .9rem; border-bottom: 1px solid var(--card-line); }
   .dot { width: 11px; height: 11px; border-radius: 50%; flex: 0 0 11px; }
   .dot:nth-child(1) { background: #ff5f57; } .dot:nth-child(2) { background: #febc2e; } .dot:nth-child(3) { background: #28c840; }
   .titlebar .title { flex: 1; text-align: center; font-size: .8rem; color: var(--ink-soft); margin-right: 3rem; }
@@ -207,7 +246,7 @@
   @media (max-width: 640px) { .features { grid-template-columns: 1fr; gap: 1.5rem; } }
 
   /* ---------- Agents (the dark beat) ---------- */
-  #agents-band { background: var(--ink); color: var(--cream); padding: 6rem 0; margin: 1rem 0; }
+  #agents-band { background: var(--band); color: #f2f1f7; padding: 6rem 0; margin: 1rem 0; }
   #agents-band h2 { color: #fff; }
   #agents-band .section-sub { color: #b9b9c9; }
   .agents-lede { max-width: 42rem; color: #cfcfdd; }
@@ -226,7 +265,7 @@
     font: 600 .85rem/1 -apple-system, sans-serif;
     background: var(--coral); color: #fff;
     border: none; border-radius: var(--r-sm);
-    padding: .6rem 1.1rem; cursor: pointer;
+    padding: .6rem 0; min-width: 5.4em; text-align: center; cursor: pointer;
   }
   .copybtn:hover { background: var(--coral-deep); }
   .agents-facts { display: flex; flex-direction: column; gap: .45rem; margin-top: 1.6rem; font-size: .92rem; color: #b9b9c9; }
@@ -249,7 +288,7 @@
     overflow-x: auto; white-space: nowrap;
   }
   .minicopy {
-    font: 600 .8rem/1 -apple-system, sans-serif; padding: 0 .8rem;
+    font: 600 .8rem/1 -apple-system, sans-serif; min-width: 4.6em; text-align: center;
     background: var(--card); border: 1.5px solid var(--line); border-radius: var(--r-sm);
     cursor: pointer;
   }
@@ -285,6 +324,7 @@
   <nav>
     <a class="brand" href="#"><img src="icon-180.png" alt="" width="30" height="30">TypeCue</a>
     <div class="nav-links">
+      <button id="theme-toggle" aria-label="Switch color theme" title="Switch theme">&#9680;</button>
       <a href="#how">How it works</a>
       <a href="#features">Features</a>
       <a href="#agents-band">For agents</a>
@@ -303,7 +343,7 @@
     block into whatever field has focus.</p>
     <div class="cta-row">
       <a class="btn btn-primary" href="https://github.com/alexpolonsky/TypeCue/releases/latest/download/TypeCue.dmg"><svg viewBox="0 0 814 1000" width="14" height="17" style="vertical-align:-2.5px;margin-right:.45rem" fill="currentColor" aria-hidden="true"><path d="M788 341c-6 4-107 61-107 187 0 146 128 198 132 199-1 3-20 70-67 138-42 60-86 120-153 120s-84-39-161-39c-75 0-102 40-163 40s-104-56-153-124C60 782 14 664 14 552c0-180 117-275 232-275 61 0 112 41 150 41 36 0 93-43 162-43 26 0 120 2 182 92zM554 187c31-36 52-87 52-137 0-7-1-14-2-20-50 2-109 33-144 74-28 32-54 83-54 134 0 8 1 15 2 18 3 1 8 1 13 1 44 0 100-30 133-70z"/></svg>Download for Mac</a>
-      <a class="btn btn-ghost" href="https://github.com/alexpolonsky/TypeCue"><svg viewBox="0 0 16 16" width="15" height="15" style="vertical-align:-2px;margin-right:.4rem" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>Source on GitHub</a>
+      <a class="link-secondary" href="https://github.com/alexpolonsky/TypeCue"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>Source on GitHub</a>
     </div>
     <p class="fine">MIT license &middot; macOS 14+ &middot; everything stays on your Mac</p>
   </header>
@@ -491,6 +531,17 @@
 <script>
 (function () {
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Theme: follow the system by default; the toggle overrides and persists.
+  const root = document.documentElement;
+  const saved = localStorage.getItem("theme");
+  if (saved) root.dataset.theme = saved;
+  document.getElementById("theme-toggle").addEventListener("click", () => {
+    const systemDark = matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = root.dataset.theme ? root.dataset.theme === "dark" : systemDark;
+    root.dataset.theme = isDark ? "light" : "dark";
+    localStorage.setItem("theme", root.dataset.theme);
+  });
 
   // Typing engine (mutate textContent; sibling caret rides along). Optional per-char callback.
   function typeInto(el, text, base, done, onChar) {
