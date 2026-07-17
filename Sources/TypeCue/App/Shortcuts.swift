@@ -1,9 +1,9 @@
 import KeyboardShortcuts
 
 extension KeyboardShortcuts.Name {
-    /// Global hotkey that types the next block of the active script. Default: Ctrl+Option+T.
+    /// Global hotkey that types the next block of the active script. Default: Ctrl+Option+X.
     static let typeNextBlock = Self(
         "typeNextBlock",
-        default: .init(.t, modifiers: [.control, .option])
+        default: .init(.x, modifiers: [.control, .option])
     )
 }

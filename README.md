@@ -16,7 +16,7 @@ decisions, and [AGENTS.md](AGENTS.md) for the working agreement.
    "Settings" and "How TypeCue Works" in the menu open the right surface.
 2. Pick it as the active script from the menu, or from the floating panel's header menu.
 3. During recording, focus the target field, then press the global hotkey
-   (default Ctrl+Option+T). TypeCue types the next block, human-paced.
+   (default Ctrl+Option+X). TypeCue types the next block, human-paced.
 4. Each press types the next block in order. Press the hotkey again while a block is
    typing to stop it. When the last block is typed, the sequence stops - choose "Reset"
    to start over.
@@ -110,3 +110,14 @@ Sources/TypeCueUITests/     UI + e2e tests (XCUITest)
 
 See [docs/MANUAL_REGRESSION.md](docs/MANUAL_REGRESSION.md) for the pre-release manual check
 against real target apps.
+
+## Built with
+
+[KeyboardShortcuts](https://github.com/sindresorhus/KeyboardShortcuts) (global hotkey
+recording) and [Sauce](https://github.com/Clipy/Sauce) (layout-aware key code
+resolution), both MIT licensed - full texts in
+[THIRD-PARTY-LICENSES.md](THIRD-PARTY-LICENSES.md).
+
+## License
+
+MIT - see [LICENSE](LICENSE).

@@ -11,7 +11,7 @@ Test Pad shows "Verified".
 
 - [ ] Menu bar icon appears; no Dock icon; app not in Cmd-Tab switcher.
 - [ ] Create a script with 3+ blocks; set it active from the menu.
-- [ ] Global shortcut (default Ctrl+Option+T) types block 1 into a focused TextEdit field.
+- [ ] Global shortcut (default Ctrl+Option+X) types block 1 into a focused TextEdit field.
 - [ ] Each subsequent press types the next block, in order, with no characters merged or
       reordered.
 - [ ] After the last block, further presses do nothing (sequence stops). Menu shows the
