@@ -130,6 +130,27 @@
   }
   .link-secondary:hover { color: var(--ink); }
   .fine { font-size: .85rem; color: var(--ink-soft); margin-top: 1.1rem; }
+  .fine-link {
+    font: inherit; color: var(--ink-soft); background: none; border: none;
+    padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
+  }
+  .fine-link:hover { color: var(--ink); }
+  .srcwidget {
+    max-width: 33rem; margin-top: .9rem; padding: .9rem 1rem;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md);
+  }
+  .srcwidget p { margin: .6rem 0 0; font-size: .84rem; color: var(--ink-soft); }
+  .srcwidget p code {
+    font: .85em ui-monospace, "SF Mono", Menlo, monospace;
+    background: var(--cream-deep); padding: .08em .35em; border-radius: 5px;
+  }
+  .cmdrow { display: flex; gap: .5rem; align-items: stretch; }
+  .cmdrow code {
+    flex: 1; min-width: 0; padding: .5rem .7rem;
+    background: var(--cream-deep); border-radius: var(--r-sm);
+    font: .78rem/1.7 ui-monospace, "SF Mono", Menlo, monospace;
+    overflow-x: auto; white-space: nowrap;
+  }
 
   /* ---------- Keycaps ---------- */
   kbd {
@@ -268,31 +289,7 @@
     padding: .6rem 0; min-width: 5.4em; text-align: center; cursor: pointer;
   }
   .copybtn:hover { background: var(--coral-deep); }
-  .agents-facts { display: flex; flex-direction: column; gap: .45rem; margin-top: 1.6rem; font-size: .92rem; color: #b9b9c9; }
-  .agents-facts code { font: .85em ui-monospace, "SF Mono", Menlo, monospace; color: #e8e6f0; }
-  .agents-facts b { color: #fff; font-weight: 600; }
   #agents-band a { color: #fff; }
-
-  /* ---------- Install ---------- */
-  #install { padding: 5rem 0 2rem; }
-  .tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; margin-top: 2rem; }
-  .tier h3 { margin: 0 0 .15rem; font-size: 1rem; }
-
-  .tier p { margin: .4rem 0 0; font-size: .88rem; color: var(--ink-soft); }
-  .btn-small { padding: .6rem 1.05rem; font-size: .92rem; margin-top: .7rem; }
-  .cmdrow { display: flex; gap: .5rem; margin-top: .7rem; align-items: stretch; }
-  .cmdrow code {
-    flex: 1; min-width: 0; padding: .5rem .7rem;
-    background: var(--cream-deep); border-radius: var(--r-sm);
-    font: .78rem/1.7 ui-monospace, "SF Mono", Menlo, monospace;
-    overflow-x: auto; white-space: nowrap;
-  }
-  .minicopy {
-    font: 600 .8rem/1 -apple-system, sans-serif; min-width: 4.6em; text-align: center;
-    background: var(--card); border: 1.5px solid var(--line); border-radius: var(--r-sm);
-    cursor: pointer;
-  }
-  .minicopy:hover { border-color: var(--ink-soft); }
 
   /* ---------- FAQ ---------- */
   #faq { padding: 3.5rem 0 3rem; }
@@ -306,10 +303,14 @@
   details p { color: var(--ink-soft); font-size: .95rem; margin: .6rem 0 0; max-width: 44rem; }
 
   /* ---------- Footer ---------- */
-  footer { border-top: 1px solid var(--line); margin-top: 2rem; padding: 2.2rem 0 3rem; font-size: .9rem; color: var(--ink-soft); }
-  .foot-row { display: flex; flex-wrap: wrap; gap: .4rem 1.4rem; margin-bottom: .9rem; }
+  footer { border-top: 1px solid var(--line); margin-top: 2rem; padding: 2rem 0 2.8rem; color: var(--ink-soft); }
   footer a { color: var(--ink-soft); }
   footer a:hover { color: var(--ink); }
+  .foot-made { margin: 0 0 .5rem; font-size: .95rem; }
+  .foot-made b { color: var(--ink); }
+  .foot-personal { margin-left: .8rem; font-size: .85rem; }
+  .foot-links { margin: 0 0 .8rem; font-size: .82rem; }
+  .foot-fine { margin: 0; font-size: .76rem; opacity: .75; }
 
   @media (prefers-reduced-motion: reduce) {
     .caret { animation: none; }
@@ -328,7 +329,6 @@
       <a href="#how">How it works</a>
       <a href="#features">Features</a>
       <a href="#agents-band">For agents</a>
-      <a href="#install">Install</a>
       <a href="#faq">FAQ</a>
       <a href="https://github.com/alexpolonsky/TypeCue">GitHub</a>
     </div>
@@ -345,7 +345,17 @@
       <a class="btn btn-primary" href="https://github.com/alexpolonsky/TypeCue/releases/latest/download/TypeCue.dmg"><svg viewBox="0 0 814 1000" width="14" height="17" style="vertical-align:-2.5px;margin-right:.45rem" fill="currentColor" aria-hidden="true"><path d="M788 341c-6 4-107 61-107 187 0 146 128 198 132 199-1 3-20 70-67 138-42 60-86 120-153 120s-84-39-161-39c-75 0-102 40-163 40s-104-56-153-124C60 782 14 664 14 552c0-180 117-275 232-275 61 0 112 41 150 41 36 0 93-43 162-43 26 0 120 2 182 92zM554 187c31-36 52-87 52-137 0-7-1-14-2-20-50 2-109 33-144 74-28 32-54 83-54 134 0 8 1 15 2 18 3 1 8 1 13 1 44 0 100-30 133-70z"/></svg>Download for Mac</a>
       <a class="link-secondary" href="https://github.com/alexpolonsky/TypeCue"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>Source on GitHub</a>
     </div>
-    <p class="fine">MIT license &middot; macOS 14+ &middot; everything stays on your Mac</p>
+    <p class="fine">MIT license &middot; macOS 14+ &middot; everything stays on your Mac
+      &middot; <button class="fine-link" id="src-toggle">or build from source</button></p>
+    <div class="srcwidget" id="srcwidget" hidden>
+      <div class="cmdrow">
+        <code id="clone-cmd">git clone https://github.com/alexpolonsky/TypeCue</code>
+        <button class="minicopy" id="copy-clone">Copy</button>
+      </div>
+      <p>Then <code>xcodegen generate</code> and build - the README has the details. Swift 6, no surprises.</p>
+    </div>
+    <!-- Homebrew line joins this widget at the first tagged release:
+         brew install --cask alexpolonsky/tap/typecue -->
   </header>
 </div>
 
@@ -444,36 +454,10 @@
     </div>
     <p class="agents-lede">Then ask for things like <em>"turn these prompts into a well-paced TypeCue
     script"</em>. The agent writes the blocks, adds the markers, and reloads the app. You press the key.</p>
-    <div class="agents-facts">
-      <div><b>Scripts</b> are plain JSON at <code>~/Library/Application Support/TypeCue/scripts.json</code></div>
-      <div><b>Commands</b>: <code>typecue://activate-script</code> &middot; <code>typecue://reset-session</code> &middot; <code>typecue://reload</code></div>
-      <div><b>State</b> mirrors to <code>state.json</code> so tools can watch the session</div>
-    </div>
   </div>
 </div>
 
 <div class="wrap">
-  <section id="install">
-    <h2>Install</h2>
-    <div class="tiers">
-      <div class="card tier">
-        <h3>Download the app</h3>
-        <p>One dmg, drag it to Applications. macOS 14 or later.</p>
-        <a class="btn btn-primary btn-small" href="https://github.com/alexpolonsky/TypeCue/releases/latest/download/TypeCue.dmg">Download TypeCue.dmg</a>
-      </div>
-      <div class="card tier">
-        <h3>Build from source</h3>
-        <p>Swift 6 and XcodeGen; the README has the three commands.</p>
-        <div class="cmdrow">
-          <code id="clone-cmd">git clone https://github.com/alexpolonsky/TypeCue</code>
-          <button class="minicopy" id="copy-clone">Copy</button>
-        </div>
-      </div>
-    </div>
-    <!-- Homebrew tier lands with the first tagged release:
-         brew install --cask alexpolonsky/tap/typecue -->
-  </section>
-
   <section id="faq">
     <h2>FAQ</h2>
     <details>
@@ -505,26 +489,30 @@
       performing a demo rather than for everyday shortcuts.</p>
     </details>
     <details>
+      <summary>How do AI agents control TypeCue?</summary>
+      <p>Scripts are plain JSON at <code>~/Library/Application Support/TypeCue/scripts.json</code>;
+      agents edit the file directly. Three commands drive the app -
+      <code>typecue://activate-script</code>, <code>typecue://reset-session</code>, and
+      <code>typecue://reload</code> - and the session mirrors to <code>state.json</code> so
+      tools can watch progress. The <a href="skill">skill</a> documents all of it.</p>
+    </details>
+    <details>
       <summary>Can I use it commercially - at work, in a paid product demo?</summary>
       <p>Yes. MIT license, no restrictions, no fine print.</p>
     </details>
   </section>
 
   <footer>
-    <div class="foot-row">
-      <a href="https://github.com/alexpolonsky/TypeCue">Source code</a>
-      <a href="https://github.com/alexpolonsky/TypeCue/releases">Releases</a>
-      <a href="https://github.com/alexpolonsky/TypeCue/blob/main/LICENSE">MIT License</a>
-      <a href="https://github.com/alexpolonsky/TypeCue/blob/main/THIRD-PARTY-LICENSES.md">Acknowledgements</a>
-      <a href="llms.txt">llms.txt</a>
-    </div>
-    <div class="foot-row">
-      <span>Made by <a href="https://alexpolonsky.com"><b>Alex Polonsky</b></a></span>
-      <a href="https://github.com/alexpolonsky">GitHub</a>
-      <a href="https://x.com/alexpo">X</a>
-      <a href="https://www.linkedin.com/in/alexpolonsky">LinkedIn</a>
-    </div>
-    <p style="margin:.4rem 0 0">The app runs entirely on your Mac - no account, nothing phoned home. This site keeps an anonymous, cookieless visit count (self-hosted GoatCounter).</p>
+    <p class="foot-made">TypeCue is made by <a href="https://alexpolonsky.com"><b>Alex Polonsky</b></a>
+      <span class="foot-personal"><a href="https://github.com/alexpolonsky">GitHub</a> &middot;
+      <a href="https://x.com/alexpo">X</a> &middot;
+      <a href="https://www.linkedin.com/in/alexpolonsky">LinkedIn</a></span></p>
+    <p class="foot-links"><a href="https://github.com/alexpolonsky/TypeCue">Source code</a> &middot;
+      <a href="https://github.com/alexpolonsky/TypeCue/releases">Releases</a> &middot;
+      <a href="https://github.com/alexpolonsky/TypeCue/blob/main/LICENSE">MIT license</a> &middot;
+      <a href="https://github.com/alexpolonsky/TypeCue/blob/main/THIRD-PARTY-LICENSES.md">Acknowledgements</a> &middot;
+      <a href="llms.txt">llms.txt</a></p>
+    <p class="foot-fine">The app runs entirely on your Mac - no account, nothing phoned home. This site keeps an anonymous, cookieless visit count.</p>
   </footer>
 </div>
 
@@ -634,6 +622,13 @@
   } else {
     setTimeout(() => playBlock(1), 2200);
   }
+
+  // Build-from-source disclosure
+  const srcToggle = document.getElementById("src-toggle");
+  const srcWidget = document.getElementById("srcwidget");
+  srcToggle.addEventListener("click", () => {
+    srcWidget.hidden = !srcWidget.hidden;
+  });
 
   // Copy the clone command
   const cloneBtn = document.getElementById("copy-clone");
