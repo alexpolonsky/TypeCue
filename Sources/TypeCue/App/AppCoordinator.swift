@@ -41,7 +41,7 @@ final class AppCoordinator {
     /// action the user initiated there, so an alert - not the menu warning line - is right).
     var importExportError: String?
 
-    @ObservationIgnored private let defaults = UserDefaults.standard
+    @ObservationIgnored private let defaults: UserDefaults
     /// Mirrors session state to `state.json` for external observers (AI agents and
     /// assistants, scripts) - see `SessionStateFile`.
     @ObservationIgnored private lazy var stateFile = SessionStateFile(directory: store.fileURL.deletingLastPathComponent())
@@ -62,8 +62,11 @@ final class AppCoordinator {
     }
 
     /// Designated initializer with injectable dependencies. `shared` uses the defaults;
-    /// tests can wire a temporary store/settings and skip first-launch seeding.
-    init(store: ScriptStore, settings: SettingsStore, seedSample: Bool) {
+    /// tests can wire a temporary store/settings/defaults and skip first-launch seeding.
+    /// Injecting `defaults` matters: the coordinator persists the active-script id there,
+    /// and tests writing to the real standard defaults would pollute the user's session.
+    init(store: ScriptStore, settings: SettingsStore, seedSample: Bool, defaults: UserDefaults = .standard) {
+        self.defaults = defaults
         let initInterval = Signposts.launch.beginInterval("coordinator_init")
         defer { Signposts.launch.endInterval("coordinator_init", initInterval) }
 

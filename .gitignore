@@ -27,3 +27,6 @@ PROJECT_BRIEF.md
 docs/OPTIMIZATION_PLAN.md
 docs/PERFORMANCE.md
 .cursor/plans/
+
+# Generic editor-agent reference library (not project-specific; kept local)
+.cursor/skills/

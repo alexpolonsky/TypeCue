@@ -11,8 +11,10 @@ struct AppCoordinatorTests {
     private func makeCoordinator() -> AppCoordinator {
         let dir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
         let store = ScriptStore(directory: dir)
-        let settings = SettingsStore(defaults: UserDefaults(suiteName: "coord-\(UUID().uuidString)")!)
-        return AppCoordinator(store: store, settings: settings, seedSample: false)
+        let suite = "coord-\(UUID().uuidString)"
+        let settings = SettingsStore(defaults: UserDefaults(suiteName: suite)!)
+        // Isolated defaults so tests never write the user's real active-script id.
+        return AppCoordinator(store: store, settings: settings, seedSample: false, defaults: UserDefaults(suiteName: suite)!)
     }
 
     @Test("Menu bar symbol and VoiceOver label reflect session state")

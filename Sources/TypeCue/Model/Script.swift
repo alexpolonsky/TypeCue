@@ -20,13 +20,12 @@ public struct Script: Identifiable, Codable, Equatable, Sendable {
         Script(
             name: "TypeCue tour",
             blocks: [
-                TextBlock(text: "Focus any text field, then press your hotkey. TypeCue types this line for you, one block per press."),
-                TextBlock(text: "You can shift speed mid-line: [speed:20]this part races by,[speed:default] then [speed:120]this part crawls.[speed:default]"),
-                TextBlock(text: "Add pauses for dramatic timing.[1.5] That was a one-and-a-half second beat before this sentence."),
-                TextBlock(text: "This block spans two lines.\nThe break was inserted with Shift+Return, so it won't send early in chat apps."),
-                TextBlock(text: "Capitals, commas, symbols and numbers all land exactly: Hello, World! (v2 @ 100%)."),
-                TextBlock(text: "Finish a prompt, then let TypeCue send it for you.[enter]"),
-                TextBlock(text: "That's the tour. Edit these blocks, delete this script, or write your own. Open Formatting in the editor for every marker.")
+                TextBlock(text: "Focus any text field, then press your hotkey. [0.6] TypeCue types this line for you - one block per press, with real keystrokes."),
+                TextBlock(text: "Markers direct the pace as it types: [0.8] that was a beat, [speed:22]this part races ahead,[speed:default] and now it settles back to your speed."),
+                TextBlock(text: "A realistic prompt mixes them naturally. [0.5] Review this repo, [speed:120]slowly now - [speed:default]list the riskiest files, [0.6] and explain your reasoning as you go."),
+                TextBlock(text: "Blocks can span lines too.\nThe break above was typed as Shift+Return, so chat apps hold the message. [0.5] Capitals, symbols, numbers - Hello, World! (v2 @ 100%) - all land exactly."),
+                TextBlock(text: "End a block with the send marker and TypeCue presses Return for you.[enter]"),
+                TextBlock(text: "That's the tour. [0.5] Edit these blocks, write your own script, or ask your AI agent to write one - see Formatting in the editor for every marker.")
             ]
         )
     }
