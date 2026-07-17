@@ -102,6 +102,10 @@
   }
   kbd.pressed { animation: press .28s ease; }
   @keyframes press { 40% { transform: translateY(2px); border-bottom-width: 1.5px; } }
+  .step code, .feature code, details code {
+    font: .85em ui-monospace, "SF Mono", Menlo, monospace;
+    background: var(--cream-deep); padding: .08em .35em; border-radius: 5px;
+  }
 
   /* ---------- Demo scene ---------- */
   .demo { padding: 2.2rem 0 4rem; }
@@ -143,6 +147,11 @@
   }
   .tc-block[data-state="typed"] { opacity: .55; }
   .tc-block[data-state="typed"]::before { content: "\2713\00a0"; color: var(--coral); font-weight: 700; }
+  .tc-block .mk {
+    font: .92em ui-monospace, "SF Mono", Menlo, monospace;
+    color: var(--coral-deep); background: rgba(240,89,76,.09);
+    padding: 0 .25em; border-radius: 4px;
+  }
   /* Target app window: full macOS chrome, in contrast to the panel */
   .window {
     background: var(--card); border-radius: var(--r-md);
@@ -231,12 +240,20 @@
   .tier h3 { margin: 0 0 .15rem; font-size: 1rem; }
 
   .tier p { margin: .4rem 0 0; font-size: .88rem; color: var(--ink-soft); }
-  .tier code {
-    display: block; margin-top: .6rem; padding: .55rem .7rem;
+  .btn-small { padding: .6rem 1.05rem; font-size: .92rem; margin-top: .7rem; }
+  .cmdrow { display: flex; gap: .5rem; margin-top: .7rem; align-items: stretch; }
+  .cmdrow code {
+    flex: 1; min-width: 0; padding: .5rem .7rem;
     background: var(--cream-deep); border-radius: var(--r-sm);
-    font: .78rem/1.5 ui-monospace, "SF Mono", Menlo, monospace;
+    font: .78rem/1.7 ui-monospace, "SF Mono", Menlo, monospace;
     overflow-x: auto; white-space: nowrap;
   }
+  .minicopy {
+    font: 600 .8rem/1 -apple-system, sans-serif; padding: 0 .8rem;
+    background: var(--card); border: 1.5px solid var(--line); border-radius: var(--r-sm);
+    cursor: pointer;
+  }
+  .minicopy:hover { border-color: var(--ink-soft); }
 
   /* ---------- FAQ ---------- */
   #faq { padding: 3.5rem 0 3rem; }
@@ -303,8 +320,8 @@
         </div>
         <ul class="tc-blocks">
           <li class="tc-block" data-state="typed">Open the repo and walk through the bug.</li>
-          <li class="tc-block" data-state="next">Refactor the auth flow and explain each change.</li>
-          <li class="tc-block" data-state="upcoming">Now add tests for the edge cases.</li>
+          <li class="tc-block" data-state="next">Refactor the auth flow <span class="mk">[0.6]</span> and explain each change.</li>
+          <li class="tc-block" data-state="upcoming">Paste the path <span class="mk">[speed:15]</span> Sources/Engine/KeystrokeResolver.swift</li>
         </ul>
       </div>
       <div class="window">
@@ -327,7 +344,7 @@
   <section id="how">
     <h2>How it works</h2>
     <div class="steps">
-      <div class="step"><div class="n">1</div><h3>Write your blocks</h3><p>A script is an ordered list of text blocks, one per beat of your demo. Pace them with inline markers like [0.5] and [speed:40].</p></div>
+      <div class="step"><div class="n">1</div><h3>Write your blocks</h3><p>A script is an ordered list of text blocks, one per beat of your demo. Pace them with inline markers like <code>[0.5]</code> and <code>[speed:40]</code>.</p></div>
       <div class="step"><div class="n">2</div><h3>Focus any field</h3><p>Your editor, a browser, a chat app. TypeCue waits in the menu bar.</p></div>
       <div class="step"><div class="n">3</div><h3>Press <kbd>&#8963;</kbd><kbd>&#8997;</kbd><kbd>X</kbd></h3><p>The next block types itself, human-paced. Press again for the block after, or mid-type to stop.</p></div>
     </div>
@@ -343,7 +360,7 @@
       </div>
       <div class="feature">
         <svg viewBox="0 0 24 24"><path d="M4 8h9M4 16h13"/><circle class="acc" cx="16.5" cy="8" r="2.4"/><circle class="acc" cx="9.5" cy="16" r="2.4"/></svg>
-        <h3>Direct the pace</h3><p>Inline markers set the rhythm: [0.5] pauses, [speed:40] changes tempo, [enter] submits on cue.</p>
+        <h3>Direct the pace</h3><p>Inline markers set the rhythm: <code>[0.5]</code> pauses, <code>[speed:40]</code> changes tempo, <code>[enter]</code> submits on cue.</p>
       </div>
       <div class="feature">
         <svg viewBox="0 0 24 24"><path d="M3 12h2.5l2-5 3 10 2.5-7 1.5 2h6.5" class="acc"/></svg>
@@ -385,7 +402,7 @@
         value="Read https://typecue.app/skill and set up my TypeCue scripts.">
       <button class="copybtn" id="copy-snippet">Copy</button>
     </div>
-    <p class="agents-lede">Then ask for things like <em>"turn this outline into a paced two-minute demo
+    <p class="agents-lede">Then ask for things like <em>"turn these prompts into a well-paced TypeCue
     script"</em>. The agent writes the blocks, adds the markers, and reloads the app. You press the key.</p>
     <div class="agents-facts">
       <div><b>Scripts</b> are plain JSON at <code>~/Library/Application Support/TypeCue/scripts.json</code></div>
@@ -401,13 +418,16 @@
     <div class="tiers">
       <div class="card tier">
         <h3>Download the app</h3>
-        <p>Grab the latest release and drag it to Applications. macOS 14 or later.</p>
-        <code><a href="https://github.com/alexpolonsky/TypeCue/releases/latest" style="text-decoration:none">github.com/alexpolonsky/TypeCue/releases</a></code>
+        <p>One dmg, drag it to Applications. macOS 14 or later.</p>
+        <a class="btn btn-primary btn-small" href="https://github.com/alexpolonsky/TypeCue/releases/latest/download/TypeCue.dmg">Download TypeCue.dmg</a>
       </div>
       <div class="card tier">
         <h3>Build from source</h3>
         <p>Swift 6 and XcodeGen; the README has the three commands.</p>
-        <code>git clone https://github.com/alexpolonsky/TypeCue && cd TypeCue && xcodegen generate</code>
+        <div class="cmdrow">
+          <code id="clone-cmd">git clone https://github.com/alexpolonsky/TypeCue</code>
+          <button class="minicopy" id="copy-clone">Copy</button>
+        </div>
       </div>
     </div>
     <!-- Homebrew tier lands with the first tagged release:
@@ -415,7 +435,7 @@
   </section>
 
   <section id="faq">
-    <h2>Before you ask</h2>
+    <h2>FAQ</h2>
     <details>
       <summary>Why does TypeCue need Accessibility permission?</summary>
       <p>Accessibility is the macOS API for sending keystrokes to other apps - the entire
@@ -490,8 +510,14 @@
   else setTimeout(() => typeInto(h1, H1_TEXT, 58), 350);
 
   // ---- Demo: panel + window driven off one source of truth ----
+  // Markers shown in the panel direct the typing; they are never typed themselves.
   const rows = document.querySelectorAll(".tc-block");
-  const BLOCKS = Array.from(rows, r => r.textContent);
+  const SCRIPT = [
+    { segments: [{ t: "Open the repo and walk through the bug.", d: 52 }] },
+    { segments: [{ t: "Refactor the auth flow ", d: 52 }, { pause: 600 }, { t: "and explain each change.", d: 52 }] },
+    { segments: [{ t: "Paste the path ", d: 52 }, { t: "Sources/Engine/KeystrokeResolver.swift", d: 15 }] },
+  ];
+  const BLOCKS = SCRIPT.map(b => b.segments.map(seg => seg.t || "").join(""));
   const field = document.getElementById("typed-demo");
   const inputrow = document.getElementById("inputrow");
   const bubbles = [document.getElementById("bubble-0"), document.getElementById("bubble-1"), document.getElementById("bubble-2")];
@@ -503,12 +529,33 @@
   }
   function flashConnector(on) { inputrow.classList.toggle("pulse", on); }
 
+  function typeSegments(el, segments, onChar, done) {
+    const total = segments.reduce((n, seg) => n + (seg.t ? seg.t.length : 0), 0);
+    let typedSoFar = 0;
+    (function run(si) {
+      if (si >= segments.length) { done(); return; }
+      const seg = segments[si];
+      if (seg.pause) { setTimeout(() => run(si + 1), seg.pause); return; }
+      let i = 0;
+      (function step() {
+        i += 1;
+        el.textContent += seg.t[i - 1];
+        onChar(++typedSoFar, total);
+        if (i < seg.t.length) setTimeout(step, seg.d + (Math.random() * 30 - 15));
+        else run(si + 1);
+      })();
+    })(0);
+  }
+
   function playBlock(i) {
     pressKeys();
     setTimeout(() => {
       setRow(i, "typing");
       flashConnector(true);
-      typeInto(field, BLOCKS[i], 52, () => {
+      field.textContent = "";
+      typeSegments(field, SCRIPT[i].segments, (typed, total) => {
+        rows[i].style.setProperty("--progress", `${(typed / total) * 100}%`);
+      }, () => {
         flashConnector(false);
         setTimeout(() => {
           setRow(i, "typed");
@@ -519,8 +566,6 @@
           if (i + 1 < BLOCKS.length) setTimeout(() => playBlock(i + 1), 2000);
           else setTimeout(resetLoop, 2600);
         }, 700);
-      }, (typed, total) => {
-        rows[i].style.setProperty("--progress", `${(typed / total) * 100}%`);
       });
     }, 420);
   }
@@ -538,6 +583,15 @@
   } else {
     setTimeout(() => playBlock(1), 2200);
   }
+
+  // Copy the clone command
+  const cloneBtn = document.getElementById("copy-clone");
+  cloneBtn.addEventListener("click", () => {
+    navigator.clipboard.writeText(document.getElementById("clone-cmd").textContent).then(() => {
+      cloneBtn.textContent = "Copied";
+      setTimeout(() => { cloneBtn.textContent = "Copy"; }, 1600);
+    });
+  });
 
   // Copy the skill line for the user's agent
   const btn = document.getElementById("copy-snippet");

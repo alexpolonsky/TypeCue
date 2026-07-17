@@ -55,7 +55,7 @@ Cursor, or any tool with access to your machine) can author and drive your scrip
 The repo ships a ready-made agent skill at
 [`.agents/skills/typecue`](.agents/skills/typecue/SKILL.md) - schema, guardrails, and
 direction rules for pacing a script with markers. Point your agent at it (or paste
-it in) and ask for things like *"turn this outline into a paced TypeCue script for my
+it in) and ask for things like *"turn these prompts into a well-paced TypeCue script for my
 demo"*.
 
 ## Requirements

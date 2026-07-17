@@ -54,8 +54,9 @@ active script id/name, `nextBlockIndex`, `totalBlocks`, `isTyping`.
 
 ## Directing a script (pacing rules)
 
-When converting a user's raw script into a paced TypeCue script, direct it like a
-screencast, not a transcript. One block = one hotkey press = one beat of the demo -
+A TypeCue script is typed content - prompts, commands, chat messages, code - not
+spoken lines, and it has no target duration. Pacing is about how the typing lands on
+screen, not about filling time. One block = one hotkey press = one beat of the demo;
 split blocks at the moments the presenter wants to trigger separately.
 
 Speed tiers (ms/char):
