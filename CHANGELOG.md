@@ -6,31 +6,37 @@ All notable changes to TypeCue are documented here. The format follows
 
 ## [Unreleased]
 
-Initial development toward 0.1.0, the first public release: menu bar app with
-scripted block typing (layout-aware synthetic keystrokes, Unicode fallback for
-characters not on the current layout), inline pacing markers, natural typing
-rhythm, floating teleprompter panel, script editor with import/export, and
-Accessibility onboarding with a live Test Pad.
+## [0.1.0] - 2026-07-18
 
-### Added
+First public release.
 
-- An About tab, drag-to-reorder for scripts, and a right-click menu on scripts
-  (Make Active, Duplicate, Export, Delete).
-- App icon and a matching menu bar mark - the caret appears in the menu bar exactly
-  when a script is armed.
-- `typecue://` commands (`activate-script`, `reset-session`, `reload`) so AI agents,
-  assistants, and scripts can drive the app, plus a `state.json` session mirror they
-  can observe.
-- About TypeCue in the menu, with project links and open-source acknowledgements.
-- A ready-made agent skill (`.agents/skills/typecue`) for authoring and pacing scripts.
+TypeCue is a macOS menu bar app that types your script into any app - one block
+per hotkey press, as real system-level keystrokes, at a human pace. Write a demo
+as ordered blocks, focus the target field, and each press of the global hotkey
+(default Ctrl+Option+X) types the next block: no typos, identical on every take.
 
-### Changed
+### Highlights
 
-- Default hotkey is now Ctrl+Option+X.
-- Onboarding is shorter and clearer; the tour script now mixes pauses, speed
-  changes, and sends the way a real demo script does.
+- Scripted block typing with layout-aware synthetic keystrokes and a Unicode
+  fallback for characters not on the current layout - any language, RTL included,
+  with input-source switches handled mid-session.
+- Inline pacing markers written directly in a block's text: `[0.5]` pauses,
+  `[speed:40]` / `[speed:default]` tempo shifts, `[enter]` to submit. Line breaks
+  type as Shift+Return so multi-line blocks never submit early in chat apps.
+- Natural typing rhythm with slight per-character variation.
+- Floating teleprompter panel showing every block and its state (typed / typing /
+  next / upcoming) without ever stealing focus.
+- Script editor with import/export, drag-to-reorder, and a right-click menu
+  (Make Active, Duplicate, Export, Delete), plus an About tab.
+- App icon with a matching menu bar mark - the caret appears exactly when a
+  script is armed; the mark flashes a warning when a secure field blocks typing.
+- Accessibility onboarding with a live Test Pad that proves keystrokes arrive.
+- An agent surface: scripts live in plain JSON under Application Support,
+  `typecue://` commands (`activate-script`, `reset-session`, `reload`) drive the
+  app, a `state.json` mirror exposes the session, and a ready-made agent skill
+  ships in the repo and at [typecue.app/skill.md](https://typecue.app/skill.md).
+- A scripts file that fails to read is set aside as
+  `scripts.json.corrupt-<timestamp>` instead of being silently replaced.
 
-### Fixed
-
-- A scripts file that fails to read is set aside as `scripts.json.corrupt-<timestamp>`
-  instead of being silently replaced on the next save.
+[Unreleased]: https://github.com/alexpolonsky/TypeCue/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/alexpolonsky/TypeCue/releases/tag/v0.1.0
