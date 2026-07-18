@@ -30,3 +30,4 @@ docs/PERFORMANCE.md
 
 # Generic editor-agent reference library (not project-specific; kept local)
 .cursor/skills/
+.agents/product-marketing.md
