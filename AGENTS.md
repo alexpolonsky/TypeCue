@@ -93,3 +93,20 @@ Notes for anyone extending this:
   works). Keep it that way unless you're wiring real distribution signing.
 - See `README.md` for the fuller layout and `docs/MANUAL_REGRESSION.md` for the
   pre-release human checklist.
+
+## Release DMG
+
+The signed, notarized DMG is built with `create-dmg` (install via `brew install create-dmg`).
+The installer background is committed as `scripts/dmg_background.png` and can be regenerated:
+
+```bash
+swift scripts/gen-dmg-background.swift   # writes build/dmg_background.png (800×372)
+```
+
+Key parameters for `create-dmg` (see the release skill for the full command):
+- `--window-size 800 400` — background height is 372 px (400 − 28 px title bar) to avoid a scrollbar
+- `--icon-size 128`
+- `--icon "TypeCue.app" 200 172` / `--app-drop-link 600 172`
+- Sign the resulting DMG yourself with `codesign --sign "Developer ID Application: …" --timestamp`
+  (do NOT use create-dmg's built-in `--codesign`; it omits the secure timestamp and the signature fails)
+- Notarize with `xcrun notarytool submit … --keychain-profile typecue-notary --wait`, then staple
