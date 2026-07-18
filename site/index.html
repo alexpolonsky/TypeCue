@@ -368,6 +368,12 @@
   #faq details:last-of-type { border-bottom: none; }
 
   /* ---------- Footer ---------- */
+  #get { padding: 1rem 0 4.5rem; text-align: center; }
+  #get h2 { margin-bottom: 1.4rem; }
+  #get .fine code {
+    font: .85em ui-monospace, "SF Mono", Menlo, monospace;
+    background: var(--cream-deep); padding: .08em .35em; border-radius: 5px;
+  }
   footer { border-top: 1px solid var(--line); margin-top: 2rem; padding: 2rem 0 2.8rem; color: var(--ink-soft); }
   footer a { color: var(--ink-soft); }
   footer a:hover { color: var(--ink); }
@@ -405,10 +411,11 @@
     <h1><span id="typed-h1">Press a key. It types the line.</span><span class="caret" id="h1-caret"></span></h1>
     <p class="kicker">Real keystrokes, at a human pace.</p>
     <p class="sub">Write your lines ahead of time. Each press of one hotkey types the next
-    one into whatever app you're in - perfectly on cue.</p>
+    one into whatever app you're in - perfectly on cue. Built for demo recordings
+    and live presentations.</p>
     <div class="cta-row">
-      <a class="btn btn-primary" href="https://github.com/alexpolonsky/TypeCue/releases/latest/download/TypeCue.dmg"><svg viewBox="0 0 814 1000" width="14" height="17" style="vertical-align:-2.5px;margin-right:.45rem" fill="currentColor" aria-hidden="true"><path d="M788 341c-6 4-107 61-107 187 0 146 128 198 132 199-1 3-20 70-67 138-42 60-86 120-153 120s-84-39-161-39c-75 0-102 40-163 40s-104-56-153-124C60 782 14 664 14 552c0-180 117-275 232-275 61 0 112 41 150 41 36 0 93-43 162-43 26 0 120 2 182 92zM554 187c31-36 52-87 52-137 0-7-1-14-2-20-50 2-109 33-144 74-28 32-54 83-54 134 0 8 1 15 2 18 3 1 8 1 13 1 44 0 100-30 133-70z"/></svg>Download for Mac</a>
-      <a class="link-secondary" href="https://github.com/alexpolonsky/TypeCue"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>Source on GitHub</a>
+      <a class="btn btn-primary" data-goatcounter-click="download-hero" href="https://github.com/alexpolonsky/TypeCue/releases/latest/download/TypeCue.dmg"><svg viewBox="0 0 814 1000" width="14" height="17" style="vertical-align:-2.5px;margin-right:.45rem" fill="currentColor" aria-hidden="true"><path d="M788 341c-6 4-107 61-107 187 0 146 128 198 132 199-1 3-20 70-67 138-42 60-86 120-153 120s-84-39-161-39c-75 0-102 40-163 40s-104-56-153-124C60 782 14 664 14 552c0-180 117-275 232-275 61 0 112 41 150 41 36 0 93-43 162-43 26 0 120 2 182 92zM554 187c31-36 52-87 52-137 0-7-1-14-2-20-50 2-109 33-144 74-28 32-54 83-54 134 0 8 1 15 2 18 3 1 8 1 13 1 44 0 100-30 133-70z"/></svg>Download for Mac</a>
+      <a class="link-secondary" data-goatcounter-click="github-hero" href="https://github.com/alexpolonsky/TypeCue"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>Source on GitHub</a>
     </div>
     <p class="fine">macOS 14+ &middot; <button class="fine-link" id="src-toggle" aria-expanded="false" aria-controls="instpop">more install options</button></p>
     <div class="instwrap">
@@ -420,7 +427,7 @@
         <div class="instline">
           <span class="prompt">$</span>
           <code id="inst-cmd">brew install --cask alexpolonsky/tap/typecue</code>
-          <button class="icopy" id="inst-copy" aria-label="Copy command">
+          <button class="icopy" id="inst-copy" data-goatcounter-click="install-copy" aria-label="Copy command">
             <svg class="cp" viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5"/><path d="M10.5 3.5v-1a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h1"/></svg>
             <svg class="ck" viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg>
           </button>
@@ -454,7 +461,7 @@ The pacing lives in the script - you just press one key.</span></li>
       <video id="realvid-player" controls playsinline preload="metadata" data-poster="demo-poster.jpg" data-src="demo.mp4" width="1600" height="844"></video>
     </div>
     <p class="demo-hint"><span id="hint-sim">Each press of <kbd id="k-ctrl">&#8963;</kbd><kbd id="k-opt">&#8997;</kbd><kbd id="k-x">X</kbd> types the next block. Recreated in the browser -</span>
-      <button class="fine-link" id="real-toggle">watch the real recording</button>.</p>
+      <button class="fine-link" id="real-toggle" data-goatcounter-click="watch-recording">watch the real recording</button>.</p>
   </div>
 </div>
 
@@ -518,7 +525,7 @@ The pacing lives in the script - you just press one key.</span></li>
     <div class="skillfield">
       <input id="skill-line" type="text" readonly spellcheck="false" aria-label="Agent instruction to copy"
         value="Read https://typecue.app/skill.md and set up my TypeCue scripts.">
-      <button class="copybtn" id="copy-snippet">Copy</button>
+      <button class="copybtn" id="copy-snippet" data-goatcounter-click="skill-copy">Copy</button>
     </div>
     <p class="agents-lede">Then ask for things like <em>"turn these prompts into a well-paced TypeCue
     script"</em>. The agent writes the blocks, adds the markers, and reloads the app. You press the key.</p>
@@ -575,6 +582,12 @@ The pacing lives in the script - you just press one key.</span></li>
       <summary>Can I use it commercially - at work, in a paid product demo?</summary>
       <p>Yes. MIT license, no restrictions, no fine print.</p>
     </details>
+  </section>
+
+  <section id="get">
+    <h2>Get TypeCue</h2>
+    <a class="btn btn-primary" data-goatcounter-click="download-bottom" href="https://github.com/alexpolonsky/TypeCue/releases/latest/download/TypeCue.dmg"><svg viewBox="0 0 814 1000" width="14" height="17" style="vertical-align:-2.5px;margin-right:.45rem" fill="currentColor" aria-hidden="true"><path d="M788 341c-6 4-107 61-107 187 0 146 128 198 132 199-1 3-20 70-67 138-42 60-86 120-153 120s-84-39-161-39c-75 0-102 40-163 40s-104-56-153-124C60 782 14 664 14 552c0-180 117-275 232-275 61 0 112 41 150 41 36 0 93-43 162-43 26 0 120 2 182 92zM554 187c31-36 52-87 52-137 0-7-1-14-2-20-50 2-109 33-144 74-28 32-54 83-54 134 0 8 1 15 2 18 3 1 8 1 13 1 44 0 100-30 133-70z"/></svg>Download for Mac</a>
+    <p class="fine">or <code>brew install --cask alexpolonsky/tap/typecue</code> &middot; macOS 14+ &middot; free &amp; open source</p>
   </section>
 
   <footer>
