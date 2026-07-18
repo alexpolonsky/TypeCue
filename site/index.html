@@ -209,79 +209,82 @@
     box-shadow: inset 0 1px 0 rgba(255,255,255,.6);
   }
   .scene {
-    display: grid; grid-template-columns: 17rem 1fr; gap: 1.4rem;
-    align-items: start; max-width: 52rem; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 19rem; gap: 1.6rem;
+    align-items: start; max-width: 56rem; margin: 0 auto;
   }
-  /* TypeCue panel: deliberately NOT app-window chrome - a floating overlay card */
-  .tc-panel {
-    background: var(--card); border-radius: var(--r-md);
-    box-shadow: 0 10px 28px rgba(35,36,58,.14);
-    padding: .75rem .8rem .6rem;
-    font-size: .82rem;
+  /* Faithful replicas of the real app surfaces (colors lifted from the recording).
+     Replica tokens; dark values mirror the app's dark appearance. */
+  .scene {
+    --w-bg: #ffffff; --w-text: #1c1c1f; --w-bar: #f3f2f0; --w-title: #6b6b70; --w-line: #e6e5e2;
+    --p-bg: #f6f5f2; --p-line: rgba(0,0,0,.09); --p-dim: #9a9893; --p-text: #1d1d1f;
+    --p-done: #8e8c88; --p-blue: #0a7cff; --p-bluebg: rgba(10,124,255,.10);
   }
-  .tc-head { display: flex; align-items: center; gap: .45rem; margin-bottom: .55rem; }
-  .tc-head img { width: 16px; height: 16px; border-radius: 4px; }
-  .tc-head .tc-name { font-weight: 700; font-size: .82rem; }
-  .tc-head .tc-keys { margin-left: auto; white-space: nowrap; }
-  .tc-head kbd { font-size: .68rem; min-width: 1.3em; }
-  .tc-blocks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .3rem; }
+  :root[data-theme="dark"] .scene { --w-bg: #1e1e20; --w-text: #e8e8ea; --w-bar: #2d2d2f; --w-title: #a1a1a6; --w-line: #3a3a3d; --p-bg: #2c2c2e; --p-line: rgba(255,255,255,.10); --p-dim: #98989d; --p-text: #f2f2f4; --p-done: #8e8e93; --p-bluebg: rgba(10,124,255,.22); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .scene { --w-bg: #1e1e20; --w-text: #e8e8ea; --w-bar: #2d2d2f; --w-title: #a1a1a6; --w-line: #3a3a3d; --p-bg: #2c2c2e; --p-line: rgba(255,255,255,.10); --p-dim: #98989d; --p-text: #f2f2f4; --p-done: #8e8e93; --p-bluebg: rgba(10,124,255,.22); }
+  }
+  /* TextEdit window */
+  .tewin {
+    background: var(--w-bg); border-radius: 10px; overflow: hidden;
+    box-shadow: 0 18px 50px rgba(35,36,58,.18), 0 2px 8px rgba(35,36,58,.08);
+  }
+  .tebar {
+    display: flex; align-items: center; gap: .5rem; height: 2rem; padding: 0 .8rem;
+    background: var(--w-bar); border-bottom: 1px solid var(--w-line);
+  }
+  .tl { width: 12px; height: 12px; border-radius: 50%; flex: 0 0 12px; }
+  .tl.r { background: #ff5f57; } .tl.y { background: #febc2e; } .tl.g { background: #28c840; }
+  .tebar .tetitle { flex: 1; text-align: center; font-size: .8rem; font-weight: 600; color: var(--w-title); margin-right: 3.2rem; }
+  .tedoc {
+    padding: 1.4rem 1.6rem; min-height: 17rem; color: var(--w-text);
+    font-size: .95rem; line-height: 1.55; white-space: pre-wrap; overflow-wrap: break-word;
+  }
+  .tecaret {
+    display: inline-block; width: 1.5px; height: 1.05em; background: var(--w-text);
+    vertical-align: -0.14em; margin-left: 1px; animation: blink 1.1s step-end infinite;
+  }
+  /* TypeCue panel */
+  .tcpanel {
+    background: var(--p-bg); border-radius: 10px; border: 1px solid var(--p-line);
+    box-shadow: 0 14px 40px rgba(35,36,58,.16);
+    padding: .55rem .8rem .85rem; font-size: .8rem;
+  }
+  .tcbar { display: flex; align-items: center; gap: .5rem; padding: .15rem 0 .35rem; }
+  .tcdot { width: 12px; height: 12px; border-radius: 50%; background: var(--p-line); flex: 0 0 12px; }
+  .tcapp { font-weight: 700; font-size: .8rem; color: var(--p-dim); }
+  .tcscript { display: flex; align-items: center; gap: .4rem; padding: .2rem 0 .5rem; border-bottom: 1px solid var(--p-line); }
+  .tcchev { color: var(--p-text); font-size: .7rem; transform: translateY(-1px); }
+  .tcscript b { font-size: .88rem; color: var(--p-text); }
+  .tccount { margin-left: auto; font-size: .78rem; color: var(--p-dim); }
+  .tc-blocks { list-style: none; margin: .55rem 0 0; padding: 0; display: flex; flex-direction: column; gap: .45rem; }
   .tc-block {
-    position: relative; padding: .42rem .55rem .42rem .65rem;
-    border-left: 3px solid transparent; border-radius: 0 var(--r-sm) var(--r-sm) 0;
-    color: var(--ink); opacity: .5; line-height: 1.35;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    transition: opacity .25s, border-color .25s, background .25s;
+    display: flex; gap: .5rem; align-items: flex-start;
+    padding: .4rem .5rem; border-radius: 7px; line-height: 1.4; color: var(--p-text);
+    white-space: pre-wrap; transition: background .25s, color .25s;
   }
-  .tc-block[data-state="upcoming"] { opacity: .38; }
-  .tc-block[data-state="next"] { opacity: .85; }
-  .tc-block[data-state="typing"] { opacity: 1; border-color: var(--coral); background: rgba(240,89,76,.07); }
-  .tc-block[data-state="typing"]::after {
-    content: ""; position: absolute; left: 0; bottom: 0; height: 2px;
-    background: var(--coral); width: var(--progress, 0%); transition: width .12s linear;
+  .tc-block .tcic {
+    flex: 0 0 1em; width: 1em; height: 1em; margin-top: .17em;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 50%; font-size: .72em; line-height: 1;
   }
-  .tc-block[data-state="typed"] { opacity: .55; }
-  .tc-block[data-state="typed"]::before { content: "\2713\00a0"; color: var(--coral); font-weight: 700; }
-  .tc-block .mk {
-    font: .92em ui-monospace, "SF Mono", Menlo, monospace;
-    color: var(--coral-deep); background: rgba(240,89,76,.09);
-    padding: 0 .25em; border-radius: 4px;
-  }
-  /* Target app window: full macOS chrome, in contrast to the panel */
-  .window {
-    background: var(--card); border-radius: var(--r-md);
-    box-shadow: 0 18px 50px rgba(35,36,58,.18), 0 2px 8px rgba(35,36,58,.08);
-    overflow: hidden;
-  }
-  .titlebar { display: flex; align-items: center; gap: .45rem; padding: .7rem .9rem; border-bottom: 1px solid var(--card-line); }
-  .dot { width: 11px; height: 11px; border-radius: 50%; flex: 0 0 11px; }
-  .dot:nth-child(1) { background: #ff5f57; } .dot:nth-child(2) { background: #febc2e; } .dot:nth-child(3) { background: #28c840; }
-  .titlebar .title { flex: 1; text-align: center; font-size: .8rem; color: var(--ink-soft); margin-right: 3rem; }
-  .chat { padding: 1.2rem 1.1rem 1.1rem; min-height: 11rem; display: flex; flex-direction: column; justify-content: flex-end; gap: .7rem; }
-  .bubble {
-    align-self: flex-end; background: var(--cream); border: 1px solid var(--line);
-    border-radius: var(--r-md) var(--r-md) 4px var(--r-md);
-    padding: .5rem .8rem; font-size: .88rem; max-width: 92%;
-    opacity: 0; transform: translateY(4px); transition: opacity .35s, transform .35s;
-  }
-  .bubble.shown { opacity: 1; transform: none; }
-  .inputrow {
-    display: flex; align-items: center; gap: .6rem;
-    border: 1.5px solid var(--line); border-radius: var(--r-md); padding: .6rem .85rem;
-    transition: border-color .25s, box-shadow .25s;
-  }
-  .inputrow.pulse { border-color: var(--coral); box-shadow: 0 0 0 3px rgba(240,89,76,.15); }
-  .inputrow .text { font-size: .92rem; min-height: 1.4em; }
-  .inputrow .caret { height: 1.05em; }
+  .tc-block[data-state="upcoming"] { color: var(--p-done); }
+  .tc-block[data-state="upcoming"] .tcic { border: 1.3px solid var(--p-done); }
+  .tc-block[data-state="next"] { background: var(--p-bluebg); }
+  .tc-block[data-state="next"] .tcic::before { content: "\25B6"; color: var(--p-blue); }
+  .tc-block[data-state="typing"] { background: var(--p-bluebg); }
+  .tc-block[data-state="typing"] .tcic::before { content: "\22EF"; color: var(--p-blue); font-weight: 700; }
+  .tc-block[data-state="typed"] { color: var(--p-done); }
+  .tc-block[data-state="typed"] .tcic { background: var(--p-done); }
+  .tc-block[data-state="typed"] .tcic::before { content: "\2713"; color: var(--p-bg); font-weight: 700; font-size: .8em; }
   .demo-hint { text-align: center; font-size: .85rem; color: var(--ink-soft); margin-top: 1.2rem; }
-  .realtake { max-width: 46rem; margin: 2.4rem auto 0; }
-  .realtake video {
-    display: block; width: 100%; height: auto; border-radius: var(--r-md);
-    box-shadow: 0 18px 50px rgba(35,36,58,.18), 0 2px 8px rgba(35,36,58,.08);
-  }
-  .realtake p { text-align: center; font-size: .85rem; color: var(--ink-soft); margin: .9rem 0 0; }
+  .demo-hint kbd { transition: transform .12s, border-bottom-width .12s, background .12s; }
+  .demo-hint kbd.pressed { transform: translateY(2px); border-bottom-width: 1.5px; background: var(--cream-deep); }
+  .realvid { max-width: 56rem; margin: 0 auto; }
+  .realvid video { display: block; width: 100%; height: auto; border-radius: var(--r-sm); }
   @media (max-width: 720px) {
     .scene { grid-template-columns: 1fr; }
-    .tc-panel { max-width: 22rem; }
+    .tcpanel { max-width: 22rem; }
+    .tedoc { min-height: 12rem; }
   }
 
   /* ---------- Sections ---------- */
@@ -355,7 +358,7 @@
   @media (prefers-reduced-motion: reduce) {
     .caret { animation: none; }
     kbd.pressed { animation: none; }
-    .bubble, .tc-block, .inputrow { transition: none; }
+    .tc-block { transition: none; }
     html { scroll-behavior: auto; }
   }
 </style>
@@ -385,8 +388,7 @@
       <a class="btn btn-primary" href="https://github.com/alexpolonsky/TypeCue/releases/latest/download/TypeCue.dmg"><svg viewBox="0 0 814 1000" width="14" height="17" style="vertical-align:-2.5px;margin-right:.45rem" fill="currentColor" aria-hidden="true"><path d="M788 341c-6 4-107 61-107 187 0 146 128 198 132 199-1 3-20 70-67 138-42 60-86 120-153 120s-84-39-161-39c-75 0-102 40-163 40s-104-56-153-124C60 782 14 664 14 552c0-180 117-275 232-275 61 0 112 41 150 41 36 0 93-43 162-43 26 0 120 2 182 92zM554 187c31-36 52-87 52-137 0-7-1-14-2-20-50 2-109 33-144 74-28 32-54 83-54 134 0 8 1 15 2 18 3 1 8 1 13 1 44 0 100-30 133-70z"/></svg>Download for Mac</a>
       <a class="link-secondary" href="https://github.com/alexpolonsky/TypeCue"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>Source on GitHub</a>
     </div>
-    <p class="fine">MIT license &middot; macOS 14+ &middot; everything stays on your Mac
-      &middot; <button class="fine-link" id="src-toggle" aria-expanded="false" aria-controls="instpop">more install options</button></p>
+    <p class="fine">macOS 14+ &middot; <button class="fine-link" id="src-toggle" aria-expanded="false" aria-controls="instpop">more install options</button></p>
     <div class="instwrap">
       <div class="instpop" id="instpop">
         <div class="insttabs">
@@ -409,38 +411,28 @@
 
 <div class="wrap demo">
   <div class="stage">
-    <div class="scene" aria-label="Simulated demo: the TypeCue panel plays script blocks into an app window">
-      <div class="tc-panel" aria-hidden="true">
-        <div class="tc-head">
-          <img src="icon-180.png" alt="" width="16" height="16">
-          <span class="tc-name">TypeCue</span>
-          <span class="tc-keys"><kbd id="k-ctrl">&#8963;</kbd><kbd id="k-opt">&#8997;</kbd><kbd id="k-x">X</kbd></span>
-        </div>
+    <div class="scene" aria-label="Simulated demo: the TypeCue panel plays script blocks into a TextEdit window">
+      <div class="tewin" aria-hidden="true">
+        <div class="tebar"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span><span class="tetitle">Take one</span></div>
+        <div class="tedoc"><span id="typed-demo"></span><span class="tecaret" id="demo-caret"></span></div>
+      </div>
+      <div class="tcpanel" aria-hidden="true">
+        <div class="tcbar"><span class="tcdot"></span><span class="tcapp">TypeCue</span></div>
+        <div class="tcscript"><span class="tcchev">&#x2304;</span><b>Take one</b><span class="tccount" id="tc-count">1 / 3</span></div>
         <ul class="tc-blocks">
-          <li class="tc-block" data-state="typed">Open the repo and walk through the bug.</li>
-          <li class="tc-block" data-state="next">Refactor the auth flow <span class="mk">[0.6]</span> and explain each change.</li>
-          <li class="tc-block" data-state="upcoming">Paste the path <span class="mk">[speed:15]</span> Sources/Engine/KeystrokeResolver.swift</li>
+          <li class="tc-block" data-state="next"><span class="tcic"></span><span>TypeCue demo - every line you're watching is typed by a single hotkey press.
+One block per press. No typos. Same take, every time.</span></li>
+          <li class="tc-block" data-state="upcoming"><span class="tcic"></span><span>It pauses exactly where you tell it to [0.8] - see? - and [speed:35]it can rush through the parts nobody reads at full speed[speed:default]...</span></li>
+          <li class="tc-block" data-state="upcoming"><span class="tcic"></span><span>[speed:120]...then slow down when it matters.[speed:default] [0.8]
+The pacing lives in the script - you just press one key.</span></li>
         </ul>
       </div>
-      <div class="window">
-        <div class="titlebar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="title">Any app with a text field</span></div>
-        <div class="chat">
-          <div class="bubble shown" id="bubble-0">Open the repo and walk through the bug.</div>
-          <div class="bubble" id="bubble-1"></div>
-          <div class="bubble" id="bubble-2"></div>
-          <div class="inputrow" id="inputrow">
-            <div class="text"><span id="typed-demo"></span><span class="caret" id="demo-caret"></span></div>
-          </div>
-        </div>
-      </div>
     </div>
-    <p class="demo-hint">Each press of <kbd>&#8963;</kbd><kbd>&#8997;</kbd><kbd>X</kbd> plays the next block. This scene is simulated; the app sends real keystrokes.</p>
-    <div class="realtake">
-      <video controls playsinline preload="metadata" width="1920" height="1078">
-        <source src="demo.mp4" type="video/mp4">
-      </video>
-      <p>The real thing - recorded in one take, hotkey presses shown.</p>
+    <div class="realvid" id="realvid" hidden>
+      <video id="realvid-player" controls playsinline preload="metadata" data-poster="demo-poster.jpg" data-src="demo.mp4" width="1600" height="844"></video>
     </div>
+    <p class="demo-hint"><span id="hint-sim">Each press of <kbd id="k-ctrl">&#8963;</kbd><kbd id="k-opt">&#8997;</kbd><kbd id="k-x">X</kbd> types the next block. Recreated in the browser -</span>
+      <button class="fine-link" id="real-toggle">watch the real recording</button>.</p>
   </div>
 </div>
 
@@ -603,29 +595,33 @@
     setTimeout(() => typeInto(h1, H1_TEXT, 58), 350);
   }
 
-  // ---- Demo: panel + window driven off one source of truth ----
+  // ---- Demo: replica panel + TextEdit window driven off one source of truth ----
   // Markers shown in the panel direct the typing; they are never typed themselves.
   const rows = document.querySelectorAll(".tc-block");
+  const tcCount = document.getElementById("tc-count");
   const SCRIPT = [
-    { segments: [{ t: "Open the repo and walk through the bug.", d: 52 }] },
-    { segments: [{ t: "Refactor the auth flow ", d: 52 }, { pause: 600 }, { t: "and explain each change.", d: 52 }] },
-    { segments: [{ t: "Paste the path ", d: 52 }, { t: "Sources/Engine/KeystrokeResolver.swift", d: 15 }] },
+    { segments: [
+      { t: "TypeCue demo - every line you're watching is typed by a single hotkey press.\nOne block per press. No typos. Same take, every time.", d: 48 }] },
+    { segments: [
+      { t: "It pauses exactly where you tell it to ", d: 48 }, { pause: 800 },
+      { t: "- see? - and ", d: 48 },
+      { t: "it can rush through the parts nobody reads at full speed", d: 16 },
+      { t: "...", d: 48 }] },
+    { segments: [
+      { t: "...then slow down when it matters.", d: 105 }, { pause: 800 },
+      { t: "\nThe pacing lives in the script - you just press one key.", d: 48 }] },
   ];
-  const BLOCKS = SCRIPT.map(b => b.segments.map(seg => seg.t || "").join(""));
   const field = document.getElementById("typed-demo");
-  const inputrow = document.getElementById("inputrow");
-  const bubbles = [document.getElementById("bubble-0"), document.getElementById("bubble-1"), document.getElementById("bubble-2")];
-  const keys = ["k-ctrl", "k-opt", "k-x"].map(id => document.getElementById(id));
 
-  function setRow(i, state) { rows[i].dataset.state = state; rows[i].style.removeProperty("--progress"); }
+  function setRow(i, state) { rows[i].dataset.state = state; }
+  function setCount(text) { tcCount.textContent = text; }
+  const hintKeys = ["k-ctrl", "k-opt", "k-x"].map(id => document.getElementById(id));
   function pressKeys() {
-    keys.forEach(k => { k.classList.remove("pressed"); void k.offsetWidth; k.classList.add("pressed"); });
+    hintKeys.forEach(k => k.classList.add("pressed"));
+    setTimeout(() => hintKeys.forEach(k => k.classList.remove("pressed")), 260);
   }
-  function flashConnector(on) { inputrow.classList.toggle("pulse", on); }
 
-  function typeSegments(el, segments, onChar, done) {
-    const total = segments.reduce((n, seg) => n + (seg.t ? seg.t.length : 0), 0);
-    let typedSoFar = 0;
+  function typeSegments(el, segments, done) {
     (function run(si) {
       if (si >= segments.length) { done(); return; }
       const seg = segments[si];
@@ -634,7 +630,6 @@
       (function step() {
         i += 1;
         el.textContent += seg.t[i - 1];
-        onChar(++typedSoFar, total);
         if (i < seg.t.length) setTimeout(step, seg.d + (Math.random() * 30 - 15));
         else run(si + 1);
       })();
@@ -643,42 +638,59 @@
 
   function playBlock(i) {
     pressKeys();
-    setTimeout(() => {
-      setRow(i, "typing");
-      flashConnector(true);
-      field.textContent = "";
-      typeSegments(field, SCRIPT[i].segments, (typed, total) => {
-        rows[i].style.setProperty("--progress", `${(typed / total) * 100}%`);
-      }, () => {
-        flashConnector(false);
-        setTimeout(() => {
-          setRow(i, "typed");
-          if (rows[i + 1]) setRow(i + 1, "next");
-          bubbles[i].textContent = BLOCKS[i];
-          bubbles[i].classList.add("shown");
-          field.textContent = "";
-          if (i + 1 < BLOCKS.length) setTimeout(() => playBlock(i + 1), 2000);
-          else setTimeout(resetLoop, 2600);
-        }, 700);
-      });
-    }, 420);
+    setTimeout(() => startBlock(i), 380);
+  }
+  function startBlock(i) {
+    setRow(i, "typing");
+    typeSegments(field, SCRIPT[i].segments, () => {
+      setRow(i, "typed");
+      if (i + 1 < SCRIPT.length) {
+        setRow(i + 1, "next");
+        setCount(`${i + 2} / 3`);
+        field.textContent += "\n\n";
+        setTimeout(() => playBlock(i + 1), 1600);
+      } else {
+        setCount("done");
+        setTimeout(resetLoop, 4200);
+      }
+    });
   }
 
   function resetLoop() {
-    setRow(0, "typed"); setRow(1, "next"); setRow(2, "upcoming");
-    bubbles[1].classList.remove("shown"); bubbles[2].classList.remove("shown");
-    setTimeout(() => playBlock(1), 1400);
+    field.textContent = "";
+    setRow(0, "next"); setRow(1, "upcoming"); setRow(2, "upcoming");
+    setCount("1 / 3");
+    setTimeout(() => playBlock(0), 1500);
   }
 
   if (reduced) {
-    // Settled frame: blocks 1-2 typed, 3 next; two bubbles sent.
-    setRow(0, "typed"); setRow(1, "typed"); setRow(2, "next");
-    bubbles[1].textContent = BLOCKS[1]; bubbles[1].classList.add("shown");
+    // Settled frame: everything typed, script complete.
+    field.textContent = SCRIPT.map(b => b.segments.map(s => s.t || "").join("")).join("\n\n");
+    setRow(0, "typed"); setRow(1, "typed"); setRow(2, "typed");
+    setCount("done");
   } else {
-    setTimeout(() => playBlock(1), 2200);
+    setTimeout(() => playBlock(0), 1800);
   }
 
   const srcToggle = document.getElementById("src-toggle");
+  // Demo stage: swap the simulated scene for the real recording in place
+  const realToggle = document.getElementById("real-toggle");
+  const realVid = document.getElementById("realvid");
+  const sceneEl = document.querySelector(".scene");
+  const realPlayer = document.getElementById("realvid-player");
+  realToggle.addEventListener("click", () => {
+    const showVid = realVid.hidden;
+    if (showVid && !realPlayer.src) {
+      realPlayer.poster = realPlayer.dataset.poster;
+      realPlayer.src = realPlayer.dataset.src;
+    }
+    realVid.hidden = !showVid;
+    sceneEl.style.display = showVid ? "none" : "";
+    document.getElementById("hint-sim").hidden = showVid;
+    realToggle.textContent = showVid ? "back to the simulation" : "watch the real recording";
+    if (!showVid) realPlayer.pause();
+  });
+
   const instPop = document.getElementById("instpop");
   const instCmd = document.getElementById("inst-cmd");
   const instTabs = Array.from(instPop.querySelectorAll(".itab"));

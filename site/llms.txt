@@ -57,12 +57,20 @@ TypeCue is deliberately automatable by AI agents with machine access
 
 - macOS 14 (Sonoma) or later. One permission: Accessibility (System Settings >
   Privacy & Security > Accessibility) - the macOS API for sending keystrokes.
-- Download: https://github.com/alexpolonsky/TypeCue/releases/latest
-- Source and build instructions: https://github.com/alexpolonsky/TypeCue
+- Direct download (signed, notarized dmg):
+  https://github.com/alexpolonsky/TypeCue/releases/latest/download/TypeCue.dmg
+- Homebrew: `brew install --cask alexpolonsky/tap/typecue`
+  (tap: https://github.com/alexpolonsky/homebrew-tap)
+- Build from source: clone https://github.com/alexpolonsky/TypeCue, run
+  `xcodegen generate`, build with Xcode 16.4+ (Swift 6). Details in the README.
 
 ## Links
 
 - Website: https://typecue.app
+- Demo video (41s, real recording): https://typecue.app/demo.mp4
 - Repository: https://github.com/alexpolonsky/TypeCue
+- Releases: https://github.com/alexpolonsky/TypeCue/releases
+- Changelog: https://github.com/alexpolonsky/TypeCue/blob/main/CHANGELOG.md
+- Agent skill (raw markdown): https://typecue.app/skill.md
 - License (MIT): https://github.com/alexpolonsky/TypeCue/blob/main/LICENSE
 - Author: Alex Polonsky - https://alexpolonsky.com
