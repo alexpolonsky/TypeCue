@@ -34,6 +34,12 @@ focus. Real system-level keystrokes, human pacing, no typos, identical on every 
 drag TypeCue to Applications, and grant the one permission it asks for (Accessibility -
 the macOS API for sending keystrokes; there is a Test Pad in onboarding to verify it).
 
+**Homebrew**:
+
+```bash
+brew install --cask alexpolonsky/tap/typecue
+```
+
 **Build from source**:
 
 ```bash
