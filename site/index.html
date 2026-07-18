@@ -135,22 +135,49 @@
     padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
   }
   .fine-link:hover { color: var(--ink); }
-  .srcwidget {
-    max-width: 33rem; margin-top: .9rem; padding: .9rem 1rem;
-    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md);
+  /* Install popover: a small terminal anchored to the fine-print link. */
+  .instwrap { position: relative; height: 0; }
+  .instpop {
+    position: absolute; left: 0; top: .55rem; z-index: 40;
+    width: min(31rem, calc(100vw - 3rem));
+    background: var(--band); color: var(--code-ink);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: var(--r-md);
+    box-shadow: 0 18px 50px rgba(0,0,0,.28), 0 2px 10px rgba(0,0,0,.14);
+    padding: .5rem .6rem .6rem;
+    opacity: 0; transform: translateY(-4px); pointer-events: none;
+    transition: opacity .16s ease, transform .16s ease;
   }
-  .srcwidget p { margin: .6rem 0 0; font-size: .84rem; color: var(--ink-soft); }
-  .srcwidget p code {
-    font: .85em ui-monospace, "SF Mono", Menlo, monospace;
-    background: var(--cream-deep); padding: .08em .35em; border-radius: 5px;
+  .instpop.open { opacity: 1; transform: none; pointer-events: auto; }
+  .insttabs { display: flex; gap: .2rem; padding: .1rem .15rem .45rem; }
+  .itab {
+    font: 600 .74rem/1 inherit; font-family: inherit; color: rgba(232,230,240,.55);
+    background: none; border: none; padding: .34rem .6rem; border-radius: 7px; cursor: pointer;
   }
-  .cmdrow { display: flex; gap: .5rem; align-items: stretch; }
-  .cmdrow code {
-    flex: 1; min-width: 0; padding: .5rem .7rem;
-    background: var(--cream-deep); border-radius: var(--r-sm);
-    font: .78rem/1.7 ui-monospace, "SF Mono", Menlo, monospace;
-    overflow-x: auto; white-space: nowrap;
+  .itab:hover { color: var(--code-ink); }
+  .itab.active { color: var(--code-ink); background: rgba(255,255,255,.1); }
+  .instline {
+    display: flex; align-items: center; gap: .55rem;
+    background: rgba(255,255,255,.06); border-radius: var(--r-sm);
+    padding: .55rem .5rem .55rem .75rem;
   }
+  .instline .prompt { color: var(--coral); font: 700 .78rem ui-monospace, "SF Mono", Menlo, monospace; }
+  .instline code {
+    flex: 1; min-width: 0; font: .78rem/1.6 ui-monospace, "SF Mono", Menlo, monospace;
+    white-space: nowrap; overflow-x: auto; scrollbar-width: none;
+  }
+  .instline code::-webkit-scrollbar { display: none; }
+  .icopy {
+    flex: 0 0 auto; display: flex; padding: .3rem; border-radius: 6px;
+    background: none; border: none; color: rgba(232,230,240,.55); cursor: pointer;
+  }
+  .icopy:hover { color: var(--code-ink); background: rgba(255,255,255,.1); }
+  .icopy .ck { display: none; }
+  .icopy.ok .cp { display: none; }
+  .icopy.ok .ck { display: block; color: #7ed492; }
+  .instnote { margin: .5rem .2rem 0; font-size: .72rem; color: rgba(232,230,240,.45); }
+  .instnote a { color: inherit; }
+  @media (prefers-reduced-motion: reduce) { .instpop { transition: none; } }
 
   /* ---------- Keycaps ---------- */
   kbd {
@@ -346,17 +373,23 @@
       <a class="link-secondary" href="https://github.com/alexpolonsky/TypeCue"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>Source on GitHub</a>
     </div>
     <p class="fine">MIT license &middot; macOS 14+ &middot; everything stays on your Mac
-      &middot; <button class="fine-link" id="src-toggle">or brew / build from source</button></p>
-    <div class="srcwidget" id="srcwidget" hidden>
-      <div class="cmdrow">
-        <code id="brew-cmd">brew install --cask alexpolonsky/tap/typecue</code>
-        <button class="minicopy" id="copy-brew">Copy</button>
+      &middot; <button class="fine-link" id="src-toggle" aria-expanded="false" aria-controls="instpop">more install options</button></p>
+    <div class="instwrap">
+      <div class="instpop" id="instpop">
+        <div class="insttabs" role="tablist">
+          <button class="itab active" role="tab" aria-selected="true" data-cmd="brew install --cask alexpolonsky/tap/typecue">Homebrew</button>
+          <button class="itab" role="tab" aria-selected="false" data-cmd="git clone https://github.com/alexpolonsky/TypeCue">Source</button>
+        </div>
+        <div class="instline">
+          <span class="prompt">$</span>
+          <code id="inst-cmd">brew install --cask alexpolonsky/tap/typecue</code>
+          <button class="icopy" id="inst-copy" aria-label="Copy command">
+            <svg class="cp" viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5"/><path d="M10.5 3.5v-1a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h1"/></svg>
+            <svg class="ck" viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg>
+          </button>
+        </div>
+        <p class="instnote">Building from source: <code>xcodegen generate</code>, then build - details in the <a href="https://github.com/alexpolonsky/TypeCue#install">README</a>.</p>
       </div>
-      <div class="cmdrow">
-        <code id="clone-cmd">git clone https://github.com/alexpolonsky/TypeCue</code>
-        <button class="minicopy" id="copy-clone">Copy</button>
-      </div>
-      <p>Building from source: <code>xcodegen generate</code>, then build - the README has the details. Swift 6, no surprises.</p>
     </div>
   </header>
 </div>
@@ -625,20 +658,38 @@
   }
 
   const srcToggle = document.getElementById("src-toggle");
-  const srcWidget = document.getElementById("srcwidget");
-  srcToggle.addEventListener("click", () => {
-    srcWidget.hidden = !srcWidget.hidden;
+  const instPop = document.getElementById("instpop");
+  const instCmd = document.getElementById("inst-cmd");
+  const instTabs = Array.from(instPop.querySelectorAll(".itab"));
+  const instCopy = document.getElementById("inst-copy");
+  const setPop = (open) => {
+    instPop.classList.toggle("open", open);
+    srcToggle.setAttribute("aria-expanded", String(open));
+  };
+  srcToggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    setPop(!instPop.classList.contains("open"));
   });
-
-  for (const [btnId, cmdId] of [["copy-brew", "brew-cmd"], ["copy-clone", "clone-cmd"]]) {
-    const b = document.getElementById(btnId);
-    b.addEventListener("click", () => {
-      navigator.clipboard.writeText(document.getElementById(cmdId).textContent).then(() => {
-        b.textContent = "Copied";
-        setTimeout(() => { b.textContent = "Copy"; }, 1600);
-      });
+  document.addEventListener("click", (e) => {
+    if (instPop.classList.contains("open") && !instPop.contains(e.target)) setPop(false);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") setPop(false);
+  });
+  instTabs.forEach((tab) => tab.addEventListener("click", () => {
+    instTabs.forEach((t) => {
+      t.classList.toggle("active", t === tab);
+      t.setAttribute("aria-selected", String(t === tab));
     });
-  }
+    instCmd.textContent = tab.dataset.cmd;
+    instCopy.classList.remove("ok");
+  }));
+  instCopy.addEventListener("click", () => {
+    navigator.clipboard.writeText(instCmd.textContent).then(() => {
+      instCopy.classList.add("ok");
+      setTimeout(() => instCopy.classList.remove("ok"), 1400);
+    });
+  });
 
   // Copy the skill line for the user's agent
   const btn = document.getElementById("copy-snippet");
