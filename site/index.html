@@ -164,6 +164,18 @@
     padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
   }
   .fine-link:hover { color: var(--ink); }
+  .savewrap { display: flex; align-items: center; gap: .7rem; }
+  .savechip {
+    display: inline-flex; align-items: center; gap: .45rem;
+    font: 600 .85rem/1 inherit; font-family: inherit; color: var(--ink);
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    padding: .6rem .85rem; cursor: pointer;
+  }
+  .savechip:active { transform: translateY(1px); }
+  /* Belt and suspenders: the save-later chip is mobile-only. The JS gate checks
+     Web Share + coarse pointer, but some environments misreport pointer type -
+     desktop-width viewports never show it, period. */
+  @media (min-width: 681px) { .savewrap { display: none !important; } }
   /* Install popover: a small terminal anchored to the fine-print link. */
   .instwrap { position: relative; height: 0; }
   .instpop {
@@ -418,6 +430,11 @@
       <a class="link-secondary" data-goatcounter-click="github-hero" href="https://github.com/alexpolonsky/TypeCue"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>Source on GitHub</a>
     </div>
     <p class="fine">macOS 14+ &middot; <button class="fine-link" id="src-toggle" aria-expanded="false" aria-controls="instpop">more install options</button></p>
+    <p class="fine savewrap" id="save-later-wrap" hidden>On your phone?
+      <button class="savechip" id="save-later" data-goatcounter-click="save-later">
+        <svg viewBox="0 0 16 20" width="13" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 12V2M8 2L4.5 5.5M8 2l3.5 3.5"/><path d="M3 9v8.5h10V9" stroke-linejoin="miter"/></svg>
+        Save TypeCue for later
+      </button></p>
     <div class="instwrap">
       <div class="instpop" id="instpop">
         <div class="insttabs">
@@ -587,7 +604,7 @@ The pacing lives in the script - you just press one key.</span></li>
   <section id="get">
     <h2>Get TypeCue</h2>
     <a class="btn btn-primary" data-goatcounter-click="download-bottom" href="https://github.com/alexpolonsky/TypeCue/releases/latest/download/TypeCue.dmg"><svg viewBox="0 0 814 1000" width="14" height="17" style="vertical-align:-2.5px;margin-right:.45rem" fill="currentColor" aria-hidden="true"><path d="M788 341c-6 4-107 61-107 187 0 146 128 198 132 199-1 3-20 70-67 138-42 60-86 120-153 120s-84-39-161-39c-75 0-102 40-163 40s-104-56-153-124C60 782 14 664 14 552c0-180 117-275 232-275 61 0 112 41 150 41 36 0 93-43 162-43 26 0 120 2 182 92zM554 187c31-36 52-87 52-137 0-7-1-14-2-20-50 2-109 33-144 74-28 32-54 83-54 134 0 8 1 15 2 18 3 1 8 1 13 1 44 0 100-30 133-70z"/></svg>Download for Mac</a>
-    <p class="fine">or <code>brew install --cask alexpolonsky/tap/typecue</code> &middot; macOS 14+ &middot; free &amp; open source</p>
+    <p class="fine">or <code>brew install --cask alexpolonsky/tap/typecue</code></p>
   </section>
 
   <footer>
@@ -712,6 +729,16 @@ The pacing lives in the script - you just press one key.</span></li>
     setCount("done");
   } else {
     setTimeout(() => playBlock(0), 1800);
+  }
+
+  // Mobile visitors can't run a Mac app; offer the native share sheet
+  // (AirDrop, Notes, message-to-self) as a zero-backend "save for later".
+  const saveWrap = document.getElementById("save-later-wrap");
+  if (navigator.share && matchMedia("(pointer: coarse)").matches) {
+    saveWrap.hidden = false;
+    document.getElementById("save-later").addEventListener("click", () => {
+      navigator.share({ title: "TypeCue", text: "TypeCue - press a key, it types the line", url: "https://typecue.app" }).catch(() => {});
+    });
   }
 
   const srcToggle = document.getElementById("src-toggle");
