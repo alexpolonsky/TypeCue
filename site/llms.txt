@@ -27,11 +27,18 @@
 
 ## Use cases
 
-- Product demo videos and screencasts: retake-free typing, identical on every take.
-- Live presentations, webinars, conference demos: no typos with an audience watching.
-- Tutorials and course material: consistent pacing viewers can follow.
-- Any AI-tool demo where prompts must be typed on screen (Claude, Cursor, ChatGPT,
-  terminals, editors) - the typing is indistinguishable from a human performing it.
+- Product teams and founders - demo videos and screencasts: retake-free typing,
+  identical on every take.
+- Presenters and sales engineers - live talks, webinars, conference and customer
+  demos: no typos with an audience watching.
+- Teachers and course creators - tutorial and course recordings: consistent,
+  followable pacing for commands and code typed on screen.
+- Livestreamers - coding or tool streams: prepared segments type themselves while
+  the streamer narrates.
+- Film and TV productions - screen scenes: an actor "types" and the on-screen text
+  is real, coherent, and paced like human typing.
+- Anyone demoing AI tools - prompts typed on screen (Claude, Cursor, ChatGPT,
+  terminals, editors) look indistinguishable from a human performing them.
 
 ## For AI agents
 

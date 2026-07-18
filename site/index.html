@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TypeCue - press a key, it types the line</title>
-<meta name="description" content="Free, open-source macOS menu bar app that types your script into any app, one block per hotkey press. Real keystrokes, human pace, no typos - for demos, tutorials, and live presentations.">
+<meta name="description" content="Free, open-source macOS menu bar app that types your script into any app - one hotkey press per line, as real keystrokes at a human pace. No typos, in demos, tutorials, streams, and live talks.">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="icon-180.png">
 <meta property="og:title" content="TypeCue - press a key, it types the line">
-<meta property="og:description" content="Free, open-source macOS app that types your demo script into any app, one block per hotkey press. Flawless, take after take.">
+<meta property="og:description" content="Free, open-source macOS app that types your script into any app - one hotkey press per line, at a human pace. Flawless, take after take.">
 <meta property="og:image" content="https://typecue.app/og.png">
 <meta property="og:url" content="https://typecue.app">
 <meta property="og:type" content="website">
@@ -20,7 +20,7 @@
   "name": "TypeCue",
   "operatingSystem": "macOS 14.0 or later",
   "applicationCategory": "UtilitiesApplication",
-  "description": "Free, open-source macOS menu bar app that types your script into any app, one block per hotkey press - real keystrokes at a human pace, for demos, tutorials, and live presentations.",
+  "description": "Free, open-source macOS menu bar app that types your script into any app - one hotkey press per line, as real keystrokes at a human pace. For demos, tutorials, streams, and live talks.",
   "url": "https://typecue.app",
   "image": "https://typecue.app/og.png",
   "downloadUrl": "https://github.com/alexpolonsky/TypeCue/releases/latest/download/TypeCue.dmg",
@@ -404,8 +404,8 @@
     <span class="eyebrow">Native macOS &middot; free &amp; open source</span>
     <h1><span id="typed-h1">Press a key. It types the line.</span><span class="caret" id="h1-caret"></span></h1>
     <p class="kicker">Real keystrokes, at a human pace.</p>
-    <p class="sub">Write your demo as blocks. During the take, one hotkey types the next
-    block into whatever field has focus.</p>
+    <p class="sub">Write your lines ahead of time. Each press of one hotkey types the next
+    one into whatever app you're in - perfectly on cue.</p>
     <div class="cta-row">
       <a class="btn btn-primary" href="https://github.com/alexpolonsky/TypeCue/releases/latest/download/TypeCue.dmg"><svg viewBox="0 0 814 1000" width="14" height="17" style="vertical-align:-2.5px;margin-right:.45rem" fill="currentColor" aria-hidden="true"><path d="M788 341c-6 4-107 61-107 187 0 146 128 198 132 199-1 3-20 70-67 138-42 60-86 120-153 120s-84-39-161-39c-75 0-102 40-163 40s-104-56-153-124C60 782 14 664 14 552c0-180 117-275 232-275 61 0 112 41 150 41 36 0 93-43 162-43 26 0 120 2 182 92zM554 187c31-36 52-87 52-137 0-7-1-14-2-20-50 2-109 33-144 74-28 32-54 83-54 134 0 8 1 15 2 18 3 1 8 1 13 1 44 0 100-30 133-70z"/></svg>Download for Mac</a>
       <a class="link-secondary" href="https://github.com/alexpolonsky/TypeCue"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>Source on GitHub</a>
@@ -462,7 +462,7 @@ The pacing lives in the script - you just press one key.</span></li>
   <section id="how">
     <h2>How it works</h2>
     <div class="steps">
-      <div class="step"><div class="n">1</div><h3>Write your blocks</h3><p>A script is an ordered list of text blocks, one per beat of your demo. Pace them with inline markers like <code>[0.5]</code> and <code>[speed:40]</code>.</p></div>
+      <div class="step"><div class="n">1</div><h3>Write your blocks</h3><p>A script is an ordered list of text blocks, one per beat of your demo, lesson, or scene. Pace them with inline markers like <code>[0.5]</code> and <code>[speed:40]</code>.</p></div>
       <div class="step"><div class="n">2</div><h3>Focus any field</h3><p>Your editor, a browser, a chat app. TypeCue waits in the menu bar.</p></div>
       <div class="step"><div class="n">3</div><h3>Press <kbd>&#8963;</kbd><kbd>&#8997;</kbd><kbd>X</kbd></h3><p>The next block types itself, human-paced. Press again for the block after, or mid-type to stop.</p></div>
     </div>
@@ -563,6 +563,13 @@ The pacing lives in the script - you just press one key.</span></li>
       <code>typecue://activate-script</code>, <code>typecue://reset-session</code>, and
       <code>typecue://reload</code> - and the session mirrors to <code>state.json</code> so
       tools can watch progress. The <a href="skill.md">skill</a> documents all of it.</p>
+    </details>
+    <details>
+      <summary>What do people use it for?</summary>
+      <p>Mostly product demos - recorded screencasts and live ones on stage or in a
+      sales call. The same mechanics carry tutorial and course recordings, coding
+      livestreams where a segment is prepared ahead, and film or TV scenes where an
+      actor types and the screen has to show real, coherent text.</p>
     </details>
     <details>
       <summary>Can I use it commercially - at work, in a paid product demo?</summary>
