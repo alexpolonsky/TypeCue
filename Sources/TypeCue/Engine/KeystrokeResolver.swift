@@ -26,6 +26,11 @@ public final class KeystrokeResolver: @unchecked Sendable {
 
     private let lock = NSLock()
     private var cache: [Character: Keystroke] = [:]
+    /// Layout-dependent special keycodes, captured alongside the cache so the hot typing
+    /// path never hops to the main thread. Space is the most common character in any
+    /// script; a per-character `DispatchQueue.main.sync` here stalls typing whenever the
+    /// main thread is momentarily busy.
+    private var specials: (return: CGKeyCode, tab: CGKeyCode, space: CGKeyCode)?
     private var observer: NSObjectProtocol?
 
     public init() {
@@ -62,17 +67,17 @@ public final class KeystrokeResolver: @unchecked Sendable {
     /// The Return keystroke on the current layout. `shifted` posts Shift+Return, which
     /// inserts a line break without submitting in most chat apps.
     public func returnKeystroke(shifted: Bool) -> Keystroke {
-        Keystroke(keyCode: onMain { CGKeyCode(Sauce.shared.keyCode(for: .`return`)) }, needsShift: shifted)
+        Keystroke(keyCode: specialKeycodes().return, needsShift: shifted)
     }
 
     public func resolve(_ character: Character) -> Resolution {
         switch character {
         case "\n", "\r":
-            return .special(Keystroke(keyCode: onMain { CGKeyCode(Sauce.shared.keyCode(for: .`return`)) }, needsShift: false))
+            return .special(Keystroke(keyCode: specialKeycodes().return, needsShift: false))
         case "\t":
-            return .special(Keystroke(keyCode: onMain { CGKeyCode(Sauce.shared.keyCode(for: .tab)) }, needsShift: false))
+            return .special(Keystroke(keyCode: specialKeycodes().tab, needsShift: false))
         case " ":
-            return .special(Keystroke(keyCode: onMain { CGKeyCode(Sauce.shared.keyCode(for: .space)) }, needsShift: false))
+            return .special(Keystroke(keyCode: specialKeycodes().space, needsShift: false))
         default:
             break
         }
@@ -89,6 +94,17 @@ public final class KeystrokeResolver: @unchecked Sendable {
         return .unicode(String(character))
     }
 
+    private func specialKeycodes() -> (return: CGKeyCode, tab: CGKeyCode, space: CGKeyCode) {
+        lock.lock()
+        let known = specials
+        lock.unlock()
+        if let known { return known }
+        rebuildCache()
+        lock.lock()
+        defer { lock.unlock() }
+        return specials ?? (36, 48, 49)
+    }
+
     /// Builds the layout cache on first use if the launch-time warm-up hasn't run yet.
     /// Idempotent, so the rare race between first `resolve` and the deferred warm-up is
     /// harmless (worst case: the cache is built once here instead).
@@ -100,7 +116,7 @@ public final class KeystrokeResolver: @unchecked Sendable {
     }
 
     private func rebuildCache() {
-        let newCache = onMain { () -> [Character: Keystroke] in
+        let (newCache, newSpecials) = onMain { () -> ([Character: Keystroke], (CGKeyCode, CGKeyCode, CGKeyCode)) in
             var built: [Character: Keystroke] = [:]
 
             // First pass: base (unshifted) mappings take priority.
@@ -122,11 +138,17 @@ public final class KeystrokeResolver: @unchecked Sendable {
                     built[character] = Keystroke(keyCode: keyCode, needsShift: true)
                 }
             }
-            return built
+            let specialCodes = (
+                CGKeyCode(Sauce.shared.keyCode(for: .`return`)),
+                CGKeyCode(Sauce.shared.keyCode(for: .tab)),
+                CGKeyCode(Sauce.shared.keyCode(for: .space))
+            )
+            return (built, specialCodes)
         }
 
         lock.lock()
         cache = newCache
+        specials = newSpecials
         lock.unlock()
     }
 }

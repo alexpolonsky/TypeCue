@@ -173,6 +173,15 @@ final class AppCoordinator {
         isTyping = true
         publishState()
         typingTask = Task {
+            // Menu bar apps are "background" while the target app is frontmost, so App
+            // Nap and timer coalescing can stretch the inter-character sleeps into
+            // visible stalls (worst under recording load). Assert latency-critical
+            // activity for exactly the duration of the run.
+            let activity = ProcessInfo.processInfo.beginActivity(
+                options: [.userInitiated, .latencyCritical],
+                reason: "Typing a script block"
+            )
+            defer { ProcessInfo.processInfo.endActivity(activity) }
             let outcome = await engine.type(segments, pacing: pacing, newlineMode: mode)
             if outcome == .cancelled {
                 session.rewind(to: typedIndex)

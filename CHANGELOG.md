@@ -6,6 +6,19 @@ All notable changes to TypeCue are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-07-19
+
+### Fixed
+
+- Typing could stall for a moment at spaces, tabs, or line breaks when the Mac was
+  under load (for example while recording the screen): those characters resolved
+  their keycode through a synchronous main-thread call on every keystroke. The
+  keycodes are now cached with the layout cache, so the typing path never waits on
+  the main thread.
+- Typing runs now hold a latency-critical activity assertion, preventing App Nap
+  and timer coalescing from stretching the pauses between characters while TypeCue
+  works in the background behind the target app.
+
 ## [0.1.0] - 2026-07-18
 
 First public release.
@@ -38,5 +51,6 @@ as ordered blocks, focus the target field, and each press of the global hotkey
 - A scripts file that fails to read is set aside as
   `scripts.json.corrupt-<timestamp>` instead of being silently replaced.
 
-[Unreleased]: https://github.com/alexpolonsky/TypeCue/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/alexpolonsky/TypeCue/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/alexpolonsky/TypeCue/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/alexpolonsky/TypeCue/releases/tag/v0.1.0
