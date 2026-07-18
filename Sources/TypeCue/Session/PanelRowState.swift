@@ -35,7 +35,6 @@ public func panelRowStates(
 ) -> [PanelRowState] {
     guard blockCount > 0 else { return [] }
 
-    // The block currently being typed, if any (one behind the armed index).
     let typingIndex: Int? = {
         guard isTyping else { return nil }
         switch sessionState {

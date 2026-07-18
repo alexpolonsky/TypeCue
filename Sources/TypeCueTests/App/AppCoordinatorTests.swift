@@ -102,7 +102,7 @@ struct AppCoordinatorTests {
         coordinator.store.flush()
         _ = coordinator.session.advance()
 
-        // External edit: append a block to the active script on disk.
+        // Simulate an external edit (bypasses the store, writes scripts.json directly).
         var edited = script
         edited.blocks.append(TextBlock(text: "c"))
         let data = try JSONEncoder().encode([edited])

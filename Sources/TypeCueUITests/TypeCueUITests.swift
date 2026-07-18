@@ -20,13 +20,11 @@ final class TypeCueUITests: XCTestCase {
         let window = app.windows["TypeCue"]
         XCTAssertTrue(window.waitForExistence(timeout: 5), "Main window should open")
 
-        // Create a script.
         app.buttons["addScriptButton"].click()
 
         let nameField = app.textFields["scriptNameField"]
         XCTAssertTrue(nameField.waitForExistence(timeout: 3), "New script should be selected and editable")
 
-        // Rename it.
         nameField.click()
         nameField.typeKey("a", modifierFlags: .command)
         nameField.typeText("Demo One")
@@ -35,7 +33,6 @@ final class TypeCueUITests: XCTestCase {
         // Add a second block (the new script starts with one).
         app.buttons["addBlockButton"].click()
 
-        // Two "Block N" labels should now be visible.
         XCTAssertTrue(app.staticTexts["Block 1"].exists)
         XCTAssertTrue(app.staticTexts["Block 2"].waitForExistence(timeout: 3))
     }

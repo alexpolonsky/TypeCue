@@ -15,7 +15,7 @@ public enum SessionState: Equatable, Sendable {
 ///
 /// Decides *which* block should be typed next; it never types anything itself. The set of blocks
 /// for a given script id is supplied via an injected closure so this type stays decoupled from
-/// `ScriptStore` (Phase 5 wires the closure to the store).
+/// `ScriptStore`.
 ///
 /// Semantics:
 /// - An active script with zero blocks is defined as `.complete(total: 0)` — there is nothing to type.
@@ -39,7 +39,6 @@ public final class SessionController {
         self.state = .idle
     }
 
-    /// Sets (or clears) the active script, resets the cursor to 0, and recomputes state.
     public func setActiveScript(_ id: UUID?) {
         activeScriptID = id
         cursor = 0
@@ -65,7 +64,6 @@ public final class SessionController {
         return block
     }
 
-    /// Re-arms the sequence: cursor back to 0 and state recomputed from the active script.
     public func reset() {
         cursor = 0
         recomputeState()

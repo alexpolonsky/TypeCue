@@ -542,7 +542,6 @@
     })();
   }
 
-  // Hero headline
   const h1 = document.getElementById("typed-h1");
   const H1_TEXT = "Press a key. It types the line.";
   if (reduced) h1.textContent = H1_TEXT;
@@ -623,14 +622,12 @@
     setTimeout(() => playBlock(1), 2200);
   }
 
-  // Build-from-source disclosure
   const srcToggle = document.getElementById("src-toggle");
   const srcWidget = document.getElementById("srcwidget");
   srcToggle.addEventListener("click", () => {
     srcWidget.hidden = !srcWidget.hidden;
   });
 
-  // Copy the clone command
   const cloneBtn = document.getElementById("copy-clone");
   cloneBtn.addEventListener("click", () => {
     navigator.clipboard.writeText(document.getElementById("clone-cmd").textContent).then(() => {

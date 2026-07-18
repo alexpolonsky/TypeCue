@@ -2,11 +2,6 @@ import Foundation
 import Observation
 
 /// User-facing typing settings, persisted in `UserDefaults`.
-///
-/// Extracted from `AppCoordinator` so the coordinator no longer mixes settings
-/// persistence with typing/window orchestration (single responsibility), and so the
-/// settings load/save behavior is independently unit-testable with an injected
-/// `UserDefaults` suite.
 @MainActor
 @Observable
 public final class SettingsStore {
@@ -43,7 +38,6 @@ public final class SettingsStore {
         self.newlineMode = defaults.string(forKey: Keys.newlineMode).flatMap(NewlineMode.init(rawValue:)) ?? .shiftReturn
     }
 
-    /// The current pacing configuration derived from the persisted settings.
     public var pacing: PacingConfig {
         PacingConfig(baseDelay: baseDelay, jitterEnabled: jitterEnabled, jitterFraction: jitterFraction)
     }

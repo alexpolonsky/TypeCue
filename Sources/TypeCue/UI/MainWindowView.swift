@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// The two sections of the app's single primary window.
+/// The tabs of the app's single primary window.
 enum EditorTab: Hashable {
     case scripts
     case settings

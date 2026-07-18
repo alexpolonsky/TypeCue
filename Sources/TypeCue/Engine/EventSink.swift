@@ -11,7 +11,7 @@ public struct Keystroke: Equatable, Sendable {
     }
 }
 
-/// Abstraction over the actual OS key-posting. Real impl (Phase 3) calls CGEventPost;
+/// Abstraction over OS key-posting. The real implementation calls CGEventPost;
 /// tests use a mock that records calls.
 public protocol EventSink: AnyObject, Sendable {
     /// Post a genuine key down/up for a resolved keystroke.

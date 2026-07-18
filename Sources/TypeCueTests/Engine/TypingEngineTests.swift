@@ -78,8 +78,6 @@ struct TypingEngineTests {
         #expect(sink.calls == expected)
     }
 
-    /// Regression test: two rapid presses must never interleave. The second call, made
-    /// while the first is still running, is rejected and produces no sink calls.
     @Test("concurrent type is rejected and never interleaves")
     func concurrentTypeIsRejected() async {
         let sink = MockEventSink()
@@ -101,7 +99,6 @@ struct TypingEngineTests {
         let second = await engine.type("cd", pacing: config)
         #expect(second == .rejected)
 
-        // Release the first run and let it finish.
         await gate.open()
         let firstOutcome = await first.value
         #expect(firstOutcome == .completed)

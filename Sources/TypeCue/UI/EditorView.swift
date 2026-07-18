@@ -161,8 +161,6 @@ struct ScriptsEditorView: View {
             .buttonStyle(.borderless)
             .controlSize(.small)
             .padding(.horizontal, 8)
-            // Fixed height shared with the blocks list's Add Block bar so the two
-            // bottom dividers align across the split view.
             .frame(height: footerBarHeight)
         }
         // Opaque bar so scrolled list content doesn't show through the inset footer.
@@ -233,7 +231,6 @@ struct ScriptsEditorView: View {
     }
 }
 
-/// Editable detail for a single script.
 private struct ScriptDetailView: View {
     @Binding var script: Script
 
@@ -305,7 +302,6 @@ private struct ScriptDetailView: View {
     }
 }
 
-/// One block row: the reorder controls plus the editable block text.
 private struct BlockRow: View {
     @Binding var block: TextBlock
     let index: Int
