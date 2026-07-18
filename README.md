@@ -28,6 +28,8 @@ script instead. Write your demo as ordered blocks; during the take, each press o
 global hotkey (default Ctrl+Option+X) types the next block into whatever field has
 focus. Real system-level keystrokes, human pacing, no typos, identical on every take.
 
+https://github.com/user-attachments/assets/8c643371-bacf-4e50-b152-aaf584afc315
+
 ## Install
 
 **Download**: grab [the latest release](https://github.com/alexpolonsky/TypeCue/releases/latest),
