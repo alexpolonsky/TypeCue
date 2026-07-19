@@ -51,6 +51,7 @@
     --card-line: #efece3;
     --band: #23243a;
     --code-ink: #e8e6f0;
+    --vid-blend: #eae4d6;
     --r-sm: 8px;
     --r-md: 14px;
     --r-lg: 22px;
@@ -67,6 +68,8 @@
       --card: #282936;
       --card-line: #34354a;
       --band: #12131b;
+      --vid-blend: #14151d;
+      --vid-feather: transparent;
     }
   }
   :root[data-theme="dark"] {
@@ -80,6 +83,8 @@
     --card: #282936;
     --card-line: #34354a;
     --band: #12131b;
+    --vid-blend: #14151d;
+    --vid-feather: transparent;
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -259,8 +264,12 @@
   }
   /* TextEdit window */
   .tewin {
-    background: var(--w-bg); border-radius: 10px; overflow: hidden;
+    position: relative; background: var(--w-bg); border-radius: 10px; overflow: hidden;
     box-shadow: 0 18px 50px rgba(35,36,58,.18), 0 2px 8px rgba(35,36,58,.08);
+  }
+  .tedoc-measure {
+    position: absolute; left: 0; top: 2rem; width: 100%;
+    visibility: hidden; pointer-events: none;
   }
   .tebar {
     display: flex; align-items: center; gap: .5rem; height: 2rem; padding: 0 .8rem;
@@ -313,8 +322,15 @@
   .demo-hint { text-align: center; font-size: .85rem; color: var(--ink-soft); margin-top: 1.2rem; }
   .demo-hint kbd { transition: transform .12s, border-bottom-width .12s, background .12s; }
   .demo-hint kbd.pressed { transform: translateY(2px); border-bottom-width: 1.5px; background: var(--cream-deep); }
-  .realvid { max-width: 56rem; margin: 0 auto; }
+  .stage.vidmode { background: var(--vid-blend); }
+  .realvid { max-width: 56rem; margin: 0 auto; position: relative; }
   .realvid video { display: block; width: 100%; height: auto; border-radius: var(--r-sm); }
+  /* Feathered edge in the stage's own color: hides the video-vs-CSS color drift
+     (BT.709 vs sRGB) and the footage's slight corner vignette. */
+  .realvid::after {
+    content: ""; position: absolute; inset: 0; border-radius: var(--r-sm);
+    box-shadow: inset 0 0 26px 14px var(--vid-feather); pointer-events: none;
+  }
   @media (max-width: 720px) {
     .scene { grid-template-columns: 1fr; }
     .tcpanel { max-width: 22rem; }
@@ -574,6 +590,11 @@ The pacing lives in the script - you just press one key.</span></li>
       <p>Anything with a text field: browsers, editors, chat apps, terminals, TextEdit.</p>
     </details>
     <details>
+      <summary>Can I change the hotkey?</summary>
+      <p>Yes. &#8963;&#8997;X is just the default - set any shortcut you like in Settings,
+      and the menu shows whatever binding is active.</p>
+    </details>
+    <details>
       <summary>How is this different from TextExpander or Keyboard Maestro?</summary>
       <p>Those expand snippets or run automations on demand. TypeCue plays an ordered
       script, one hotkey press per block, with pacing you direct. It was built for
@@ -593,6 +614,12 @@ The pacing lives in the script - you just press one key.</span></li>
       sales call. The same mechanics apply to tutorial and course recordings, coding
       livestreams where a segment is prepared ahead, and film or TV scenes where an
       actor types and the screen has to show real, coherent text.</p>
+    </details>
+    <details>
+      <summary>How does it update?</summary>
+      <p>TypeCue never phones home, so it never updates itself either. Homebrew users get
+      new versions with <code>brew upgrade</code>; everyone else downloads the new dmg
+      when a release interests them.</p>
     </details>
     <details>
       <summary>Can I use it commercially - at work, in a paid product demo?</summary>
@@ -670,6 +697,20 @@ The pacing lives in the script - you just press one key.</span></li>
       { t: "\nThe pacing lives in the script - you just press one key.", d: 48 }] },
   ];
   const field = document.getElementById("typed-demo");
+
+  // Lock the document area to its final height so the window never grows
+  // mid-loop (the page below would shift on every cycle, worst on mobile).
+  const tedoc = field.closest(".tedoc");
+  const FULL_TEXT = SCRIPT.map(b => b.segments.map(s => s.t || "").join("")).join("\n\n");
+  const measure = document.createElement("div");
+  measure.className = "tedoc tedoc-measure";
+  measure.setAttribute("aria-hidden", "true");
+  measure.textContent = FULL_TEXT;
+  tedoc.parentElement.appendChild(measure);
+  function lockHeight() { tedoc.style.height = measure.offsetHeight + "px"; }
+  lockHeight();
+  let rsz;
+  addEventListener("resize", () => { clearTimeout(rsz); rsz = setTimeout(lockHeight, 150); });
 
   function setRow(i, state) { rows[i].dataset.state = state; }
   function setCount(text) { tcCount.textContent = text; }
@@ -758,6 +799,7 @@ The pacing lives in the script - you just press one key.</span></li>
     }
     realVid.hidden = !showVid;
     sceneEl.style.display = showVid ? "none" : "";
+    document.querySelector(".stage").classList.toggle("vidmode", showVid);
     document.getElementById("hint-sim").hidden = showVid;
     realToggle.textContent = showVid ? "back to the animation" : "watch the real recording";
     if (!showVid) realPlayer.pause();
