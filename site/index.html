@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TypeCue - press a key, it types the line</title>
-<meta name="description" content="Free, open-source macOS menu bar app that types your script into any app - one hotkey press per line, as real keystrokes at a human pace. No typos, in demos, tutorials, streams, and live talks.">
+<meta name="description" content="Free, open-source macOS menu bar app that types your script into any app - one hotkey press per line, as real keystrokes at a human pace. For demos, tutorials, streams, and live talks - no typos.">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="icon-180.png">
 <meta property="og:title" content="TypeCue - press a key, it types the line">
@@ -423,7 +423,7 @@
     <h1><span id="typed-h1">Press a key. It types the line.</span><span class="caret" id="h1-caret"></span></h1>
     <p class="kicker">Real keystrokes, at a human pace.</p>
     <p class="sub">Write your lines ahead of time. Each press of one hotkey types the next
-    one into whatever app you're in - perfectly on cue. Built for demo recordings
+    line into whatever app you're in - perfectly on cue. Built for demo recordings
     and live presentations.</p>
     <div class="cta-row">
       <a class="btn btn-primary" data-goatcounter-click="download-hero" href="https://github.com/alexpolonsky/TypeCue/releases/latest/download/TypeCue.dmg"><svg viewBox="0 0 814 1000" width="14" height="17" style="vertical-align:-2.5px;margin-right:.45rem" fill="currentColor" aria-hidden="true"><path d="M788 341c-6 4-107 61-107 187 0 146 128 198 132 199-1 3-20 70-67 138-42 60-86 120-153 120s-84-39-161-39c-75 0-102 40-163 40s-104-56-153-124C60 782 14 664 14 552c0-180 117-275 232-275 61 0 112 41 150 41 36 0 93-43 162-43 26 0 120 2 182 92zM554 187c31-36 52-87 52-137 0-7-1-14-2-20-50 2-109 33-144 74-28 32-54 83-54 134 0 8 1 15 2 18 3 1 8 1 13 1 44 0 100-30 133-70z"/></svg>Download for Mac</a>
@@ -477,7 +477,7 @@ The pacing lives in the script - you just press one key.</span></li>
     <div class="realvid" id="realvid" hidden>
       <video id="realvid-player" controls playsinline preload="metadata" data-poster="demo-poster.jpg" data-src="demo.mp4" width="1600" height="844"></video>
     </div>
-    <p class="demo-hint"><span id="hint-sim">Each press of <kbd id="k-ctrl">&#8963;</kbd><kbd id="k-opt">&#8997;</kbd><kbd id="k-x">X</kbd> types the next block. Recreated in the browser -</span>
+    <p class="demo-hint"><span id="hint-sim">Each press of <kbd id="k-ctrl">&#8963;</kbd><kbd id="k-opt">&#8997;</kbd><kbd id="k-x">X</kbd> types the next line -</span>
       <button class="fine-link" id="real-toggle" data-goatcounter-click="watch-recording">watch the real recording</button>.</p>
   </div>
 </div>
@@ -488,7 +488,7 @@ The pacing lives in the script - you just press one key.</span></li>
     <div class="steps">
       <div class="step"><div class="n">1</div><h3>Write your blocks</h3><p>A script is an ordered list of text blocks, one per beat of your demo, lesson, or scene. Pace them with inline markers like <code>[0.5]</code> and <code>[speed:40]</code>.</p></div>
       <div class="step"><div class="n">2</div><h3>Focus any field</h3><p>Your editor, a browser, a chat app. TypeCue waits in the menu bar.</p></div>
-      <div class="step"><div class="n">3</div><h3>Press <kbd>&#8963;</kbd><kbd>&#8997;</kbd><kbd>X</kbd></h3><p>The next block types itself, human-paced. Press again for the block after, or mid-type to stop.</p></div>
+      <div class="step"><div class="n">3</div><h3>Press <kbd>&#8963;</kbd><kbd>&#8997;</kbd><kbd>X</kbd></h3><p>The next block types itself, human-paced. Press again for the one after, or mid-type to stop.</p></div>
     </div>
   </section>
 
@@ -498,19 +498,19 @@ The pacing lives in the script - you just press one key.</span></li>
     <div class="features">
       <div class="feature">
         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/><path class="acc" d="M7 14.8h10"/><path d="M6.2 9.6h.01M9.4 9.6h.01M12.6 9.6h.01M15.8 9.6h.01"/></svg>
-        <h3>Real keystrokes</h3><p>System-level key events, not a clipboard paste - nothing for the receiving app to tell apart from you typing it.</p>
+        <h3>Real keystrokes</h3><p>System-level key events, not a clipboard paste - to the receiving app, it's just you typing.</p>
       </div>
       <div class="feature">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h9M4 16h13"/><circle class="acc" cx="16.5" cy="8" r="2.4"/><circle class="acc" cx="9.5" cy="16" r="2.4"/></svg>
-        <h3>Direct the pace</h3><p>Inline markers set the rhythm: <code>[0.5]</code> pauses, <code>[speed:40]</code> changes tempo, <code>[enter]</code> submits on cue.</p>
+        <h3>Direct the pace</h3><p>Inline markers set the pace: <code>[0.5]</code> pauses, <code>[speed:40]</code> changes tempo, <code>[enter]</code> submits on cue.</p>
       </div>
       <div class="feature">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h2.5l2-5 3 10 2.5-7 1.5 2h6.5" class="acc"/></svg>
-        <h3>Natural rhythm</h3><p>Timing varies at spaces and punctuation, the way people actually type.</p>
+        <h3>Natural rhythm</h3><p>Timing varies at spaces and punctuation, the way people type.</p>
       </div>
       <div class="feature">
         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="11" height="16" rx="2"/><path d="M6 8.5h5M6 12h3.5"/><path class="acc" d="M17.5 7l3.5 0M17.5 12h3.5M17.5 17h3.5"/></svg>
-        <h3>Floating teleprompter</h3><p>An always-on-top panel tracks typed, typing, and next while the target app keeps focus.</p>
+        <h3>Floating teleprompter</h3><p>An always-on-top panel tracks what's typed, what's typing, and what's next while the target app keeps focus.</p>
       </div>
       <div class="feature">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.6 2.4 2.6 14.6 0 17M12 3.5c-2.6 2.4-2.6 14.6 0 17"/></svg>
@@ -526,7 +526,7 @@ The pacing lives in the script - you just press one key.</span></li>
       </div>
       <div class="feature">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 4.5c-2.2 0-2.6 1.4-2.6 3 0 2.4-.4 3.6-2.4 4.5 2 .9 2.4 2.1 2.4 4.5 0 1.6.4 3 2.6 3M15.5 4.5c2.2 0 2.6 1.4 2.6 3 0 2.4.4 3.6 2.4 4.5-2 .9-2.4 2.1-2.4 4.5 0 1.6-.4 3-2.6 3"/><circle class="acc" cx="12" cy="12" r="1.3"/></svg>
-        <h3>Plain-file scripts</h3><p>Scripts live in a plain JSON file you can edit by hand, sync, or hand to your AI tools.</p>
+        <h3>Plain-file scripts</h3><p>Scripts live in a plain JSON file you can edit by hand, sync, or pass to your AI tools.</p>
       </div>
     </div>
   </section>
@@ -535,7 +535,7 @@ The pacing lives in the script - you just press one key.</span></li>
 <div id="agents-band">
   <div class="wrap">
     <h2>Built for AI agents</h2>
-    <p class="section-sub">TypeCue is driven by the tools you already use. Claude Code, Cursor, or any agent
+    <p class="section-sub">The tools you already use can drive TypeCue. Claude Code, Cursor, or any agent
     with access to your machine can author scripts, pace them like a director, and control the app.</p>
     <p class="agents-lede">The repo ships an <a href="https://github.com/alexpolonsky/TypeCue/blob/main/.agents/skills/typecue/SKILL.md">agent skill</a>
     with the script schema, guardrails, and pacing rules. Give this line to your agent:</p>
@@ -554,8 +554,8 @@ The pacing lives in the script - you just press one key.</span></li>
     <h2>FAQ</h2>
     <details>
       <summary>Why does TypeCue need Accessibility permission?</summary>
-      <p>Accessibility is the macOS API for sending keystrokes to other apps - the entire
-      mechanism, and the only permission TypeCue asks for. Verify it in the onboarding Test
+      <p>Accessibility is the macOS API for sending keystrokes to other apps, and the only
+      permission TypeCue asks for. Verify it in the onboarding Test
       Pad before you go live; the code is open if you want proof.</p>
     </details>
     <details>
@@ -566,9 +566,8 @@ The pacing lives in the script - you just press one key.</span></li>
     </details>
     <details>
       <summary>Does it work in my language?</summary>
-      <p>Yes. Typing is layout-aware, RTL included. Characters on your active layout go out
-      as real keystrokes and everything else arrives by direct Unicode entry, including
-      when you switch input sources mid-session.</p>
+      <p>Yes. Typing is layout-aware, RTL included - and switching input sources mid-session
+      is handled automatically.</p>
     </details>
     <details>
       <summary>Which apps does it type into?</summary>
@@ -591,7 +590,7 @@ The pacing lives in the script - you just press one key.</span></li>
     <details>
       <summary>What do people use it for?</summary>
       <p>Mostly product demos - recorded screencasts and live ones on stage or in a
-      sales call. The same mechanics carry tutorial and course recordings, coding
+      sales call. The same mechanics apply to tutorial and course recordings, coding
       livestreams where a segment is prepared ahead, and film or TV scenes where an
       actor types and the screen has to show real, coherent text.</p>
     </details>
@@ -756,7 +755,7 @@ The pacing lives in the script - you just press one key.</span></li>
     realVid.hidden = !showVid;
     sceneEl.style.display = showVid ? "none" : "";
     document.getElementById("hint-sim").hidden = showVid;
-    realToggle.textContent = showVid ? "back to the simulation" : "watch the real recording";
+    realToggle.textContent = showVid ? "back to the animation" : "watch the real recording";
     if (!showVid) realPlayer.pause();
   });
 
