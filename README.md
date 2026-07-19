@@ -28,7 +28,9 @@ script instead. Write your demo as ordered blocks; during the take, each press o
 global hotkey (default Ctrl+Option+X) types the next block into whatever field has
 focus. Real system-level keystrokes, human pacing, no typos, identical on every take.
 
-https://github.com/user-attachments/assets/110686e2-2e6b-41c2-9781-e51b36c8563a
+
+https://github.com/user-attachments/assets/673c73f4-c44e-4d11-9cd3-6acb266aacf2
+
 
 ## Install
 
