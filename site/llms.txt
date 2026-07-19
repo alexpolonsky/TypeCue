@@ -74,7 +74,7 @@ TypeCue is deliberately automatable by AI agents with machine access
 ## Links
 
 - Website: https://typecue.app
-- Demo video (41s, real recording): https://typecue.app/demo.mp4
+- Demo video (41s, real recording): https://github.com/alexpolonsky/TypeCue/releases/download/v0.1.1/TypeCue-demo.mp4
 - Repository: https://github.com/alexpolonsky/TypeCue
 - Releases: https://github.com/alexpolonsky/TypeCue/releases
 - Changelog: https://github.com/alexpolonsky/TypeCue/blob/main/CHANGELOG.md
